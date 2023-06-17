@@ -481,6 +481,10 @@
     [
       "0187334c-67e7-4c37-9e56-a2c4a9ea8c19",
       "ADCs components"
+    ],
+    [
+      "db5b5259-db1d-46d2-b339-880df6aa32fe",
+      "Connectors(USB,Programming and debugging)"
     ]
   ],
   "text_variables": {}
