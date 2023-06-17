@@ -8,6 +8,18 @@ Este es el código fuente del microcontralor principal, las tareas que ejecuta s
 - Actualización de firmware de los modulos por SPI, de esta manera evitando usar programadores de firmware para el modulo.
 
 
+## Pasos para la construcción del proyecto(en dado caso que no uses el contenedor docker)
+
+1. Instalar ESP-IDF
+
+2. En este directorio ejecutar 
+```sh
+get-idf
+idf.py build
+```
+
+3. Subir el nuevo firmware
+
 ## Registros SPI de cada modulo
 
 ### Pedales
