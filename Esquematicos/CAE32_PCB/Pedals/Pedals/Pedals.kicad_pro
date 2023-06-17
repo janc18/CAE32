@@ -379,13 +379,8 @@
         "microvia_drill": 0.1,
         "name": "Señal",
         "nets": [
-          "/ACCEL",
-          "/BRAKE",
-          "/CLUTCH",
           "/SWCLK",
-          "/SWDIO",
-          "/USART_RX",
-          "/USART_TX"
+          "/SWDIO"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
@@ -485,6 +480,10 @@
     [
       "db5b5259-db1d-46d2-b339-880df6aa32fe",
       "Connectors(USB,Programming and debugging)"
+    ],
+    [
+      "af4de2bd-7a38-4d95-b043-2fd3b0e6e25e",
+      "Power Supply"
     ]
   ],
   "text_variables": {}
