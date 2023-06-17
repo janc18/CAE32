@@ -34,14 +34,20 @@ directamente un cable, ademas añadir la serigrafia necesaria.
 
 6. Conectar las entras de Reset y Boot al puerto rj45
 
-## Recomendación
+## Mejoras (nuevos componentes a agregar)
 
-- Quizá sea mejor opción agregar un Multiplexor de 8 canales con ADC, además que será posible 
-agregar más sensores, pero no estoy seguro si el MCU será lo suficiente rápido para leer 
-todos los datos
+- Multiplexor de 8 canales con ADC 
 
 - Añadir hardware para 3 células de carga
 	- Posible modelo de celda de carga [Aliexpress](https://es.aliexpress.com/item/1005004518830741.html)
 
-
 - Añadir pines para conexión SPI y I2c
+
+- USB tipo C
+
+- Nuevo Microcontrolador mas potente(Familia STM32F0), con soporte para conexión HID, por lo que podría funcionar
+sin la placa principal
+
+
+
+
