@@ -400,9 +400,6 @@
         "microvia_drill": 0.1,
         "name": "Spi",
         "nets": [
-          "/CS_PDL",
-          "/MISO",
-          "/MOSI",
           "/NRST",
           "/SCKL"
         ],
@@ -484,6 +481,10 @@
     [
       "af4de2bd-7a38-4d95-b043-2fd3b0e6e25e",
       "Power Supply"
+    ],
+    [
+      "d0544081-4d46-4bd0-961b-9683f35d3586",
+      "Load Cells"
     ]
   ],
   "text_variables": {}
