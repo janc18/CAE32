@@ -17,6 +17,11 @@
 **build/
 **.cache/
 **.vscode/
+
+#ESP32-S3 dowloaded idf-components
+**managed_components/
+**dependencies.lock
+
 Codigo/Firmware/Main_board_HID/ESP32-S3/.devcontainer/
 Codigo/Firmware/Main_board/.devcontainer/
 Codigo/Interfaz_grafica/Interfaz_gtk/cmake_install.cmake
