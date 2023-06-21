@@ -26,8 +26,6 @@ If you want to contribute, please read the [CONTRIBUTING.md](./docs/CONTRIBUTING
 
 ![Señales](./Esquematicos/CAE32_PCB/Pedals/Pedals.png)
 
-![PCB_señales](./Esquematicos/CAE32_PCB/Pedals/Pedals.jpg)
-
 ## Version 2.0
 
 - Placa Para la captura de señales analogicas (STM32F072RBT6)
