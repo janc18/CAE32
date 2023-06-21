@@ -3,6 +3,10 @@
 CAE32 es un proyecto de construcción y desarrollo de todas las etapas de un volante para videojuegos de PC,
 para el sistema operativo de GNU/Linux.
 
+Si quiere contribuir revisa el archivo [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+If you want to contribute, please read the [CONTRIBUTING.md](./docs/CONTRIBUTING-english.md) file.
+
 ## Las etapas son:
 
 * Diseño PCB
