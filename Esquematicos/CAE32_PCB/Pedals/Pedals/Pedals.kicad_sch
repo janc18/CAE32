@@ -2278,7 +2278,7 @@
     (property "Value" "M" (id 1) (at 264.795 144.78 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via" (id 2) (at 266.065 149.86 0)
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad" (id 2) (at 266.065 149.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 266.065 149.86 0)
@@ -2296,7 +2296,7 @@
     (property "Value" "M" (id 1) (at 249.555 144.78 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via" (id 2) (at 250.19 149.86 0)
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad" (id 2) (at 250.19 149.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 250.19 149.86 0)
@@ -2365,7 +2365,7 @@
     (property "Value" "M" (id 1) (at 254.635 144.78 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via" (id 2) (at 255.905 149.86 0)
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad" (id 2) (at 255.905 149.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 255.905 149.86 0)
@@ -2577,7 +2577,7 @@
     (property "Value" "M" (id 1) (at 259.715 144.78 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via" (id 2) (at 260.985 149.86 0)
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad" (id 2) (at 260.985 149.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 260.985 149.86 0)
@@ -2791,7 +2791,7 @@
     (uuid db448617-4c4d-4414-b908-dcf012a48abf)
     (property "Reference" "J1" (id 0) (at 192.405 119.38 0))
     (property "Value" "SPI_MASTER" (id 1) (at 192.405 121.92 0))
-    (property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Horizontal" (id 2) (at 191.77 130.175 0)
+    (property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical" (id 2) (at 191.77 130.175 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 191.77 130.175 0)
@@ -3399,19 +3399,19 @@
       (reference "D4") (unit 1) (value "LED") (footprint "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder")
     )
     (path "/24d197b5-8acb-4d99-8e5d-25048dd62849"
-      (reference "H1") (unit 1) (value "M") (footprint "MountingHole:MountingHole_3.2mm_M3_Pad_Via")
+      (reference "H1") (unit 1) (value "M") (footprint "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad")
     )
     (path "/3973bfc9-bcd6-4f06-8ccc-37dab1d0c469"
-      (reference "H2") (unit 1) (value "M") (footprint "MountingHole:MountingHole_3.2mm_M3_Pad_Via")
+      (reference "H2") (unit 1) (value "M") (footprint "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad")
     )
     (path "/930eb733-a967-4793-9d84-fdf5e0d67f86"
-      (reference "H3") (unit 1) (value "M") (footprint "MountingHole:MountingHole_3.2mm_M3_Pad_Via")
+      (reference "H3") (unit 1) (value "M") (footprint "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad")
     )
     (path "/2464bc3f-5269-4b31-a1c1-48b0deb8f337"
-      (reference "H4") (unit 1) (value "M") (footprint "MountingHole:MountingHole_3.2mm_M3_Pad_Via")
+      (reference "H4") (unit 1) (value "M") (footprint "MountingHole:MountingHole_2.2mm_M2_DIN965_Pad")
     )
     (path "/db448617-4c4d-4414-b908-dcf012a48abf"
-      (reference "J1") (unit 1) (value "SPI_MASTER") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Horizontal")
+      (reference "J1") (unit 1) (value "SPI_MASTER") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical")
     )
     (path "/6a9f9c80-ce4e-45f4-a95d-764bf4249ff8"
       (reference "J2") (unit 1) (value "CAN") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
@@ -3456,10 +3456,10 @@
       (reference "J15") (unit 1) (value "USB_C_Receptacle") (footprint "Connector_USB:USB_C_Receptacle_G-Switch_GT-USB-7010ASV")
     )
     (path "/db5b5259-db1d-46d2-b339-880df6aa32fe/d9aacc9d-05ae-4825-9a0d-6ffb9e4a0908"
-      (reference "J16") (unit 1) (value "UART_PGR") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Horizontal")
+      (reference "J16") (unit 1) (value "UART_PGR") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical")
     )
     (path "/db5b5259-db1d-46d2-b339-880df6aa32fe/edba0ae9-c38d-42f3-b7ef-6a137906c1bd"
-      (reference "J17") (unit 1) (value "ST-Link") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Horizontal")
+      (reference "J17") (unit 1) (value "ST-Link") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical")
     )
     (path "/d0544081-4d46-4bd0-961b-9683f35d3586/5645bbe1-320e-4607-a8c9-ca2df583753a"
       (reference "J18") (unit 1) (value "LC_2") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x07_P2.54mm_Vertical")
@@ -3567,13 +3567,25 @@
       (reference "SW3") (unit 1) (value "RST") (footprint "Extra_components:TS-1095PD-A16B2-D2")
     )
     (path "/af4de2bd-7a38-4d95-b043-2fd3b0e6e25e/3c755e88-f94d-4eee-9da7-b5b9c94f38e4"
-      (reference "TP1") (unit 1) (value "GND") (footprint "TestPoint:TestPoint_Pad_D3.0mm")
+      (reference "TP1") (unit 1) (value "GND") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/af4de2bd-7a38-4d95-b043-2fd3b0e6e25e/36533663-7998-4304-8c67-fce0d7b1fd0c"
-      (reference "TP2") (unit 1) (value "5v") (footprint "TestPoint:TestPoint_Pad_D3.0mm")
+      (reference "TP2") (unit 1) (value "5v") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/af4de2bd-7a38-4d95-b043-2fd3b0e6e25e/2f7d23da-5592-4647-a7f1-21a65883ff4a"
-      (reference "TP3") (unit 1) (value "3v3") (footprint "TestPoint:TestPoint_Pad_D3.0mm")
+      (reference "TP3") (unit 1) (value "3v3") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+    )
+    (path "/d0544081-4d46-4bd0-961b-9683f35d3586/e9c93b4d-9b20-47f9-ad09-1c5b42809e01"
+      (reference "TP4") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+    )
+    (path "/d0544081-4d46-4bd0-961b-9683f35d3586/ab5c869d-6fec-4307-b52a-a0a0a3ba65ae"
+      (reference "TP5") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+    )
+    (path "/d0544081-4d46-4bd0-961b-9683f35d3586/c032cbe9-fa28-4b72-a603-fb3cc494b270"
+      (reference "TP6") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+    )
+    (path "/d0544081-4d46-4bd0-961b-9683f35d3586/55466aec-0a20-4387-9a6b-9e4c0cb6c611"
+      (reference "TP7") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/beb69fcb-f032-45d6-a522-3b1db9902ca2"
       (reference "U1") (unit 1) (value "STM32F072RBTx") (footprint "Package_QFP:LQFP-64_10x10mm_P0.5mm")
