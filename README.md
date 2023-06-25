@@ -24,7 +24,7 @@ If you want to contribute, please read the [CONTRIBUTING.md](./docs/CONTRIBUTING
 
 - Placa para la captura de señales analogicas (STM32G070KBT6)
 
-![Señales](./Esquematicos/CAE32_PCB/Pedals/Pedals.png)
+![Señales](./Esquematicos/CAE32_PCB/Pedals/Pedals_1_V1.png)
 
 ## Version 2.0
 
@@ -32,6 +32,8 @@ If you want to contribute, please read the [CONTRIBUTING.md](./docs/CONTRIBUTING
 
 Tiene varias mejoras en comparación a la primera versión para mas información visita
 el siguiente [archivo](./Esquematicos/CAE32_PCB/Pedals/README.md)
+
+![Señales version 2](./Esquematicos/CAE32_PCB/Pedals/Pedals_1_V2.png)
 
 ### Firmware
 
