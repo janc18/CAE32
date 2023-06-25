@@ -28,3 +28,8 @@ Codigo/Interfaz_grafica/Interfaz_gtk/cmake_install.cmake
 Codigo/Interfaz_grafica/Interfaz_gtk/CMakeCache.txt
 Codigo/Interfaz_grafica/Interfaz_gtk/CMakeFiles/
 **compile_commands.json
+
+**Gerber
+**.csv
+**.xml
+**.log
