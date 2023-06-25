@@ -888,7 +888,9 @@
     (uuid eba05004-461a-42d6-afdb-30607ee721cb)
   )
 
+  (no_connect (at 56.515 66.04) (uuid 10bb0a99-9b30-4443-9662-29df42848859))
   (no_connect (at 242.57 31.115) (uuid 4fb1ef44-149e-48cf-a293-fbb0a5e2bed6))
+  (no_connect (at 56.515 63.5) (uuid add0b902-ac1a-4528-84f4-b43178de97c7))
 
   (wire (pts (xy 78.994 55.88) (xy 87.376 55.88))
     (stroke (width 0) (type default) (color 0 0 0 0))
