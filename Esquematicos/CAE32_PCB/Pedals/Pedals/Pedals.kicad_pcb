@@ -260,7 +260,7 @@
       (net 15 "GNDREF") (pinfunction "2") (pintype "passive") (tstamp 47008a42-d86d-4f8c-8514-0dca8ff61206))
     (pad "2" thru_hole circle (at 3.25 -1.95) (size 1.5 1.5) (drill 1) (layers *.Cu *.Mask)
       (net 15 "GNDREF") (pinfunction "2") (pintype "passive") (tstamp 808b5e54-9e3f-431b-bccb-796ae9bb2bb0))
-    (model "/home/jose/Documentos/CAE32/Esquematicos/CAE32_PCB/Pedals/3d Models/TS-1095PD-A16B2-D2-Part.step"
+    (model "${KIPRJMOD}/3d Models/TS-1095PD-A16B2-D2-Part.step"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -1543,7 +1543,7 @@
       (net 14 "+3.3V") (pinfunction "2") (pintype "passive") (tstamp 10448c06-bc12-443b-8d17-5bade5b57924))
     (pad "2" thru_hole circle (at 3.25 1.95) (size 1.5 1.5) (drill 1) (layers *.Cu *.Mask)
       (net 14 "+3.3V") (pinfunction "2") (pintype "passive") (tstamp e15b146f-2425-4859-b1e3-a08863735473))
-    (model "/home/jose/Documentos/CAE32/Esquematicos/CAE32_PCB/Pedals/3d Models/TS-1095PD-A16B2-D2-Part.step"
+    (model "${KIPRJMOD}/3d Models/TS-1095PD-A16B2-D2-Part.step"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
