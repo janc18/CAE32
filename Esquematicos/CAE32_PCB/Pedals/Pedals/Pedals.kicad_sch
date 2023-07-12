@@ -1948,10 +1948,6 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 042eb4aa-2413-409c-afce-101feddbfa15)
   )
-  (label "SWDIO" (at 125.73 172.72 180)
-    (effects (font (size 1.27 1.27)) (justify right bottom))
-    (uuid 08daa77a-a6e9-460d-a62d-ebd8cdb29353)
-  )
   (label "S_CS_PEDALS" (at 265.43 38.1 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 09e25d66-5702-4df7-9392-eb8a09612d36)
@@ -1995,10 +1991,6 @@
   (label "NRST" (at 30.48 47.625 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 2c5ef5bd-9daf-42ae-8f31-d5153b3cba7b)
-  )
-  (label "SWCLK" (at 125.73 168.91 180)
-    (effects (font (size 1.27 1.27)) (justify right bottom))
-    (uuid 2d09141a-7e02-4abe-944e-0e6fb08ec308)
   )
   (label "PGR_UART_RX" (at 66.04 70.485 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -3275,12 +3267,6 @@
     (path "/db5b5259-db1d-46d2-b339-880df6aa32fe/5f79d2f6-4769-4eba-8a72-a3929ee40540"
       (reference "#PWR046") (unit 1) (value "GNDREF") (footprint "")
     )
-    (path "/db5b5259-db1d-46d2-b339-880df6aa32fe/94064232-2224-4afe-b3f9-65089df96c73"
-      (reference "#PWR047") (unit 1) (value "+3.3V") (footprint "")
-    )
-    (path "/db5b5259-db1d-46d2-b339-880df6aa32fe/37ddbbab-607b-45c8-9507-05ab3854d485"
-      (reference "#PWR048") (unit 1) (value "GNDREF") (footprint "")
-    )
     (path "/af4de2bd-7a38-4d95-b043-2fd3b0e6e25e/22032096-7e65-4bdc-a0d3-7b58c55da033"
       (reference "#PWR049") (unit 1) (value "GNDREF") (footprint "")
     )
@@ -3625,9 +3611,6 @@
     )
     (path "/db5b5259-db1d-46d2-b339-880df6aa32fe/d9aacc9d-05ae-4825-9a0d-6ffb9e4a0908"
       (reference "J16") (unit 1) (value "UART_PGR") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical")
-    )
-    (path "/db5b5259-db1d-46d2-b339-880df6aa32fe/edba0ae9-c38d-42f3-b7ef-6a137906c1bd"
-      (reference "J17") (unit 1) (value "ST-Link") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical")
     )
     (path "/d0544081-4d46-4bd0-961b-9683f35d3586/5645bbe1-320e-4607-a8c9-ca2df583753a"
       (reference "J18") (unit 1) (value "LC_2") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x07_P2.54mm_Vertical")
