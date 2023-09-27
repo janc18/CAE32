@@ -30,9 +30,8 @@ Codigo/Interfaz_grafica/Interfaz_gtk/CMakeFiles/
 **compile_commands.json
 
 # Pcb releases
-
+*_PCB_v*
 **releases
-
 **Gerber
 **.csv
 **.xml
