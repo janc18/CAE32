@@ -1,12 +1,12 @@
-# Pasos para compilar la interfaz grafica usando docker
+# Compiling the Graphical Interface Using Docker
 
-1. Contruir la imagen docker
+To compile the graphical interface, follow these steps:
+
+1. Build the Docker image
 ```bash
 docker build -t cae32/bullseye:1.0 .
 ```
-2. Ejecutar el archivo Makefile
-
-```bash
-make gui #compila la GUI
+2. Execute the Makefile to compile the GUI
 ```
-
+make gui
+```
