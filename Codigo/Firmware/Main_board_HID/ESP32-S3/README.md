@@ -1,36 +1,36 @@
 # ESP32-S3
-Este es el código fuente del microcontralor principal, las tareas que ejecuta son:
+This is the source code for the main microcontroller, and it performs the following tasks:
 
-- Comunicación con el host(PC), conectandose por medio de cable usb y mostrandose en el sistema como un dispositivo HID(Joystick).
+- Communication with the host (PC), connecting via a USB cable and appearing in the system as an HID device (Joystick).
 
-- Recolección de todos los datos de los modulos, como su posición y estado, por medio de comunicación SPI.
+- Collection of all data from the modules, such as their position and status, through SPI communication.
 
-- Actualización de firmware de los modulos por SPI, de esta manera evitando usar programadores de firmware para el modulo.
+- Firmware updates for modules via SPI, thus avoiding the use of firmware programmers for the module.
 
+## Steps for Building the Project (in case you're not using the Docker container)
 
-## Pasos para la construcción del proyecto(en dado caso que no uses el contenedor docker)
+1. Install ESP-IDF.
 
-1. Instalar ESP-IDF
+2. In this directory, execute the following commands:
 
-2. En este directorio ejecutar 
 ```sh
 get-idf
 idf.py build
 ```
 
-3. Subir el nuevo firmware
+3. Upload the new firmware.
 
-## Registros SPI de cada modulo
+## SPI Register for each module
 
-### Pedales
+### Pedals
 
-|Comando (HEX)|Nombre|Detalles|
+|Command (HEX)|Name|Detalles|
 |-|-|-|
-|0x01|VERSION|Versión de Firmware instalada|
-|0x02|CONFIG_n_RESOLUTION|Configura la resolución del ADC|
-|0x03|ACCE|Valor del Acelerador|
-|0x04|BRAKE|Valor del Freno|
-|0x05|CLUTCH|Valor del Clutch|
-|0x06|STATUS|Valor de un Error|
+|0x01|VERSION|Installed Firmware Version|
+|0x02|CONFIG_RESOLUTION|Configure ADC Resolution|
+|0x03|ACCE|Accelerator Value|
+|0x04|BRAKE|Brake Value|
+|0x05|CLUTCH|Clutch Value|
+|0x06|STATUS|Error Status|
 
 
