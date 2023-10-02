@@ -56,7 +56,7 @@ actions in the project, and you can also view them grouped by [difficulty](https
 
 ## PCB
 
-The software used to create the PCB is KiCAD 6.
+The software used to create the PCB is KiCAD 7.
 
 When selecting components, make sure to obtain the part numbers from [LCSC](https://www.lcsc.com/).
 

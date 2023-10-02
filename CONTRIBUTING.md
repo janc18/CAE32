@@ -58,7 +58,7 @@ actualmente en el proyecto, ademas aquí puedes verlas agrupadas por [dificultad
 
 ## PCB
 
-El Sofware utilizado para crear la PCB es KiCAD 6
+El Sofware utilizado para crear la PCB es KiCAD 7
 
 Al elegir los componentes, el número de parte se tiene que obtenerse de la pagina [LCSC](https://www.lcsc.com/)
 
