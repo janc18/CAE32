@@ -1,53 +1,48 @@
-# Revisión de PCB
+# PCB Changelog
 
-## Principales problemas con la V1
+In this file, I will add the issues encountered with the development of each PCB 
+and how they will be addressed in the next interation
 
-1. Los conectores usados son difíciles de usar, requieren de un ensamble meticuloso
-para que funcione correctamente.
+## Key Issues with V1
 
-2. Los botones usados para el **Reset** y **Boot** son muy pequeños, por lo que si se
-usa un case, podrian ser de dificil acceso.
+1. The connectors used are challenging to work with and require meticulous assembly for proper functioning.
 
-3. La Api **HAL** del MCU tiene problemas que aún no he podido resolver de manera 
-correcta, estos están relacionados con la lectura analogica.
+2. The buttons used for **Reset** and **Boot** are very small, so if a case is used, they could be difficult to access.
 
-4. Los puertos para la depuración y programación no están distribuidos eficientemente.
+3. The MCU's **HAL** API has unresolved issues related to analog readings.
 
-5. Aunque tiene una resolución máxima de 14bits, tiene ruido que altera las lecturas
-ocasionando una peor experiencia de juego.
+4. Debugging and programming ports are not efficiently distributed.
 
-6. Cuando se suba el nuevo firmware no se logrará actualizar a menos de que se presionen
-los botones físicamente
+5. Despite having a maximum resolution of 14 bits, there is noise that disrupts readings,
+resulting in a poorer gaming experience.
 
-## Solución de problemas para la V1
+6. Uploading new firmware will not be possible without physically pressing the buttons.
 
-1. Cambiar los conectores usados por unos "pin sockets", y agregar una huella para soldar
-directamente un cable, ademas añadir la serigrafia necesaria.
+## Troubleshooting for V1
 
-2. Elegir botones mas altos y acomodarlos en una zona de fácil acceso 
+1. Replace the connectors with "pin sockets" and add a footprint for soldering a cable directly,
+as well as adding the necessary silkscreen.
 
-3. Usar la capa LL(Low Level) para tener un control más preciso de las lecturas análogicas
+2. Choose taller buttons and position them in an easily accessible area.
 
-4. Acomodar los puertos a una zona más accesible, como a un costado, uno al lado del otro
+3. Use the LL (Low Level) layer for more precise control of analog readings.
 
-5. Agregar un filtro por software
+4. Rearrange the ports to a more accessible area, such as placing them side by side.
 
-6. Conectar las entras de Reset y Boot al puerto rj45
+5. Implement an analog software filter.
 
-## Mejoras (nuevos componentes a agregar)
+6. Connect the Reset and Boot inputs to the RJ45 port.
 
-- Multiplexor de 8 canales con ADC 
+## Version 2 Upgrades
 
-- Añadir hardware para 3 células de carga
-	- Posible modelo de celda de carga [Aliexpress](https://es.aliexpress.com/item/1005004518830741.html)
+- 8-channel multiplexer with ADC 
 
-- Añadir pines para conexión SPI y I2c
+- Add hardware for 3 load cells
+  - Possible load cell model [Aliexpress](https://www.aliexpress.com/item/1005004518830741.html)
 
-- USB tipo C
+- Add pins for SPI and I2C connections
 
-- Nuevo Microcontrolador mas potente(Familia STM32F0), con soporte para conexión HID, por lo que podría funcionar
-sin la placa principal
+- USB Type-C
 
-
-
-
+- A more powerful microcontroller (STM32F0 family) with HID connection support,
+potentially allowing it to function without the mainboard.
