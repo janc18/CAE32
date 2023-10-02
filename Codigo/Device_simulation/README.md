@@ -1,8 +1,6 @@
-# Simulación de Dispocitivo
+# Device Simulation
 
-Aquí se encuentran los recursos necesarios para construir ejecutables para simular
-el hardware.
+In this section, you will find the resources required to build executables for simulating hardware.
 
-En el directorio **src** se encuentra el código fuente y el makefile que construye
-los ejecutables, cada codigo correspondiente al tipo de Simulación.
-
+Inside the **src** directory, you will discover the source code and the Makefile responsible for 
+constructing the executables, each corresponding to a specific type of simulation.
