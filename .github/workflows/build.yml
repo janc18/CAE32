@@ -1,0 +1,26 @@
+name: Compilar GUI
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: debian-latest  
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Installing dependencies(cmake, build-essentials and GTK3)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential libgtk-3-dev
+
+      - name: Compiling
+        run: |
+          mkdir -p ../../Codigo/Interfaz_grafica/Interfaz_gtk/build
+          cd ../../Codigo/Interfaz_grafica/Interfaz_gtk/build
+          cmake ..
+          make
