@@ -1,9 +1,9 @@
-name: Compilar GUI
+name: GUI Compilation
 
 on:
   push:
-    branches:
-      - main  
+    paths:
+      - ../../Codigo/Interfaz_grafica/Interfaz_gtk/  
 
 jobs:
   build:
