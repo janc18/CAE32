@@ -30,6 +30,14 @@ It has several improvements compared to the first version. For more information,
 
 ![Signals version 2](./Esquematicos/CAE32_PCB/Pedals/Pedals_1_V2.png)
 
+### PCB Sponsored by PCBWay
+
+![4](https://github.com/janc18/CAE32/assets/43817922/fe6902e4-3c9f-44c4-b9a3-a8754ca71d63)
+
+The PCB quality is excellent, the contact with the support service is good, they responded very quickly in the case of any issue, 
+and it has a good PCB finish using the STM assembly service,  all the IC pads are correctly soldered. Overall, the total cost of 5 PCBs 
+and 2 PCBs with the assembly service is a very accessible, so I will keep using PCBWAY to build the next PCB iterations
+
 ## Shifter
 
 ### Version 1.0
