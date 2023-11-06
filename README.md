@@ -5,6 +5,24 @@ CAE32 is a project for building and developing all stages of a gaming wheel for 
 
 If you want to contribute, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
+## Overall current status
+
+### PCBs
+
+![status_pedals](https://badgen.net/badge/Pedals%20v2.0.3/Awaiting%20package%20delivery/green)
+
+![status_shifter](https://badgen.net/badge/Shifter%20v1.1.3/Doing%20revision/purple)
+
+![status_steering_wheel](https://badgen.net/badge/Steering%20wheel%20v1.0.0/Creating%20schematics/red)
+
+### Firmware
+
+Because I don't have the PCBs right now, the best option is to do a state diagram for each PCB
+
+### Software
+
+Improving the compilation and flags for the user interface
+
 ## The stages include:
 
 * PCB Design
