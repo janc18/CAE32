@@ -33,7 +33,7 @@ _With the Serial terminal it's posible to send values witout the necessity of fi
 ## Pedals (draft::States,task,structs,etc)
 
 - Get analog readings
-  - i2c communication with ADC chip
+  - Serial data communication with ADC chip
     - initial IC configuration (Resolution, speed, one shot,etc)
     - *Get data*
   - getting the data stream from the load cell IC 
@@ -86,6 +86,11 @@ typedef enum {
     TASK_ERROR_TIMEOUT
 }TaskStatus;
 
+typedef enum{
+    INVALID_PARAMETER,
+
+}err_t
+
 typedef enum {
     ADC_CHANNEL_0,
     ADC_CHANNEL_1,
@@ -95,13 +100,11 @@ typedef enum {
     ADC_CHANNEL_5,
     ADC_CHANNEL_6,
     ADC_CHANNEL_7,
-}AdcChannel
-
-typedef enum {
-    LC_CHANNEL_1=8,
+    LC_CHANNEL_1,
     LC_CHANNEL_2,
     LC_CHANNEL_3,
-}LoadCellChannel
+}Channel
+
 
 ```
 
@@ -138,7 +141,7 @@ typedef struct{
     char Custom_7;
     char Custom_8;
     char Custom_9;
-}ProfileConfigPedal;
+}ChannelFunction;
 
 typedef struct{
 
@@ -156,7 +159,7 @@ typedef struct{
 ### Tasks (FreeRTOS)
 
 - StatusMonitorTask
-- I2cAdcReading
+- IcAdcReading
 - LoadCellDataAdquisition
 - SendingUsbPackage
 - SerialTerminalInUsbData
@@ -166,8 +169,6 @@ typedef struct{
 - LoadProfile (use an interruption in the case of any change at switches states)
 
 ### Functions
-- ConfigAdcIc (Set resolution and configs)
-- ConfigLoadCell 
 - SetConfigValues (set, top and low limits, inverted axis)
 - GetConfigValues (get, top and low limits, inverted axis)
 - LoadProfile (Load all the values from the ROM)
@@ -179,4 +180,39 @@ typedef struct{
 - Reboot
 - LimitsCalibration (With the GUI or serial terminal, pressing the pedal to define in real time the limits)
 - ReadSwitchValue (Get the value depending of the 3 switch inputs) 
--  
+- ParserCommand (build a struct that can be used to modify values)  
+
+
+### Functions in detail
+
+```c 
+/**
+ * Set Hardware configuration values
+ * Set low and top limits of any pedal, this is equal to the action action,
+ * and the axis behavior (inverted or no inverted) 
+ * @param[in] HardwareConfig struct
+ * @param[in] FunctionChannel struct
+ * @param[out] err_t int
+ **/
+
+
+
+```
+
+
+
+To do changes in real time it will be sending a string through the serial terminal like: Set;Throttle;ADC1 
+
+
+## Change log PCB Pedals
+
+### Issues
+* Fix silkscreen text at UART port TX->RX RX->TX 
+* Change diameter pcb holes for M3
+* Route correctly the boot and reset buttons
+* Round pcb corners
+* Change the female headers for block connectors or quick connectors
+
+### Testing behavior
+
+- Check the noise and data acquisition time without a single pole filter
