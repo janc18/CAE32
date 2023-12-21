@@ -1,3 +1,26 @@
+
+/**
+ * @file device_descriptor.c
+ * @brief Device descriptor definition 
+ */
+
+/**
+ * @brief Device descriptor Characteristics
+ * 
+ * A Device descriptor is a set of 8 bits that define the features
+ * of a device, this is send constantly through USB bus and is reading
+ * by the kernel.
+ *
+ * The features of this device are the next:
+ * Automobile Simulation device
+ * 3 Pedals
+ * Steering wheel
+ * Shifter
+ *
+ * .. note::
+ *    This device descriptor probably isn't correct
+ */
+
 #include "device_descriptor.h"
 
 unsigned char rdesc[32] = {
