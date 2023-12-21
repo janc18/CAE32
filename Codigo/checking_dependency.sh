@@ -13,3 +13,4 @@ for cmd in cmake gcc make pkgconf; do
   fi 
 done
 
+#TODO if pkgconf is installed, check for the gtk+-3.0 library
