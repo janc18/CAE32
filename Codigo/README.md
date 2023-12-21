@@ -17,7 +17,7 @@ File necessary to build all the documentation using the _Sphinx_ programm
 A small bash script to check if all the dependencies are already installed, in case
 someone isn't installed, it will print what is missing.
 
-## configs/
+## Shared_libraries/
 
 Files shared between the Firmare, TESTs, and Device_simulation folders for quick 
 access and modifications.
