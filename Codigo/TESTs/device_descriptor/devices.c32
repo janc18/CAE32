@@ -1,0 +1,17 @@
+Start: CAE32 Pedals
+Axis: 3
+Size_bits: 8
+Logical_Minimum: -127
+Logical_Maximum: 127
+Physical_Minumum: 0
+Physical_Maximum: 255
+End: CAE32 Pedals
+
+Start: CAE32 Shifter
+Buttons: 8
+Size_bits: 1
+Logical_Minimum: 0
+Logical_Maximum: 1
+Physical_Minumum: 0
+Physical_Maximum: 1
+End: CAE32 Shifter
