@@ -22,8 +22,15 @@ int main(int argc, char *argv[])
     printf("ERROR");
     return EXIT_FAILURE;
   }
-  printf("%d\n",find_number_of_lines(contents_file));
+  int last_cursor=find_word(contents_file,"Start",0);
+  
+  for (int i=0;i<18;i++){
+    last_cursor=find_word(contents_file,"Start",last_cursor);
+    if (last_cursor==-1) break;
+  }
+
   free(contents_file);
+
   return EXIT_SUCCESS;
 }
 //Check how to read joystick devices
