@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-const char Keywords[][30] = {"Start", "End", "Size_bits", "Logical_Minimum", "Logical_Maximum", "Physical_Minumum", "Physical_Maximum"};
+const char Keywords[][30] = {"Start",   "End", "Size_bits", "Logical_Minimum", "Logical_Maximum", "Physical_Minumum", "Physical_Maximum",
+                             "Buttons", "Axis"};
 
 /* @brief Convert input file to an string
  *
@@ -62,10 +63,10 @@ int **find_word(char *string_file, char *word, int offset) { // and return a fla
   int **cursor_and_flag = (int **)malloc(2 * sizeof(int *));
   cursor_and_flag[0] = (int *)malloc(sizeof(int));
   cursor_and_flag[1] = (int *)malloc(sizeof(int));
-  *(cursor_and_flag[0]) = offset;
-  *(cursor_and_flag[1]) = 0;
+  *(cursor_and_flag[0]) = 0;      // Cursor
+  *(cursor_and_flag[0]) = offset; // Cursor
+  *(cursor_and_flag[1]) = 1;      // Flag
   if (string_file == NULL) {
-    // return -1;
     *(cursor_and_flag[0]) = -1;
     return cursor_and_flag;
   }
@@ -84,7 +85,6 @@ int **find_word(char *string_file, char *word, int offset) { // and return a fla
       free(line_buffer);
       *(cursor_and_flag[0]) = -1;
       return cursor_and_flag;
-      // return -1;
     }
   }
 
@@ -92,8 +92,10 @@ int **find_word(char *string_file, char *word, int offset) { // and return a fla
   if (strcmp(line_buffer, "0") != 0) { // Checking if line buffer is empty
     char **token = get_line_tokens(line_buffer);
     if (strcmp(token[0], word) == 0 && token != NULL) { // Checking if the token its the same as word and not null
+#ifdef DEBUG
       printf("Word found: %s\n", token[0]);
-      // return 0; // Success
+#endif                           /* ifdef DEBUG */
+      *(cursor_and_flag)[1] = 0; // Flag: 0= Word Found
     }
   }
 #ifdef DEBUG
@@ -141,8 +143,8 @@ int find_number_of_lines(char *string_file) {
 char **get_line_tokens(char *line) {
   // The line needs to follow the next structure
   //|Parameter|:|Value|\n
-  char *parameter;
-  char *value;
+  char *parameter = NULL;
+  char *value = NULL;
   char **token = malloc(sizeof(char *) * 2);
   if (line != NULL) {
     parameter = strtok(line, ":");
@@ -179,15 +181,22 @@ int find_object(char *string_file) {
 
   // int cursors[tokens_line]; //Getting the number of tokens
 
-  int number_of_keywords = 7; // TODO: do automatic
-
+  int number_of_keywords = sizeof(Keywords) / sizeof(*Keywords);
   for (int i = 0; i < number_of_keywords; i++) {
-    printf("\033[32mOcurrence of the word: %s\n\033[0m", Keywords[i]);
+    int number_of_ocurrences = 0;
+    printf("\033[32mSearching the word: %s\t \033[0m", Keywords[i]);
     int **cursor_and_flag = find_word(string_file, (char *)Keywords[i], 0);
+    if (*(cursor_and_flag)[1] == 0)
+      number_of_ocurrences++;
     while (*(cursor_and_flag)[0] != -1) {
       cursor_and_flag = find_word(string_file, (char *)Keywords[i], *(cursor_and_flag)[0]);
+      if (*(cursor_and_flag)[1] == 0)
+        number_of_ocurrences++;
     }
-    printf("\033[32mEND\n\033[0m");
+    free(cursor_and_flag[0]);
+    free(cursor_and_flag[1]);
+    free(cursor_and_flag);
+    printf("Number of ocurrences =: %d\n", number_of_ocurrences);
   }
   return 1;
 }
