@@ -15,6 +15,7 @@ typedef struct token_descriptor {
 } token_descriptor;
 
 
+char *get_each_line_of_file_string(char *string_file, int *offset);
 char *file_to_string(char *file_path);
 int find_number_of_lines(char *string_file);
 line_token *get_line_tokens(char *line);
