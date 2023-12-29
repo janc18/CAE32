@@ -21,11 +21,13 @@ int main(int argc, char *argv[]) {
     printf("ERROR");
     return EXIT_FAILURE;
   }
-  
-  find_object(contents_file);
-
+  line_token *token;
+  token=get_line_tokens("Start:locl");
+  if (token!=NULL){
+  printf("Parameter:%s, Value:%s\n",token->parameter,token->value);
+  free_line_token(token);
+  }
   free(contents_file);
-
   return EXIT_SUCCESS;
 }
 // Check how to read joystick devices
