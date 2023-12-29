@@ -78,7 +78,7 @@ int find_number_of_lines(char *string_file) {
  *
  *  @param line char to try to separate
  *
- *  @return line_token A struct with the value an parameter
+ *  @return line_token A struct with the value an parameter or null if can't parser
  */
 line_token *get_line_tokens(char *line) {
   if (line == NULL) {
@@ -108,6 +108,8 @@ line_token *get_line_tokens(char *line) {
     return pline_token;
   } else {
     printf("ERROR parsing:%s\n", temp_line_buffer);
+    free(pline_token);
+    return NULL;
   }
 #ifdef DEBUG
   printf("ERROR: Unable to process line\n");
@@ -135,4 +137,28 @@ int free_line_token(line_token *tokens) {
     return 0;
   }
 }
-
+//This function needs to iterare from each line of the file
+char *get_each_line_of_file_string(char *string_file, int *offset) {
+  char *pline_buffer = malloc(sizeof(char) * 50);
+  if (pline_buffer == NULL) {
+    printf("Can't allocate memory for line buffer");
+    return NULL;
+  }
+  int offset_pline_buffer=0;
+  //loop to get the n line
+  while(string_file[*offset]!='\n'){
+  pline_buffer[offset_pline_buffer]=string_file[*offset];
+  offset_pline_buffer++;
+  *offset=*offset+1;
+  }
+  *offset=*offset+1;//jump \n character
+  pline_buffer[offset_pline_buffer]='\0';//add string terminate character
+  printf("size of string [%s] -is- %lu\n",pline_buffer,strlen(pline_buffer));
+  return pline_buffer;
+}
+int get_file_tokens(char *string_file) {
+  // Create an array of line tokens with the size of numbers of lines of the files
+  int number_of_lines = find_number_of_lines(string_file);
+  line_token *file_token[number_of_lines];
+  return 0;
+}
