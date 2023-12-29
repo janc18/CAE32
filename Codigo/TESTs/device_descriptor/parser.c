@@ -49,67 +49,14 @@ char *file_to_string(char *file_path) {
   fclose(fptr_devices);
   return string;
 }
-/*  @brief Find a word in a given string
+/*  @brief Get the number of lines
  *
- *   Reads a line until a new line and search for any match and print if the word was founded
+ *  Counts the number lines of an string_files until reach a escape secuence '\0'
  *
- *   @param *string_file String with all the file content
- *   @param *word Word for searching
- *   @param offset int with the character array value to start to read
+ *  @param char* A string with the contents of file
  *
- *   @return new offset until new line or -1 if its the end of the string
+ *  @return int Number of lines or -1 if a the string file is null
  */
-int **find_word(char *string_file, char *word, int offset) { // and return a flag of word found
-  int **cursor_and_flag = (int **)malloc(2 * sizeof(int *));
-  cursor_and_flag[0] = (int *)malloc(sizeof(int));
-  cursor_and_flag[1] = (int *)malloc(sizeof(int));
-  *(cursor_and_flag[0]) = 0;      // Cursor
-  *(cursor_and_flag[0]) = offset; // Cursor
-  *(cursor_and_flag[1]) = 1;      // Flag
-  if (string_file == NULL) {
-    *(cursor_and_flag[0]) = -1;
-    return cursor_and_flag;
-  }
-  char *line_buffer = malloc(sizeof(char) * 50);
-  strcpy(line_buffer, "0");
-  int line_buffer_off = 0;
-
-  while (string_file[offset] != '\n') {                 // Run for each character at line
-    line_buffer[line_buffer_off] = string_file[offset]; // save line contents to a temporary buffer
-    offset++;                                           // String File offset
-    line_buffer_off++;
-    if (string_file[offset] == '\0') {
-#ifdef DEBUG
-      printf("End of File string_file");
-#endif /* ifdef DEBUG */
-      free(line_buffer);
-      *(cursor_and_flag[0]) = -1;
-      return cursor_and_flag;
-    }
-  }
-
-  line_buffer[offset] = '\0';
-  if (strcmp(line_buffer, "0") != 0) { // Checking if line buffer is empty
-    char **token = get_line_tokens(line_buffer);
-    if (strcmp(token[0], word) == 0 && token != NULL) { // Checking if the token its the same as word and not null
-#ifdef DEBUG
-      printf("Word found: %s\n", token[0]);
-#endif                           /* ifdef DEBUG */
-      *(cursor_and_flag)[1] = 0; // Flag: 0= Word Found
-    }
-  }
-#ifdef DEBUG
-  else {
-    printf("Empty line\n");
-  }
-#endif /* ifdef DEBUG */
-  free(line_buffer);
-
-  *(cursor_and_flag[0]) = offset + 1;
-  return cursor_and_flag;
-  // return offset + 1; // jump the last new line escape secuence
-}
-
 int find_number_of_lines(char *string_file) {
   if (string_file != NULL) {
     int number_of_lines = 0;
@@ -124,79 +71,68 @@ int find_number_of_lines(char *string_file) {
     return -1;
   }
 }
-
-// Found the object size
-// Create an array with the contents of each line
-// compare the start and end of common names
-// Create a new array just with the contents of the block
-// Tokenize with the ":" delimiter
-//
 /*  @brief Get a line token
  *
  *  Get a token in a string, this function separate that string with the
- *  delimiter of ":" and create two strings
+ *  ":" delimiter and return that values in a struct;
  *
- *  @param line char to try to be separate
+ *  @param line char to try to separate
  *
- *  @return A double char pointer or NULL
+ *  @return line_token A struct with the value an parameter
  */
-char **get_line_tokens(char *line) {
-  // The line needs to follow the next structure
-  //|Parameter|:|Value|\n
-  char *parameter = NULL;
-  char *value = NULL;
-  char **token = malloc(sizeof(char *) * 2);
-  if (line != NULL) {
-    parameter = strtok(line, ":");
-    value = strtok(NULL, ":\n");
-    if (parameter != NULL && value != NULL) {
-      token[0] = strdup(parameter);
-      token[1] = strdup(value);
-      return token;
-    }
+line_token *get_line_tokens(char *line) {
+  if (line == NULL) {
+#ifdef DEBUG
+    printf("ERROR: NULL input line\n");
+#endif /* ifdef DEBUG */
+    return NULL;
+  }
+
+  line_token *pline_token = malloc(sizeof(line_token));
+  if (pline_token == NULL) {
+#ifdef DEBUG
+    printf("ERROR: Unable to allocate memory for line_token\n");
+#endif /* ifdef DEBUG */
+    return NULL;
+  }
+
+  char temp_line_buffer[50];
+  strcpy(temp_line_buffer, line);
+
+  char param[50] = {0};
+  char value[50] = {0};
+  int result = sscanf(line, "%49[^:]:%49s", param, value);
+  if (result == 2) {
+    pline_token->parameter = strdup(param);
+    pline_token->value = strdup(value);
+    return pline_token;
+  } else {
+    printf("ERROR parsing:%s\n", temp_line_buffer);
   }
 #ifdef DEBUG
-  printf("ERROR at processing line");
+  printf("ERROR: Unable to process line\n");
 #endif /* ifdef DEBUG */
-  free(token);
+  free(pline_token);
   return NULL;
 }
-/* @brief Save all the contents of an object
+/*
+ * @brief Free memory from the line_token struct
  *
- * This save all the parameters of an object included his values
- * searching for the start an end,
+ * @param line_token struct
  *
+ * @return int 0=Success, -1=Error
  */
-int find_object(char *string_file) {
-  // 1. find start and save value
-  // 2. find end and save value
-  // 3. compare the values saved
-  //    - if are the same, save the cursors
-  //    - if not throw an Error (return)
-  // 4. Save all the tokens between the cursors
-  // 5. build an struct with the tokens with malloc
-  // 6 return pointer with the struct
-
-  // int tokens_line=find_number_of_lines(string_file)+1;
-
-  // int cursors[tokens_line]; //Getting the number of tokens
-
-  int number_of_keywords = sizeof(Keywords) / sizeof(*Keywords);
-  for (int i = 0; i < number_of_keywords; i++) {
-    int number_of_ocurrences = 0;
-    printf("\033[32mSearching the word: %s\t \033[0m", Keywords[i]);
-    int **cursor_and_flag = find_word(string_file, (char *)Keywords[i], 0);
-    if (*(cursor_and_flag)[1] == 0)
-      number_of_ocurrences++;
-    while (*(cursor_and_flag)[0] != -1) {
-      cursor_and_flag = find_word(string_file, (char *)Keywords[i], *(cursor_and_flag)[0]);
-      if (*(cursor_and_flag)[1] == 0)
-        number_of_ocurrences++;
-    }
-    free(cursor_and_flag[0]);
-    free(cursor_and_flag[1]);
-    free(cursor_and_flag);
-    printf("Number of ocurrences =: %d\n", number_of_ocurrences);
+int free_line_token(line_token *tokens) {
+  if (tokens == NULL) {
+#ifdef DEBUG
+    printf("ERROR at trying to free memory\n");
+#endif /* ifdef DEBUG */
+    return -1;
+  } else {
+    free(tokens->value);
+    free(tokens->parameter);
+    free(tokens);
+    return 0;
   }
-  return 1;
 }
+
