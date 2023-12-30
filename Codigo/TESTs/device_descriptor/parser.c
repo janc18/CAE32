@@ -60,12 +60,20 @@ char *file_to_string(char *file_path) {
 int find_number_of_lines(char *string_file) {
   if (string_file != NULL) {
     int number_of_lines = 0;
+    int number_of_empty_lines = 0;
     int cursor = 0;
     while (string_file[cursor] != '\0') {
       cursor++;
-      if (string_file[cursor] == '\n')
+      if (string_file[cursor] == '\n') {
         number_of_lines++;
+      }
+      if (string_file[cursor] == '\n' && string_file[cursor - 1] == '\n') {
+        number_of_empty_lines++;
+      }
     }
+#ifdef DEBUG
+    printf("Empty lines=%d\n", number_of_empty_lines);
+#endif /* ifdef DEBUG */
     return number_of_lines;
   } else {
     return -1;
@@ -107,9 +115,21 @@ line_token *get_line_tokens(char *line) {
     pline_token->value = strdup(value);
     return pline_token;
   } else {
-    printf("ERROR parsing:%s\n", temp_line_buffer);
-    free(pline_token);
-    return NULL;
+#ifdef DEBUG
+    printf("ERROR parsing line:%s\n", temp_line_buffer);
+#endif /* ifdef DEBUG */
+    if (strlen(temp_line_buffer) == 0) {
+#ifdef DEBUG
+      printf("Empty Line\n");
+#endif /* ifdef DEBUG */
+      pline_token->parameter = strdup("EL");
+      pline_token->value = strdup("EL");
+    } else {
+      printf("Parameter=[%s],Value[%s]\n", param, value);
+      pline_token->parameter = strdup("ERROR");
+      pline_token->value = strdup("ERROR");
+    }
+    return pline_token;
   }
 #ifdef DEBUG
   printf("ERROR: Unable to process line\n");
@@ -184,8 +204,8 @@ int get_file_tokens(char *string_file) {
       free_line_token(lines_to_tokenize[i]);
     }
   }
-  
-  //Freeing array_of_lines and tokens memory
+
+  // Freeing array_of_lines and tokens memory
   for (int i = 0; i < number_of_lines; i++) {
     printf("Parameter=[%s],Value:[%s]\n", lines_to_tokenize[i]->parameter, lines_to_tokenize[i]->value);
     free(p_array_of_lines[i]);
