@@ -6,6 +6,7 @@ Logical_Maximum: 127
 Physical_Minumum: 0
 Physical_Maximum: 255
 End: CAE32 Pedals
+
 Start: CAE32 Shifter
 Buttons: 8
 Size_bits: 1
