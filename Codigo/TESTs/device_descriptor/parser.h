@@ -3,10 +3,10 @@
 
 #include <stdbool.h>
 
-typedef struct line_token{
+typedef struct line_token {
   char *parameter;
   char *value;
-}line_token;
+} line_token;
 
 typedef struct token_descriptor {
   int cursor_offset;
@@ -14,10 +14,10 @@ typedef struct token_descriptor {
   line_token tokenize;
 } token_descriptor;
 
-
 char *get_each_line_of_file_string(char *string_file, int *offset);
 char *file_to_string(char *file_path);
 int find_number_of_lines(char *string_file);
 line_token *get_line_tokens(char *line);
 int free_line_token(line_token *tokens);
+int get_file_tokens(char *string_file);
 #endif // !PARSER_H
