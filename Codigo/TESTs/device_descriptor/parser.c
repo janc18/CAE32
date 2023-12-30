@@ -137,23 +137,27 @@ int free_line_token(line_token *tokens) {
     return 0;
   }
 }
-//This function needs to iterare from each line of the file
+// This function needs to iterare from each line of the file
 char *get_each_line_of_file_string(char *string_file, int *offset) {
-  char *pline_buffer = malloc(sizeof(char) * 50);
+  char temp_line_buffer[50] = {0};
+  int offset_pline_buffer = 0;
+  // loop to get the n line
+  while (string_file[*offset] != '\n') {
+    temp_line_buffer[offset_pline_buffer] = string_file[*offset];
+    offset_pline_buffer++;
+    *offset = *offset + 1;
+  }
+  *offset = *offset + 1;                        // jump \n character
+  temp_line_buffer[offset_pline_buffer] = '\0'; // add string terminate character
+
+  int size_of_temp_line_buffer = strlen(temp_line_buffer);
+
+  char *pline_buffer = malloc(sizeof(char) * (size_of_temp_line_buffer + 1));
   if (pline_buffer == NULL) {
     printf("Can't allocate memory for line buffer");
     return NULL;
   }
-  int offset_pline_buffer=0;
-  //loop to get the n line
-  while(string_file[*offset]!='\n'){
-  pline_buffer[offset_pline_buffer]=string_file[*offset];
-  offset_pline_buffer++;
-  *offset=*offset+1;
-  }
-  *offset=*offset+1;//jump \n character
-  pline_buffer[offset_pline_buffer]='\0';//add string terminate character
-  printf("size of string [%s] -is- %lu\n",pline_buffer,strlen(pline_buffer));
+  strcpy(pline_buffer, temp_line_buffer);
   return pline_buffer;
 }
 int get_file_tokens(char *string_file) {
