@@ -21,27 +21,7 @@ int main(int argc, char *argv[]) {
     printf("ERROR");
     return EXIT_FAILURE;
   }
-  line_token *token;
-  token=get_line_tokens("Start:locl");
-  if (token!=NULL){
-  printf("Parameter:%s, Value:%s\n",token->parameter,token->value);
-  free_line_token(token);
-  }
-  // while loop to implement at get_file_tokens function
-  int offsets=0;
-  char *test_1_line=get_each_line_of_file_string(contents_file,&offsets);
-  if(test_1_line!=NULL){
-    printf("%s\noffset:%d\n",test_1_line,offsets);
-    free(test_1_line);
-  }
-  
-  char *test_2_line=get_each_line_of_file_string(contents_file,&offsets);
-  if(test_2_line!=NULL){
-    printf("%s\noffset:%d\n",test_1_line,offsets);
-    free(test_2_line);
-  }
- 
-  // while loop to implement at get_file_tokens function
+  get_file_tokens(contents_file);
   free(contents_file);
   return EXIT_SUCCESS;
 }
