@@ -50,7 +50,7 @@ char *file_to_string(char *file_path) {
 }
 /*  @brief Get the number of lines
  *
- *  Counts the number lines of an string_files until reach a escape secuence '\0'
+ *  Counts the number lines of an string_files until reach the end of strinf character '\0'
  *
  *  @param char* A string with the contents of file
  *
@@ -85,7 +85,7 @@ int find_number_of_lines(char *string_file) {
  *
  *  @param line char to try to separate
  *
- *  @return line_token A struct with the value an parameter or null if can't parser
+ *  @return line_token A struct with the value an parameter
  */
 line_token *get_line_tokens(char *line) {
   if (line == NULL) {
@@ -156,7 +156,14 @@ int free_line_token(line_token *tokens) {
     return 0;
   }
 }
-// This function needs to iterare from each line of the file
+/*
+ * @brief Get a line of an string
+ *
+ * @param char* An string with the contents of the input file
+ * @param int* Index of the string to start to iterate
+ *
+ * @return char* N line string
+ */
 char *get_each_line_of_file_string(char *string_file, int *offset) {
   char temp_line_buffer[50] = {0};
   int offset_pline_buffer = 0;
@@ -179,6 +186,13 @@ char *get_each_line_of_file_string(char *string_file, int *offset) {
   strcpy(pline_buffer, temp_line_buffer);
   return pline_buffer;
 }
+/*
+ * @brief Get all the tokens of string
+ *
+ * @param char* An string with the contents of the input file
+ *
+ * @return line_token** A pointer array of line tokens
+ */
 line_token **get_file_tokens(char *string_file) {
   // Create an array of line tokens with the size of numbers of lines of the files
   int number_of_lines = find_number_of_lines(string_file);
@@ -215,7 +229,6 @@ line_token **get_file_tokens(char *string_file) {
 
 int free_memory_tokens(line_token **tokens, int number_of_lines) {
   if (tokens != NULL) {
-
     for (int i = 0; i < number_of_lines; i++) {
       free_line_token(tokens[i]);
     }
