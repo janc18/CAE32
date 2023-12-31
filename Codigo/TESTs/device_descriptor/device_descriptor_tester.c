@@ -21,7 +21,14 @@ int main(int argc, char *argv[]) {
     printf("ERROR");
     return EXIT_FAILURE;
   }
-  get_file_tokens(contents_file);
+  int number_of_lines= find_number_of_lines(contents_file);
+
+  line_token **all_tokens;
+  all_tokens = get_file_tokens(contents_file);
+  for (int i = 0; i < number_of_lines; i++) {
+    printf("Parameter[%s], Values[%s]\n", all_tokens[i]->parameter, all_tokens[i]->value);
+  }
+  free_memory_tokens(all_tokens,number_of_lines);
   free(contents_file);
   return EXIT_SUCCESS;
 }
