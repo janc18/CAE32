@@ -11,6 +11,7 @@
  */
 
 #include "parser.h"
+#include "token_manipulation.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,9 +26,10 @@ int main(int argc, char *argv[]) {
 
   line_token **all_tokens;
   all_tokens = get_file_tokens(contents_file);
-  for (int i = 0; i < number_of_lines; i++) {
-    printf("Parameter[%s], Values[%s]\n", all_tokens[i]->parameter, all_tokens[i]->value);
-  }
+  object_index first_object;
+  first_object=get_object(all_tokens,number_of_lines);
+  printf("Printing object contents\n");
+  get_contents_of_object(all_tokens,first_object);
   free_memory_tokens(all_tokens,number_of_lines);
   free(contents_file);
   return EXIT_SUCCESS;
