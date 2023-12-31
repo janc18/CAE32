@@ -180,12 +180,12 @@ char *get_each_line_of_file_string(char *string_file, int *offset) {
   strcpy(pline_buffer, temp_line_buffer);
   return pline_buffer;
 }
-int get_file_tokens(char *string_file) {
+line_token **get_file_tokens(char *string_file) {
   // Create an array of line tokens with the size of numbers of lines of the files
   int number_of_lines = find_number_of_lines(string_file);
-  line_token *lines_to_tokenize[number_of_lines];
+  line_token **plines_to_tokenize = malloc(sizeof(line_token) * number_of_lines);
+  line_token *array_of_lines_tokenize[number_of_lines];
   char *p_array_of_lines[number_of_lines];
-
   // Getting each line and save at p_array_of_lines
   int offsets = 0;
   for (int i = 0; i < number_of_lines; i++) {
@@ -195,22 +195,33 @@ int get_file_tokens(char *string_file) {
       free(p_array_of_lines[i]);
     }
   }
-
   // Getting all the tokens from each line
   for (int i = 0; i < number_of_lines; i++) {
-    lines_to_tokenize[i] = get_line_tokens(p_array_of_lines[i]);
-    if (lines_to_tokenize[i] == NULL) {
+    array_of_lines_tokenize[i] = get_line_tokens(p_array_of_lines[i]);
+    if (array_of_lines_tokenize[i] == NULL) {
       printf("Error in string:[%s]\n", p_array_of_lines[i]);
-      free_line_token(lines_to_tokenize[i]);
+      free_line_token(*plines_to_tokenize);
     }
   }
-
-  // Freeing array_of_lines and tokens memory
+  // copy pointers to plines_to_tokenize
   for (int i = 0; i < number_of_lines; i++) {
-    printf("Parameter=[%s],Value:[%s]\n", lines_to_tokenize[i]->parameter, lines_to_tokenize[i]->value);
-    free(p_array_of_lines[i]);
-    free_line_token(lines_to_tokenize[i]);
+    plines_to_tokenize[i] = array_of_lines_tokenize[i];
   }
 
-  return 0;
+  for (int i = 0; i < number_of_lines; i++) {
+    free(p_array_of_lines[i]);
+  }
+  return plines_to_tokenize;
+}
+
+int free_memory_tokens(line_token **tokens, int number_of_lines) {
+  if (tokens != NULL) {
+
+    for (int i = 0; i < number_of_lines; i++) {
+      free_line_token(tokens[i]);
+    }
+    free(tokens);
+    return 0;
+  }
+  return -1;
 }
