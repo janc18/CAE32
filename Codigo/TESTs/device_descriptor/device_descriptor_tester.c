@@ -22,15 +22,14 @@ int main(int argc, char *argv[]) {
     printf("ERROR");
     return EXIT_FAILURE;
   }
-  int number_of_lines= find_number_of_lines(contents_file);
-
+  int number_of_lines = find_number_of_lines(contents_file);
   line_token **all_tokens;
   all_tokens = get_file_tokens(contents_file);
-  object_index first_object;
-  first_object=get_object(all_tokens,number_of_lines);
-  printf("Printing object contents\n");
-  get_contents_of_object(all_tokens,first_object);
-  free_memory_tokens(all_tokens,number_of_lines);
+  int start_index=0;
+  object_index **objects=malloc(sizeof(object_index)*10);
+  objects=get_objects_index(all_tokens,number_of_lines);
+  print_contents_of_n_object(all_tokens, *objects[2]);
+  free_memory_tokens(all_tokens, number_of_lines);
   free(contents_file);
   return EXIT_SUCCESS;
 }
