@@ -7,7 +7,9 @@ int start;
 int end;
 }object_index;
 
-object_index get_object(line_token **token_file, int number_of_lines);
+object_index *find_object(line_token **token_file, int number_of_lines, int start_index);
+object_index **get_objects_index(line_token **token_file, int number_of_lines);
 int search_for_word(line_token *token_file,const char *parameter, int index);
-int get_contents_of_object(line_token **token_file, object_index content_index);
+int print_contents_of_n_object(line_token **token_file, object_index content_index);
+int verify_object(line_token **token_file,object_index index);
 #endif // !TOKEN_MANIPULATION_H
