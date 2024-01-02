@@ -1,11 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 project(DeviceDescriptorTest)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.c")
+list(APPEND SOURCES "${PROJECT_SOURCE_DIR}/device_descriptor_tester.c")
+configure_file(${PROJECT_SOURCE_DIR}/devices.c32 ${CMAKE_BINARY_DIR}/bin/devices.c32 COPYONLY)
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-set(DEVICE_DESCRIPTOR_C ../../Shared_libraries/Device_descriptors/src/device_desc_pedals.c)
-set(DEVICE_DESCRIPTOR_H ../../Shared_libraries/Device_descriptors/include/)
-set(SOURCE_FILE_MAIN ../../Device_simulation/src/Joystick.c)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${PROJECT_SOURCE_DIR}/devices.c32"
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
+add_custom_target(run
+    COMMAND $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/bin/devices.c32
+    DEPENDS ${PROJECT_NAME})
 
-add_executable(device_descriptor ${SOURCE_FILE_MAIN} ${DEVICE_DESCRIPTOR_C})
-
-target_include_directories(device_descriptor PRIVATE ${DEVICE_DESCRIPTOR_H})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
