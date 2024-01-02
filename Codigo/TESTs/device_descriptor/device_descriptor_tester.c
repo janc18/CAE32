@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 int main(int argc, char *argv[]) {
   char *contents_file = file_to_string(argv[1]);
   if (contents_file == NULL) {
@@ -25,11 +24,12 @@ int main(int argc, char *argv[]) {
   int number_of_lines = find_number_of_lines(contents_file);
   line_token **all_tokens;
   all_tokens = get_file_tokens(contents_file);
-  int start_index=0;
-  object_index **objects=malloc(sizeof(object_index)*10);
-  objects=get_objects_index(all_tokens,number_of_lines);
-  print_contents_of_n_object(all_tokens, *objects[2]);
+  int start_index = 0;
+  object_index **objects;
+  objects = get_objects_index(all_tokens, number_of_lines);
+  print_contents_of_n_object(all_tokens, *objects[2]);//printing third object contents
   free_memory_tokens(all_tokens, number_of_lines);
+  free_memory_object(objects);
   free(contents_file);
   return EXIT_SUCCESS;
 }
