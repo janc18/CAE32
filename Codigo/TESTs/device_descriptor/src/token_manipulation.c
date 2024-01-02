@@ -16,6 +16,7 @@
 #include <string.h>
 #include <strings.h>
 
+const int max_number_objects = 10;
 object_index **get_objects_index(line_token **token_file, int number_of_lines) {
   object_index *index[number_of_lines];
   index[0] = find_object(token_file, number_of_lines, 0);
@@ -45,10 +46,15 @@ object_index **get_objects_index(line_token **token_file, int number_of_lines) {
       index[index_array] = NULL;
     }
   }
-  object_index **p_index = malloc(sizeof(object_index *) * index_array + 1);
+  object_index **p_index = calloc(sizeof(object_index*), index_array + 1);
   for (int i = 0; i < index_array + 1; i++) {
-    p_index[i] = index[i];
+    if (p_index != NULL) {
+      p_index[i] = index[i];
+    }else{
+    printf("[%d]\tindex array NULL\n",i);
+    }
   }
+  printf("Number of objects %d\n", index_array);
   return p_index;
 }
 
@@ -89,19 +95,15 @@ int print_contents_of_n_object(line_token **token_file, object_index content_ind
 object_index *find_object(line_token **token_file, int number_of_lines, int start_index) {
   object_index *index = malloc(sizeof(object_index) * number_of_lines);
   int array_index_n_object = 0;
-  // TODO if the values of the parameter are not equal keep searching
   while (start_index <= number_of_lines) {
     if (search_for_word(token_file[start_index], "Start", start_index) == 0) { // start found
-      // printf("START:%d, parameter[%s], value[%s]\n", start_index, token_file[start_index]->parameter, token_file[start_index]->value);
       index->start = start_index;
       break;
     }
     start_index++;
   }
-  // cp_start_index++;
   while (start_index <= number_of_lines) {
     if (search_for_word(token_file[start_index], "End", start_index) == 0) { // END found
-      // printf("End:%d, parameter[%s], value[%s]\n", start_index, token_file[start_index]->parameter, token_file[start_index]->value);
       index->end = start_index;
       break;
     }
@@ -110,7 +112,20 @@ object_index *find_object(line_token **token_file, int number_of_lines, int star
   if (verify_object(token_file, *index) == 0) {
     return index;
   } else {
-    printf("DAmm\n");
+    printf("ERROR: Tokens values are not the same\n");
     return NULL;
   }
+}
+
+int free_memory_object(object_index **objects){
+  if (objects != NULL) {
+    for (int i = 0; i < max_number_objects; i++) {
+      if (objects[i] != NULL) {
+        free(objects[i]);
+      } else {
+        break;
+      }
+    }
+  }
+  return 0;
 }

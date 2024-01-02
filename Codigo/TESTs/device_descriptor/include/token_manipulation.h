@@ -7,6 +7,7 @@ int start;
 int end;
 }object_index;
 
+int free_memory_object(object_index **objects);
 object_index *find_object(line_token **token_file, int number_of_lines, int start_index);
 object_index **get_objects_index(line_token **token_file, int number_of_lines);
 int search_for_word(line_token *token_file,const char *parameter, int index);
