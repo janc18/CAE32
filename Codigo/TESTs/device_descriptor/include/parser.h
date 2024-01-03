@@ -1,8 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <stdbool.h>
-
 extern const char Keywords[][30];
 typedef struct line_token {
   char *parameter;
