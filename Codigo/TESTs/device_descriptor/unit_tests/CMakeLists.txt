@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(Tests)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
+if(DEBUG)
+  message("In DEBUG mode")
+    add_definitions(-DDEBUG)
+endif()
 include_directories(${PROJECT_SOURCE_DIR}/../include)
 
 set(SOURCES "${PROJECT_SOURCE_DIR}/../src/parser.c")
