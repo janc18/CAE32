@@ -255,42 +255,18 @@ int free_memory_tokens(line_token **tokens, int number_of_lines) {
 }
 
 int remove_extra_spaces(char *line) {
-  int index_wo_spaces = 0;
-  bool Word_found = false;
-  bool Two_spaces_conse = false;
-  // // char *sentence_witout_spaces = calloc(sizeof(char), 50);
-  char sentence_witout_spaces[50] = {0};
-  // int string_len = strlen(line);
-  // for (int i = 0; i < string_len; i++) {
-  //   if (line[i] == ' ' && line[i + 1] == ' ') {
-  //     Two_spaces_conse = true;
-  //     continue;
-  //   }
-  //   if (line[i] == ' ' && line[i + 1] == '\0') {
-  //     break
-  //   }
-  //   if (Two_spaces_conse) {
-  //     Two_spaces_conse = false;
-  //     sentence_witout_spaces[index_wo_spaces++] = ' ';
-  //   } else {
-  //     if (line[i] == ' ') { // if character is space
-  //       if (line[i - 1] != ' ' && line[i + 1] != ' ') {
-  //         sentence_witout_spaces[index_wo_spaces++] = line[i];
-  //       }
-  //     } else {
-  //       sentence_witout_spaces[index_wo_spaces] = line[i];
-  //       index_wo_spaces++;
-  //     }
-  //   }
-  // }
-  int i, x;
+  int i, x,index;
   for (i = x = 0; line[i]; ++i)
     if (!isspace(line[i]) || (i > 0 && !isspace(line[i - 1])))
       line[x++] = line[i];
   line[x] = '\0';
-  // sentence_witout_spaces[index_wo_spaces] = '\0';
-  printf("[%s]\n", line);
-  // strcpy(write_pointer, sentence_witout_spaces);
+  int last_size_line = strlen(line);
+  for (index = last_size_line; index >= 0; index--) {
+    if (isspace(line[index]) || (index < 0 && !isspace(line[index - 1]))) {
+      break;
+    }
+  }
+  line[index]='\0';
   return 0;
 }
 
