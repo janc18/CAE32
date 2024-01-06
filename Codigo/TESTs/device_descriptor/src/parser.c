@@ -10,6 +10,7 @@
  */
 
 #include "parser.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,21 +63,14 @@ char *file_to_string(char *file_path) {
 int find_number_of_lines(char *string_file) {
   if (string_file != NULL) {
     int number_of_lines = 0;
-    int number_of_empty_lines = 0;
     int cursor = 0;
     while (string_file[cursor] != '\0') {
       cursor++;
       if (string_file[cursor] == '\n') {
         number_of_lines++;
       }
-      if (string_file[cursor] == '\n' && string_file[cursor - 1] == '\n') {
-        number_of_empty_lines++;
-      }
     }
-#ifdef DEBUG
-    printf("Empty lines=%d\n", number_of_empty_lines);
-#endif /* ifdef DEBUG */
-    return number_of_lines;
+    return number_of_lines + 1;
   } else {
     return -1;
   }
@@ -156,25 +150,31 @@ int free_line_token(line_token *tokens) {
  * @param char* An string with the contents of the input file
  * @param int* Index of the string to start to iterate
  *
- * @return char* N line string
+ * @return char* An allocated string
  */
 char *get_each_line_of_file_string(char *string_file, int *offset) {
   char temp_line_buffer[50] = {0};
   int offset_pline_buffer = 0;
-  // loop to get the n line
+  // loop to get the n line or end of string
   while (string_file[*offset] != '\n') {
-    temp_line_buffer[offset_pline_buffer] = string_file[*offset];
-    offset_pline_buffer++;
-    *offset = *offset + 1;
+    if (string_file[*offset] != '\0') {
+      temp_line_buffer[offset_pline_buffer] = string_file[*offset];
+      offset_pline_buffer++;
+      *offset = *offset + 1;
+    } else {
+      break;
+    }
   }
   *offset = *offset + 1;                        // jump \n character
   temp_line_buffer[offset_pline_buffer] = '\0'; // add string terminate character
 
   int size_of_temp_line_buffer = strlen(temp_line_buffer);
 
-  char *pline_buffer = malloc(sizeof(char) * (size_of_temp_line_buffer + 1));
+  char *pline_buffer = malloc(sizeof(char) * (size_of_temp_line_buffer));
   if (pline_buffer == NULL) {
+#ifdef DEBUG
     printf("Can't allocate memory for line buffer");
+#endif /* ifdef DEBUG */
     return NULL;
   }
   strcpy(pline_buffer, temp_line_buffer);
@@ -187,54 +187,50 @@ char *get_each_line_of_file_string(char *string_file, int *offset) {
  *
  * @return line_token** A pointer array of line tokens
  */
-line_token **get_file_tokens(char *string_file) {
-  // Create an array of line tokens with the size of numbers of lines of the files
+lines_tokenize *get_file_tokens(char *string_file) {
   int number_of_lines = find_number_of_lines(string_file);
-  line_token *array_of_lines_tokenize[number_of_lines];
-  char *p_array_of_lines[number_of_lines];
-  // Getting each line and save at p_array_of_lines
-  int offsets = 0;
-  for (int i = 0; i < number_of_lines; i++) {
-    p_array_of_lines[i] = get_each_line_of_file_string(string_file, &offsets);
-    if (p_array_of_lines[i] == NULL) {
-      printf("Error\n");
-      free(p_array_of_lines[i]);
-    }
-  }
+  // Getting each line and save at array_of_lines
+  char **array_of_strings = get_array_of_strings(string_file);
   // Getting all the tokens from each line
-  for (int i = 0; i < number_of_lines; i++) {
-    array_of_lines_tokenize[i] = get_line_tokens(p_array_of_lines[i]);
-    if (array_of_lines_tokenize[i] == NULL) { // Because a syntax error
-#ifdef DEBUG
-      printf("Error in string:[%s], at index %d\n", p_array_of_lines[i], i);
-#endif /* ifdef DEBUG */
-      // free_line_token(*plines_to_tokenize);
-    }
-  }
-  // getting the size of not null line tokens
-  int ne_index = 0;
-  for (int i = 0; i < number_of_lines; i++) {
-    if (array_of_lines_tokenize[i] != NULL) {
-      ne_index++;
-    }
-  }
-  line_token **plines_to_tokenize = calloc(sizeof(line_token), ne_index);
-  // copy pointers to plines_to_tokenize
-  int index_nn = 0;
-  for (int i = 0; i < number_of_lines; i++) {
-    if (array_of_lines_tokenize[i] == NULL) {
-    } else {
-      plines_to_tokenize[index_nn] = array_of_lines_tokenize[i];
-      index_nn++;
-    }
-  }
 
-  for (int i = 0; i < number_of_lines; i++) {
-    if (p_array_of_lines[i] != NULL) {
-      free(p_array_of_lines[i]);
-    }
-  }
-  return plines_to_tokenize;
+  /*
+   line_token **plines_to_tokenize = calloc(sizeof(line_token), ne_index);
+   // copy pointers to plines_to_tokenize
+   lines_tokenize *after_process;
+   int index_nn = 0;
+   for (int i = 0; i < number_of_lines; i++) {
+     if (array_of_lines_tokenize == NULL) {
+     } else {
+       plines_to_tokenize[index_nn] = array_of_lines_tokenize;
+       index_nn++;
+     }
+   }
+   for (int i = 0; i < index_nn; i++) {
+     if (plines_to_tokenize[i] != NULL) {
+       after_process->all_tokens[i] = plines_to_tokenize[i];
+       printf("Asigned memory of plines_to_tokenize:%p an after_process struct:%p in index:%d\n", plines_to_tokenize[i], after_process->all_tokens[i],
+              i);
+
+     } else {
+       printf("NULL %d\n", i);
+     }
+   }
+   //
+   for (int i = 0; i < number_of_lines; i++) {
+     if (p_array_of_lines[i] != NULL) {
+       free(p_array_of_lines[i]);
+     }
+   }
+   // for (int i = 0; i < ne_index; i++) {
+   //   free_line_token(after_process->all_tokens[i]);
+   // }
+   printf("address of %p at index %d\n", after_process->all_tokens[24], 24);
+   printf("Value of index 24:%s", after_process->all_tokens[24]->parameter);
+   after_process->number_of_lines = ne_index;
+   printf("%d\n", after_process->number_of_lines);
+   return NULL;
+   */
+  return NULL;
 }
 
 /**
@@ -244,7 +240,7 @@ line_token **get_file_tokens(char *string_file) {
  * @param int Number of lines of the given file
  *
  * @return int
- *  - 0 free memry successfully
+ *  - 0 memory successfully free
  *  - -1 line_token** is NULL
  */
 int free_memory_tokens(line_token **tokens, int number_of_lines) {
@@ -262,33 +258,39 @@ int remove_extra_spaces(char *line) {
   int index_wo_spaces = 0;
   bool Word_found = false;
   bool Two_spaces_conse = false;
-  // char *sentence_witout_spaces = calloc(sizeof(char), 50);
+  // // char *sentence_witout_spaces = calloc(sizeof(char), 50);
   char sentence_witout_spaces[50] = {0};
-  int string_len = strlen(line);
-  for (int i = 0; i < string_len; i++) {
-    if (line[i] == ' ' && line[i + 1] == ' ') {
-      Two_spaces_conse = true;
-      continue;
-    }
-    if (line[i] == ' ' && line[i + 1] == '\0') {
-      break;
-    }
-    if (Two_spaces_conse) {
-      Two_spaces_conse = false;
-      sentence_witout_spaces[index_wo_spaces++] = ' ';
-    } else {
-      if (line[i] == ' ') { // if character is space
-        if (line[i - 1] != ' ' && line[i + 1] != ' ') {
-          sentence_witout_spaces[index_wo_spaces++] = line[i];
-        }
-      } else {
-        sentence_witout_spaces[index_wo_spaces] = line[i];
-        index_wo_spaces++;
-      }
-    }
-  }
-  sentence_witout_spaces[index_wo_spaces] = '\0';
-  strcpy(line, sentence_witout_spaces);
+  // int string_len = strlen(line);
+  // for (int i = 0; i < string_len; i++) {
+  //   if (line[i] == ' ' && line[i + 1] == ' ') {
+  //     Two_spaces_conse = true;
+  //     continue;
+  //   }
+  //   if (line[i] == ' ' && line[i + 1] == '\0') {
+  //     break
+  //   }
+  //   if (Two_spaces_conse) {
+  //     Two_spaces_conse = false;
+  //     sentence_witout_spaces[index_wo_spaces++] = ' ';
+  //   } else {
+  //     if (line[i] == ' ') { // if character is space
+  //       if (line[i - 1] != ' ' && line[i + 1] != ' ') {
+  //         sentence_witout_spaces[index_wo_spaces++] = line[i];
+  //       }
+  //     } else {
+  //       sentence_witout_spaces[index_wo_spaces] = line[i];
+  //       index_wo_spaces++;
+  //     }
+  //   }
+  // }
+  int i, x;
+  for (i = x = 0; line[i]; ++i)
+    if (!isspace(line[i]) || (i > 0 && !isspace(line[i - 1])))
+      line[x++] = line[i];
+  line[x] = '\0';
+  // sentence_witout_spaces[index_wo_spaces] = '\0';
+  printf("[%s]\n", line);
+  // strcpy(write_pointer, sentence_witout_spaces);
   return 0;
 }
 
@@ -301,4 +303,50 @@ int number_of_delimiter(char *line, char delimiter) {
     line++;
   }
   return counter;
+}
+
+char **get_array_of_strings(char *string_file) {
+  int offsets = 0;
+  int number_of_lines = find_number_of_lines(string_file);
+  char temporal_array_lines[number_of_lines][50];
+  for (int i = 0; i < number_of_lines; i++) {
+    char *line = get_each_line_of_file_string(string_file, &offsets);
+    strcpy(temporal_array_lines[i], line);
+  }
+  char **p_array_lines = calloc(sizeof(char), number_of_lines * 50);
+
+  for (int i = 0; i < number_of_lines; i++) {
+    p_array_lines[i] = strdup(temporal_array_lines[i]);
+  }
+
+  return p_array_lines;
+}
+
+lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings, int number_of_lines) {
+  line_token *array_of_lines_tokenize[number_of_lines];
+  line_token **p_array_of_lines_tokenize = malloc(sizeof(line_token) * number_of_lines);
+
+  int token_with_correct_syntax = 0;
+  for (int i = 0; i < number_of_lines; i++) {
+    array_of_lines_tokenize[i] = get_line_tokens(array_of_strings[i]);
+
+    if (array_of_lines_tokenize[i] != NULL) { // Because a syntax error
+      p_array_of_lines_tokenize[token_with_correct_syntax] = array_of_lines_tokenize[i];
+      token_with_correct_syntax++;
+      // #TODO check if its an empty line, if isn't, return null
+    } else {
+#ifdef DEBUG
+      printf("Error in string:[%s], at line %d\n", array_of_strings[i], i);
+#endif /* ifdef DEBUG */
+      // #TODO take in consideration the kind of error, and give information about to the user
+      continue;
+    }
+  }
+
+  lines_tokenize *p_string_tokenize = malloc((sizeof(line_token) * token_with_correct_syntax) + sizeof(int));
+
+  p_string_tokenize->number_of_lines = token_with_correct_syntax;
+  p_string_tokenize->all_tokens = p_array_of_lines_tokenize;
+
+  return p_string_tokenize;
 }
