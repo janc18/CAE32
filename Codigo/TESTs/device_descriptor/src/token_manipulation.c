@@ -12,6 +12,7 @@
 #include "token_manipulation.h"
 #include "parser.h"
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
