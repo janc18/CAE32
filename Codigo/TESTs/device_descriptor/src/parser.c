@@ -21,11 +21,11 @@ const char Keywords[][30] = {"Start",   "End", "Size_bits", "Logical_Minimum", "
 /**
  * @brief Convert input file to an string
  *
- *  Read the file at the file path gived by the user and corverted
- *  to an string saved at the heap
+ *  Reads a file at a path given by the user and converts it
+ *  to an string saved at the heap.
  *
- *  @param file_path File path *.c32
- *  @return Pointer to the string created or NULL in the case of ERROR
+ *  @param char* File path to *.c32
+ *  @return char* On success, a string allocated at heap, or NULL if an error occurs
  */
 char *file_to_string(char *file_path) {
   FILE *fptr_devices;
@@ -54,7 +54,7 @@ char *file_to_string(char *file_path) {
 /**
  * @brief Get the number of lines
  *
- *  Counts the number lines of an string_files until reach the end of strinf character '\0'
+ *  Counts the number lines of an string_files until reaching the end of the string character '\0'
  *
  *  @param char* A string with the contents of file
  *
@@ -65,10 +65,10 @@ int find_number_of_lines(char *string_file) {
     int number_of_lines = 0;
     int cursor = 0;
     while (string_file[cursor] != '\0') {
-      cursor++;
       if (string_file[cursor] == '\n') {
         number_of_lines++;
       }
+      cursor++;
     }
     return number_of_lines + 1;
   } else {
@@ -76,14 +76,13 @@ int find_number_of_lines(char *string_file) {
   }
 }
 /**
- * @brief Get a line token
+ *  @brief Get a line token
  *
- *  Get a token in a string, this function separate that string with the
- *  ":" delimiter and return that values in a struct;
+ *  Parser a line by seperating it with the ":" delimiter and return the values in a struct
  *
- *  @param line char to try to separate
+ *  @param char* Line to be parsed
  *
- *  @return line_token A struct with the value an parameter
+ *  @return line_token* A pointer to a struct with the value an parameter, or NULL if parsing get an error
  */
 line_token *get_line_tokens(char *line) {
   if (line == NULL) {
@@ -107,7 +106,7 @@ line_token *get_line_tokens(char *line) {
   if (result == 2 && delimiter_ocurrence == 1) {
     remove_extra_spaces(param);
     remove_extra_spaces(value);
-    if (strcmp(param, "") == 0 | strcmp(value, "") == 0) { // One string Empty
+    if (param[0] == '\0' || value[0] == '\0') { // string Empty
       free(pline_token);
       return NULL;
     }
@@ -127,14 +126,14 @@ line_token *get_line_tokens(char *line) {
 /**
  * @brief Free memory from the line_token struct
  *
- * @param line_token struct
+ * @param *line_token struct
  *
  * @return int 0=Success, -1=Error
  */
 int free_line_token(line_token *tokens) {
   if (tokens == NULL) {
 #ifdef DEBUG
-    printf("ERROR at trying to free memory\n");
+    printf("Error: line_token struct NULL\n");
 #endif /* ifdef DEBUG */
     return -1;
   } else {
@@ -150,9 +149,11 @@ int free_line_token(line_token *tokens) {
  * @param char* An string with the contents of the input file
  * @param int* Index of the string to start to iterate
  *
- * @return char* An allocated string
+ * @return char* An allocated string or NULL if char* string_file is NULL
  */
 char *get_each_line_of_file_string(char *string_file, int *offset) {
+  if (string_file == NULL)
+    return NULL;
   char temp_line_buffer[50] = {0};
   int offset_pline_buffer = 0;
   // loop to get the n line or end of string
@@ -168,16 +169,18 @@ char *get_each_line_of_file_string(char *string_file, int *offset) {
   *offset = *offset + 1;                        // jump \n character
   temp_line_buffer[offset_pline_buffer] = '\0'; // add string terminate character
 
-  int size_of_temp_line_buffer = strlen(temp_line_buffer);
-
-  char *pline_buffer = malloc(sizeof(char) * (size_of_temp_line_buffer));
+  int size_of_temp_line_buffer = strlen(temp_line_buffer) + 1;
+  if (size_of_temp_line_buffer > sizeof(temp_line_buffer)) {
+    return NULL;
+  }
+  char *pline_buffer = calloc(sizeof(char), size_of_temp_line_buffer);
   if (pline_buffer == NULL) {
 #ifdef DEBUG
-    printf("Can't allocate memory for line buffer");
+    printf("Can't allocate memory for line buffer\n");
 #endif /* ifdef DEBUG */
     return NULL;
   }
-  strcpy(pline_buffer, temp_line_buffer);
+  memcpy(pline_buffer, temp_line_buffer, size_of_temp_line_buffer);
   return pline_buffer;
 }
 /**
@@ -253,9 +256,24 @@ int free_memory_tokens(line_token **tokens, int number_of_lines) {
   }
   return -1;
 }
-
+/**
+ * @brief Remove extra spaces than can cause issues
+ *
+ * For example don't is the same "Start: Name" to " Start:Name "
+ * To adress that problem this function remove a space if it is more than one
+ * and remove space at the start and the end of the line
+ *
+ * This function manipulate directly the string
+ *
+ * @param char* Line to remove extra spaces
+ *
+ * @return 0 if success or -1 if line is NULL
+ */
 int remove_extra_spaces(char *line) {
-  int i, x,index;
+  if (line == NULL)
+    return -1;
+
+  int i, x, index;
   for (i = x = 0; line[i]; ++i)
     if (!isspace(line[i]) || (i > 0 && !isspace(line[i - 1])))
       line[x++] = line[i];
@@ -266,11 +284,20 @@ int remove_extra_spaces(char *line) {
       break;
     }
   }
-  line[index]='\0';
+  line[index] = '\0';
   return 0;
 }
-
+/**
+ * @brief Count the number of delimeter matches at the input line
+ *
+ * @param char* Line to count the number of delimiters
+ * @param char Delimiter character
+ *
+ * @return int with the number of matched delimiter
+ */
 int number_of_delimiter(char *line, char delimiter) {
+  if (line == NULL)
+    return -1;
   int counter = 0;
   while (*line) {
     if (*line == delimiter) {
@@ -280,14 +307,23 @@ int number_of_delimiter(char *line, char delimiter) {
   }
   return counter;
 }
-
+/**
+ * @brief Get an array of string from an input string
+ *
+ * @param char* An String to separete in more string each new line
+ *
+ * @return char ** An array o string pointer or NULL if the string_file is NULL
+ */
 char **get_array_of_strings(char *string_file) {
+  if (string_file == NULL)
+    return NULL;
   int offsets = 0;
   int number_of_lines = find_number_of_lines(string_file);
   char temporal_array_lines[number_of_lines][50];
   for (int i = 0; i < number_of_lines; i++) {
     char *line = get_each_line_of_file_string(string_file, &offsets);
     strcpy(temporal_array_lines[i], line);
+    free(line);
   }
   char **p_array_lines = calloc(sizeof(char), number_of_lines * 50);
 
@@ -297,8 +333,18 @@ char **get_array_of_strings(char *string_file) {
 
   return p_array_lines;
 }
-
+/**
+ * @brief Get all the tokens from each line
+ *
+ * @param char** Array of strings to search for tokens
+ * @param int Number of lines from the file
+ *
+ * @return lines_tokenize AN Struct pointer with all the correct parsed lines and number of correct lines or NULL if
+ * have an error in array_of_string
+ */
 lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings, int number_of_lines) {
+  if (array_of_strings == NULL)
+    return NULL;
   line_token *array_of_lines_tokenize[number_of_lines];
   line_token **p_array_of_lines_tokenize = malloc(sizeof(line_token) * number_of_lines);
 
@@ -315,6 +361,7 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
       printf("Error in string:[%s], at line %d\n", array_of_strings[i], i);
 #endif /* ifdef DEBUG */
       // #TODO take in consideration the kind of error, and give information about to the user
+      free_line_token(array_of_lines_tokenize[i]);
       continue;
     }
   }
