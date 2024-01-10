@@ -191,49 +191,15 @@ char *get_each_line_of_file_string(char *string_file, int *offset) {
  * @return line_token** A pointer array of line tokens
  */
 lines_tokenize *get_file_tokens(char *string_file) {
+  if (string_file == NULL)
+    return NULL;
   int number_of_lines = find_number_of_lines(string_file);
   // Getting each line and save at array_of_lines
   char **array_of_strings = get_array_of_strings(string_file);
   // Getting all the tokens from each line
+  lines_tokenize *array_of_tokens = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
 
-  /*
-   line_token **plines_to_tokenize = calloc(sizeof(line_token), ne_index);
-   // copy pointers to plines_to_tokenize
-   lines_tokenize *after_process;
-   int index_nn = 0;
-   for (int i = 0; i < number_of_lines; i++) {
-     if (array_of_lines_tokenize == NULL) {
-     } else {
-       plines_to_tokenize[index_nn] = array_of_lines_tokenize;
-       index_nn++;
-     }
-   }
-   for (int i = 0; i < index_nn; i++) {
-     if (plines_to_tokenize[i] != NULL) {
-       after_process->all_tokens[i] = plines_to_tokenize[i];
-       printf("Asigned memory of plines_to_tokenize:%p an after_process struct:%p in index:%d\n", plines_to_tokenize[i], after_process->all_tokens[i],
-              i);
-
-     } else {
-       printf("NULL %d\n", i);
-     }
-   }
-   //
-   for (int i = 0; i < number_of_lines; i++) {
-     if (p_array_of_lines[i] != NULL) {
-       free(p_array_of_lines[i]);
-     }
-   }
-   // for (int i = 0; i < ne_index; i++) {
-   //   free_line_token(after_process->all_tokens[i]);
-   // }
-   printf("address of %p at index %d\n", after_process->all_tokens[24], 24);
-   printf("Value of index 24:%s", after_process->all_tokens[24]->parameter);
-   after_process->number_of_lines = ne_index;
-   printf("%d\n", after_process->number_of_lines);
-   return NULL;
-   */
-  return NULL;
+  return array_of_tokens;
 }
 
 /**
