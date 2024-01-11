@@ -134,6 +134,7 @@ TEST(ParserTests, GetArrayOfStrings) {
     EXPECT_STREQ(array_of_lines[i], correct_output_of_input_file[i]);
   }
 
+  //Post act
   free_array_of_lines(array_of_lines, number_of_lines);
 }
 
@@ -153,20 +154,8 @@ TEST(ParserTests, GetArrayOfTokens) {
   
 
   // Post Act
-  
-  for(int i=0; i<number_of_lines;i++){
-    free(array_of_strings[i]);
-  }
-  
-  free(array_of_strings);
-
-  for (int i = 0; i < array_of_objects->number_of_lines; i++) {
-    free_line_token(array_of_objects->all_tokens[i]);
-  }
-  free(array_of_objects->all_tokens);
-
-  // Liberar la estructura lines_tokenize
-  free(array_of_objects);
+  free_array_of_lines(array_of_strings, number_of_lines);
+  free_line_tokenize_struct(array_of_objects);
 }
 
 TEST(FileTest, FileNotFound) {
