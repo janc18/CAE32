@@ -1,11 +1,11 @@
 /**
  * @file token_manipulation.c
  *
- * @brief Get all the tokens of an input file
+ * @brief Get objects from tokens previously proceded
  *
- * - Get all objects of an input file with the correct sintax
- *   and saved to iterate for each token to check if the new
- *   device descriptor work as is supossed
+ * - Build objects gived by an struct with each line tokenize
+ *   and saved to compare to the device descriptor and check if work as 
+ *   is supossed
  *
  */
 
@@ -22,49 +22,49 @@ const int max_number_objects = 10;
  * @brief Get the start and end of an object
  *
  * @param line_token Struct with all the tokens of a given file
- * @param int Number of lines of the input file
  * @return object_index** Array of structs with the start and end of all objects
  */
-object_index **get_objects_index(line_token **token_file, int number_of_lines) {
-  object_index *index[number_of_lines];
-  index[0] = find_object(token_file, number_of_lines, 0);
-  int index_array = 0;
-  if (index[index_array] != NULL) {
-#ifdef DEBUG
-    print_contents_of_n_object(token_file, *index[index_array]);
-#endif /* ifdef DEBUG */
-  } else {
-    printf("ERROR at index[%d]\n", 0);
-    return NULL;
-  }
-
-  while (index[index_array] != NULL) {
-    bool are_the_same = index[index_array]->end & index[index_array - 1]->end;
-    index_array++;
-    if (are_the_same == 1)
-      break;
-    index[index_array] = find_object(token_file, number_of_lines, index[index_array - 1]->end);
-    if (index[index_array] != NULL) {
-#ifdef DEBUG
-      print_contents_of_n_object(token_file, *index[index_array]);
-#endif /* ifdef DEBUG */
-    } else {
-      printf("%d\n", index_array);
-      printf("ERROR at index[%d]\n", index_array);
-      index[index_array] = NULL;
-    }
-  }
-  object_index **p_index = calloc(sizeof(object_index *), index_array + 1);
-  for (int i = 0; i < index_array + 1; i++) {
-    if (p_index != NULL) {
-      p_index[i] = index[i];
-    } else {
-      printf("[%d]\tindex array NULL\n", i);
-    }
-  }
-  printf("Number of objects %d\n", index_array);
-  return p_index;
-}
+//
+// object_index **get_objects_index(lines_tokenize *token_lines) {
+//   object_index *index[number_of_lines];
+//   index[0] = find_object(token_file, number_of_lines, 0);
+//   int index_array = 0;
+//   if (index[index_array] != NULL) {
+// #ifdef DEBUG
+//     print_contents_of_n_object(token_file, *index[index_array]);
+// #endif /* ifdef DEBUG */
+//   } else {
+//     printf("ERROR at index[%d]\n", 0);
+//     return NULL;
+//   }
+//
+//   while (index[index_array] != NULL) {
+//     bool are_the_same = index[index_array]->end & index[index_array - 1]->end;
+//     index_array++;
+//     if (are_the_same == 1)
+//       break;
+//     index[index_array] = find_object(token_file, number_of_lines, index[index_array - 1]->end);
+//     if (index[index_array] != NULL) {
+// #ifdef DEBUG
+//       print_contents_of_n_object(token_file, *index[index_array]);
+// #endif /* ifdef DEBUG */
+//     } else {
+//       printf("%d\n", index_array);
+//       printf("ERROR at index[%d]\n", index_array);
+//       index[index_array] = NULL;
+//     }
+//   }
+//   object_index **p_index = calloc(sizeof(object_index *), index_array + 1);
+//   for (int i = 0; i < index_array + 1; i++) {
+//     if (p_index != NULL) {
+//       p_index[i] = index[i];
+//     } else {
+//       printf("[%d]\tindex array NULL\n", i);
+//     }
+//   }
+//   printf("Number of objects %d\n", index_array);
+//   return p_index;
+// }
 /**
  * @brief Verify if the start and end value are the same
  *
@@ -136,30 +136,53 @@ int print_contents_of_n_object(line_token **token_file, object_index content_ind
  * @return object_index Struct loaded with the start and end index of an object or NULL
  * if did't find anyone
  */
-object_index *find_object(line_token **token_file, int number_of_lines, int start_index) {
-  object_index *index = malloc(sizeof(object_index) * number_of_lines);
-  int array_index_n_object = 0;
-  while (start_index <= number_of_lines) {
-    if (search_for_word(token_file[start_index], "Start", start_index) == 0) { // start found
+object_index *find_object(lines_tokenize *token_line,int start_index) {
+  object_index *p_index=search_start_and_end_index(token_line,start_index);
+  if (verify_object(token_line->all_tokens, *p_index) == 0) {
+    return p_index;
+  } else {
+    printf("ERROR: Tokens values are not the same\n");
+    free(p_index);
+    return NULL;
+  }
+}
+/**
+ * @brief Search for the start and End Parameter
+ * 
+ * Get the start and end index of the given lines_tokenize struct 
+ * not compare if it is the same object.
+ * Example: 
+ *
+ * Start: CAE32
+ * ..n characteristics
+ * End: CAE32
+ * ^^^^^^^^^^^^^^^^^^^ 
+ * This it the same object
+ *
+ * @param *lines_tokenize Pointer struct with all the tokens
+ * @return *object_index Allocated Pointer struct with start and end index
+ */
+
+object_index *search_start_and_end_index(lines_tokenize *token_line,int start_index){
+  object_index *index=malloc(sizeof(object_index)); //Saving space for one struct
+  while (start_index <= token_line->number_of_lines) {
+    if (search_for_word(token_line->all_tokens[start_index], "Start", start_index) == 0) { // start found
       index->start = start_index;
       break;
     }
     start_index++;
   }
-  while (start_index <= number_of_lines) {
-    if (search_for_word(token_file[start_index], "End", start_index) == 0) { // END found
+  while (start_index <= token_line->number_of_lines) {
+    if (search_for_word(token_line->all_tokens[start_index], "End", start_index) == 0) { // END found
       index->end = start_index;
       break;
     }
     start_index++;
   }
-  if (verify_object(token_file, *index) == 0) {
-    return index;
-  } else {
-    printf("ERROR: Tokens values are not the same\n");
-    return NULL;
-  }
+  return index;
 }
+
+
 /**
  * @brief Free Memory for any objects created
  *
