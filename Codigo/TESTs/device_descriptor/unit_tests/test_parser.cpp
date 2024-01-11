@@ -23,6 +23,23 @@ TEST(ParserTests, ParsesWithOutExtraSpaces) {
   free_line_token(object);
 }
 
+TEST(ParserTests, ParseParameterTwoWords) {
+  // Arrange
+  line_token *object;
+  char token[30] = "Start:Object_1 second";
+
+  // Act
+  object = get_line_tokens(token);
+
+  // Assert
+  EXPECT_STREQ("Start", object->parameter) << "Parameter parsing failed.";
+
+  EXPECT_STREQ("Object_1 second", object->value) << "Value parsing failed";
+
+  // Post Act
+  free_line_token(object);
+}
+
 TEST(ParserTests, ParsesWithExtraSpacesNumVariation0) {
   // Arrange
   line_token *object;
