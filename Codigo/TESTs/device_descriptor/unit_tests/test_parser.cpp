@@ -134,11 +134,7 @@ TEST(ParserTests, GetArrayOfStrings) {
     EXPECT_STREQ(array_of_lines[i], correct_output_of_input_file[i]);
   }
 
-  // Post Act
-  for (int i = 0; i < number_of_lines; i++) {
-    free(array_of_lines[i]);
-  }
-  free(array_of_lines);
+  free_array_of_lines(array_of_lines, number_of_lines);
 }
 
 TEST(ParserTests, GetArrayOfTokens) {
