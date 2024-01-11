@@ -339,3 +339,23 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
 
   return p_string_tokenize;
 }
+/**
+ * @brief Free memory allocated by the function get_array_of_strings
+ *
+ * @param char** Lines allocated
+ * @param int Number of lines allocated
+ * @return int 0 in success, -1 in Error
+ */
+int free_array_of_lines(char **lines_allocated, int number_of_lines) {
+  if (lines_allocated != NULL) {
+    for (int i = 0; i < number_of_lines; i++) {
+      free(lines_allocated[i]);
+      if (lines_allocated[i]==NULL)
+        return -1;
+    }
+    free(lines_allocated);
+  } else {
+    return -1;
+  }
+  return 0;
+}
