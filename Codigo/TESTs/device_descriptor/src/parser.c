@@ -246,7 +246,7 @@ int remove_extra_spaces(char *line) {
   line[x] = '\0';
   int last_size_line = strlen(line);
   for (index = last_size_line; index >= 0; index--) {
-    if (isspace(line[index]) || (index < 0 && !isspace(line[index - 1]))) {
+    if (isspace(line[index]) || (!isspace(line[index - 1]))) {
       break;
     }
   }
