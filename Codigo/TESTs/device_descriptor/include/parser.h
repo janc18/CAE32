@@ -24,4 +24,6 @@ int remove_extra_spaces(char *line);
 int number_of_delimiter(char *line, char delimiter);
 char **get_array_of_strings(char *string_file);
 lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings, int number_of_lines);
+int free_array_of_lines(char **lines_allocated, int number_of_lines);
+int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize);
 #endif // !PARSER_H
