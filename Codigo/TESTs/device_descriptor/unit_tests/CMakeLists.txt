@@ -7,7 +7,7 @@ if(DEBUG)
 endif()
 include_directories(${PROJECT_SOURCE_DIR}/../include)
 
-set(SOURCES "${PROJECT_SOURCE_DIR}/../src/parser.c")
+set(SOURCES "${PROJECT_SOURCE_DIR}/../src/parser.c" "${PROJECT_SOURCE_DIR}/../src/token_manipulation.c")
 
 file(GLOB TEST_SOURCES "${PROJECT_SOURCE_DIR}/*.cpp")
 
