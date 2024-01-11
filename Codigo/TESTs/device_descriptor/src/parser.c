@@ -350,10 +350,30 @@ int free_array_of_lines(char **lines_allocated, int number_of_lines) {
   if (lines_allocated != NULL) {
     for (int i = 0; i < number_of_lines; i++) {
       free(lines_allocated[i]);
-      if (lines_allocated[i]==NULL)
+      if (lines_allocated[i] == NULL)
         return -1;
     }
     free(lines_allocated);
+  } else {
+    return -1;
+  }
+  return 0;
+}
+/**
+ * @brief Free memory allocated by the function get_array_of_tokens_from_an_string_array
+ *
+ * @param lines_tokenize* Struct pointer with all the lines tokenize
+ * @return int 0 in success, -1 in Error
+ */
+int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize) {
+  if (p_lines_tokenize != NULL) {
+    for (int i = 0; i < p_lines_tokenize->number_of_lines; i++) {
+      if (p_lines_tokenize->all_tokens[i] == NULL)
+        return -1;
+      free_line_token(p_lines_tokenize->all_tokens[i]);
+    }
+    free(p_lines_tokenize->all_tokens);
+    free(p_lines_tokenize);
   } else {
     return -1;
   }
