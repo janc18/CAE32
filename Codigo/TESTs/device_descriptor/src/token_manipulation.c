@@ -82,10 +82,7 @@ int verify_object(line_token **token_file, object_index index) {
 #endif /* ifdef DEBUG */
     return 0;
   } else {
-    printf("index.start:%s,index.end:%s\n", token_file[index.start]->value, token_file[index.end]->value);
-#ifdef DEBUG
-    printf("Are not same object\n");
-#endif /* ifdef DEBUG */
+    fprintf(stderr,"index.start:%s,index.end:%s\tAre not the same\n", token_file[index.start]->value, token_file[index.end]->value);
     return -1;
   }
 }
@@ -141,7 +138,7 @@ object_index *find_object(lines_tokenize *token_line,int start_index) {
   if (verify_object(token_line->all_tokens, *p_index) == 0) {
     return p_index;
   } else {
-    printf("ERROR: Tokens values are not the same\n");
+    fprintf(stderr,"ERROR: Tokens values are not the same\n");
     free(p_index);
     return NULL;
   }
