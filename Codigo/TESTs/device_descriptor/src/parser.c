@@ -86,22 +86,17 @@ int find_number_of_lines(char *string_file) {
  */
 line_token *get_line_tokens(char *line) {
   if (line == NULL) {
-#ifdef DEBUG
-    printf("ERROR: NULL input line\n");
-#endif /* ifdef DEBUG */
+    fprintf(stderr, "ERROR: NULL input line\n");
     return NULL;
   }
-  line_token *pline_token = malloc(sizeof(line_token));
+  line_token *pline_token = calloc(1, sizeof(line_token));
   if (pline_token == NULL) {
-#ifdef DEBUG
-    printf("ERROR: Unable to allocate memory for line_token\n");
-#endif /* ifdef DEBUG */
+    fprintf(stderr, "ERROR: Unable to allocate memory for line_token\n");
     return NULL;
   }
-  char param[50] = {0};
-  char value[50] = {0};
+  char param[50], value[50] = {0};
   int delimiter_ocurrence = number_of_delimiter(line, ':');
-  int result = sscanf(line, "%49[^:]: %49[^\n]", param, value);
+  int result = sscanf(line, " %49[^:]: %49[^\n]", param, value);
 
   if (result == 2 && delimiter_ocurrence == 1) {
     remove_extra_spaces(param);
@@ -117,9 +112,7 @@ line_token *get_line_tokens(char *line) {
     free(pline_token);
     return NULL;
   }
-#ifdef DEBUG
-  printf("ERROR parsing line:%s\n", temp_line_buffer);
-#endif /* ifdef DEBUG */
+  fprintf(stderr, "ERROR parsing line:%s\n", line);
   free(pline_token);
   return NULL;
 }
@@ -132,9 +125,7 @@ line_token *get_line_tokens(char *line) {
  */
 int free_line_token(line_token *tokens) {
   if (tokens == NULL) {
-#ifdef DEBUG
-    printf("Error: line_token struct NULL\n");
-#endif /* ifdef DEBUG */
+    fprintf(stderr, "WARNING: Trying to free a line_token struct that already is NULL\n");
     return -1;
   } else {
     free(tokens->value);
@@ -175,9 +166,7 @@ char *get_each_line_of_file_string(char *string_file, int *offset) {
   }
   char *pline_buffer = calloc(sizeof(char), size_of_temp_line_buffer);
   if (pline_buffer == NULL) {
-#ifdef DEBUG
-    printf("Can't allocate memory for line buffer\n");
-#endif /* ifdef DEBUG */
+    fprintf(stderr, "Can't allocate memory for line buffer\n");
     return NULL;
   }
   memcpy(pline_buffer, temp_line_buffer, size_of_temp_line_buffer);
@@ -239,7 +228,7 @@ int remove_extra_spaces(char *line) {
   if (line == NULL)
     return -1;
 
-  int i, x, index;
+  int i, x, index = 0;
   for (i = x = 0; line[i]; ++i)
     if (!isspace(line[i]) || (i > 0 && !isspace(line[i - 1])))
       line[x++] = line[i];
@@ -323,10 +312,8 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
       token_with_correct_syntax++;
       // #TODO check if its an empty line, if isn't, return null
     } else {
-#ifdef DEBUG
-      printf("Error in string:[%s], at line %d\n", array_of_strings[i], i);
-#endif /* ifdef DEBUG */
-      // #TODO take in consideration the kind of error, and give information about to the user
+      fprintf(stderr, "ERROR: in string:[%s], at line %d\t", array_of_strings[i], i);
+      analize_line(array_of_strings[i]);
       free_line_token(array_of_lines_tokenize[i]);
       continue;
     }
@@ -376,6 +363,12 @@ int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize) {
     free(p_lines_tokenize);
   } else {
     return -1;
+  }
+  return 0;
+}
+int analize_line(char *line) {
+  if (strcmp("", line) == 0) {
+    fprintf(stderr, "Empty line\n");
   }
   return 0;
 }
