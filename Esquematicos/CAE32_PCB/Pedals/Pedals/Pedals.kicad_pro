@@ -490,28 +490,8 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
-        "netclass": "Señal",
-        "pattern": "/SWCLK"
-      },
-      {
-        "netclass": "Señal",
-        "pattern": "/SWDIO"
-      },
-      {
-        "netclass": "Spi",
-        "pattern": "/NRST"
-      },
-      {
-        "netclass": "Spi",
-        "pattern": "/SCKL"
-      },
-      {
-        "netclass": "usb",
-        "pattern": "/D+"
-      },
-      {
-        "netclass": "usb",
-        "pattern": "/D-"
+        "netclass": "Default",
+        "pattern": "/MP"
       }
     ]
   },
