@@ -22,13 +22,13 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
   int number_of_lines = find_number_of_lines(contents_file);
-  line_token **all_tokens;
+  lines_tokenize *all_tokens;
   all_tokens = get_file_tokens(contents_file);
   int start_index = 0;
   object_index **objects;
-  objects = get_objects_index(all_tokens, number_of_lines);
-  print_contents_of_n_object(all_tokens, *objects[2]);//printing third object contents
-  free_memory_tokens(all_tokens, number_of_lines);
+  objects = get_objects_index(all_tokens->all_tokens, number_of_lines);
+  print_contents_of_n_object(all_tokens->all_tokens, *objects[2]);//printing third object contents
+  free_memory_tokens(all_tokens->all_tokens, number_of_lines);
   free_memory_object(objects);
   free(contents_file);
   return EXIT_SUCCESS;
