@@ -8,29 +8,8 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
+#include "device_descriptor.h"
 static unsigned char rdesc0[] = {0x05, 0x02, 0x09, 0x02, 0xa1, 0x01, 0x85, 0x01, 0xc0};
-static unsigned char rdesc[] = {
-    0x05, 0x02, /* USAGE_PAGE ( Simulation Controls Page) */
-    0x09, 0x02, /* USAGE (Automobile Simulation Device) */
-                //	0xa1, 0x01,	/* COLLECTION (Application) */
-                //	0x09, 0x01,		/* USAGE (Pointer) */
-    0xa1, 0x01, /* COLLECTION (Physical) */
-    0x85, 0x01, /* REPORT_ID (1) */
-                // 0x05, 0x02, /* USAGE (Automobile Simulation Device) */
-    0x09, 0xc4, /* USAGE (Accelerator)*/
-    0x09, 0xc5, /* USAGE (Brake)*/
-    0x09, 0xc6, /* USAGE (Clutch)*/
-    0x09, 0xc7, /* USAGE (Shifter)*/
-    0x09, 0xc8, /* USAGE (Steering)*/
-    0x15, 0x00, /* Logical_minimum (0) */
-    0x25, 0xfe, /* Logical_maximum (1) */
-    0x95, 0x05, /* report_count (3) */
-    0x75, 0x08, /* report_size (1) */
-    0x81, 0x02, /* input (data,var,abs) */
-    0xc0        /* end_collection */
-                //	0xc0,		/* end_collection */
-};
-
 static int uhid_write(int fd, const struct uhid_event *ev) {
   ssize_t ret;
 
