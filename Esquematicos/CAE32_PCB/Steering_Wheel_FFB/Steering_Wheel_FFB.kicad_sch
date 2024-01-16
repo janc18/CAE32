@@ -120,7 +120,7 @@
     )
     (pin "1" (uuid fb309add-acad-44e4-8079-04e573022706))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "#PWR03") (unit 1)
         )
@@ -145,7 +145,7 @@
     )
     (pin "1" (uuid 91f8a12a-8850-41ee-97d6-ee6fa9f0fc77))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "H1") (unit 1)
         )
@@ -170,7 +170,7 @@
     )
     (pin "1" (uuid e0894057-30f6-4161-88c9-d961b0c66426))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "H2") (unit 1)
         )
@@ -195,7 +195,7 @@
     )
     (pin "1" (uuid ba16a1e6-fd43-436e-96c6-1be21436698a))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "H3") (unit 1)
         )
@@ -220,7 +220,7 @@
     )
     (pin "1" (uuid 486245bd-045a-4da0-8aec-b3cb520e238a))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "#PWR01") (unit 1)
         )
@@ -245,7 +245,7 @@
     )
     (pin "1" (uuid c04839c0-635a-4a71-a8b3-7d314fa68e0b))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "#PWR02") (unit 1)
         )
@@ -270,7 +270,7 @@
     )
     (pin "1" (uuid 698c88a3-bc71-455f-a033-4aaf33e99b7e))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "#PWR04") (unit 1)
         )
@@ -295,7 +295,7 @@
     )
     (pin "1" (uuid 5ce19c8d-5d4c-4200-870e-3219045190f9))
     (instances
-      (project "Sterring_Wheel_FFB"
+      (project "Steering_Wheel_FFB"
         (path "/ee321a20-a8dd-4eec-929b-3ea33b8f7f91"
           (reference "H4") (unit 1)
         )
