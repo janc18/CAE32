@@ -6,8 +6,10 @@
 
   (title_block
     (title "CAE32 pedals")
-    (rev "2")
+    (date "2024-01-13")
+    (rev "1")
     (comment 1 "Desing by: janc18")
+    (comment 2 "Version 2.1")
   )
 
   (lib_symbols
