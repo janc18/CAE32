@@ -13,11 +13,11 @@ for dir in ${ListOf_directories[@]}; do
 done
 
 # Move all the required directories of the GUI
-
-cp ./Codigo/Interfaz_grafica/Interfaz_gtk/build/executable $Install_directory${ListOf_directories[4]}/exec -r #path of executable file
-cp ./Codigo/Interfaz_grafica/Interfaz_gtk/src_images $Install_directory${ListOf_directories[4]} -r
-cp ./Codigo/Interfaz_grafica/Interfaz_gtk/gladeFiles $Install_directory${ListOf_directories[4]} -r 
-cp ./Codigo/Desktop_files/start_GUI.sh $Install_directory${ListOf_directories[4]}/exec 
+cp ./Source Code/Interfaz_grafica/
+cp ./Source Code/Interfaz_grafica/Interfaz_gtk/build/executable $Install_directory${ListOf_directories[4]}/exec -r #path of executable file
+cp ./Source Code/Interfaz_grafica/Interfaz_gtk/src_images $Install_directory${ListOf_directories[4]} -r
+cp ./Source Code/Interfaz_grafica/Interfaz_gtk/gladeFiles $Install_directory${ListOf_directories[4]} -r 
+cp ./Source Code/Desktop_files/start_GUI.sh $Install_directory${ListOf_directories[4]}/exec 
 
 chmod +x $Install_directory/GUI/exec/executable
 chmod +x $Install_directory/GUI/exec/start_GUI.sh
