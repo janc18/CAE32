@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.10)
+project(DeviceSimulation)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/../Shared_libraries/Device_descriptors/src/*.c")
+list(APPEND SOURCES "${PROJECT_SOURCE_DIR}/src/Joystick.c")
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR} ../Shared_libraries/Device_descriptors/include/)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
