@@ -88,6 +88,14 @@ void print_contents_of_n_object(lines_tokenize *token_file, object_index *conten
   }
   }
 }
+/**
+ * @brief Find an object starting with the start index
+ * 
+ * @param *lines_tokenize A struct with all the tokens of a given input file
+ * @param int Start index
+ *
+ * @return *object_index or NULL if can't find any object
+ */
 
 object_index *find_object(lines_tokenize *token_line, int start_index) {
   object_index *p_index = search_start_and_end_index(token_line, start_index);
