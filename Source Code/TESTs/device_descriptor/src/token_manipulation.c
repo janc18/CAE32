@@ -23,7 +23,7 @@ enum TOKENS_ERRORS { OUTSIDE_ARRAY = 1, NOT_THE_SAME };
 /**
  * @brief Verify if the start and end value are the same
  *
- * @param line_token** Struct with all the tokens of a given file
+ * @param *lines_tokenize Struct with all the tokens of a given file
  * @param object_index Struct with the start and end index number
  *
  * @return int
@@ -55,7 +55,7 @@ int verify_object(lines_tokenize *token_file, object_index index) {
  *
  * @return int
  *  - 0 Word found
- *  - -1 Word not found
+ *  - -1 Word not found or line_token is null
  */
 int search_for_word(line_token *token_file, const char *parameter, int index) {
   if (token_file == NULL) {
@@ -73,10 +73,10 @@ int search_for_word(line_token *token_file, const char *parameter, int index) {
 /**
  * @brief Print the contents of an object
  *
- * @param line_token** A struct with all the tokens of a given input file
- * @param object_index Struct with the start and end index of an object
+ * @param *lines_tokenize A struct with all the tokens of a given input file
+ * @param *object_index Struct with the start and end index of an object
  *
- * @return #TODO check if line_token is not NULL
+ * @return void
  */
 void print_contents_of_n_object(lines_tokenize *token_file, object_index *content_index) {
   if (content_index!= NULL) {
@@ -88,16 +88,7 @@ void print_contents_of_n_object(lines_tokenize *token_file, object_index *conten
   }
   }
 }
-/**
- * @brief Search for each object sequentally
- *
- * @param line_token** A struct with all the tokens of a given input file
- * @param int Number of line of the input file
- * @param int line_token** index to start to search for the new object
- *
- * @return object_index Struct loaded with the start and end index of an object or NULL
- * if did't find anyone
- */
+
 object_index *find_object(lines_tokenize *token_line, int start_index) {
   object_index *p_index = search_start_and_end_index(token_line, start_index);
   int object_result = verify_object(token_line, *p_index);
@@ -136,7 +127,10 @@ char *token_error(int error_result) {
  * This it the same object
  *
  * @param *lines_tokenize Pointer struct with all the tokens
- * @return *object_index Allocated Pointer struct with start and end index
+ * @param int index to start to search an object 
+ * @return 
+ *  - *object_index Allocated Pointer struct with start and end index of an object
+ *  - NULL if didn't find any object
  */
 
 object_index *search_start_and_end_index(lines_tokenize *token_line, int start_index) {
