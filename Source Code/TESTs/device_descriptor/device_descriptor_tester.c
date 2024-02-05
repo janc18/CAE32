@@ -34,6 +34,7 @@ int main(int argc, char *argv[]) {
 
   first_object= find_object(array_of_objects,0);
 
+  print_contents_of_n_object(array_of_objects,first_object);
 
   if (first_object != NULL) {
     free(first_object);
