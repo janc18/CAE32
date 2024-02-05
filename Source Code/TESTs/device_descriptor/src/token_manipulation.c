@@ -130,18 +130,26 @@ char *token_error(int error_result) {
 int find_number_of_objects(lines_tokenize *token_file) {
   int number_of_objects = 0;
   object_index *cursor = NULL;
+  object_index **p_array=calloc(sizeof(object_index),max_number_objects); // saving address of object_index to free
   cursor = find_object(token_file, 0);
+  p_array[0] = cursor;
   if (cursor != NULL) {
-    number_of_objects++;
+    number_of_objects++; // object found
   } else {
     free(cursor);
-    return -1;
+    return -1; // any object found
   }
   while (cursor->end < (token_file->number_of_correct_tokens - 1) && cursor != NULL) {
     number_of_objects++;
     cursor = find_object(token_file, cursor->end);
+    p_array[number_of_objects] = cursor;
   }
-  free(cursor);
+  // Freeing Memory
+  for (int i = 0; i < max_number_objects; i++) {
+    if (p_array[i] != NULL)
+      free(p_array[i]);
+  }
+  free(p_array);
   return number_of_objects;
 }
 /**
