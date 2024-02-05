@@ -17,7 +17,7 @@
 #include <string.h>
 #include <strings.h>
 
-const int max_number_objects = 10;
+const int MAX_NUMBER_OBJECTS = 10;
 
 enum TOKENS_ERRORS { OUTSIDE_ARRAY = 1, NOT_THE_SAME };
 /**
@@ -43,6 +43,44 @@ int verify_object(lines_tokenize *token_file, object_index index) {
     fprintf(stderr, "index.start:%s,index.end:%s\tAre not the same\n", token_file->all_tokens[index.start]->value,
             token_file->all_tokens[index.end]->value);
     return 2;
+  }
+}
+
+object_index **get_all_objects(lines_tokenize *array_of_objects) {
+  int number_of_correct_objects = find_number_of_objects(array_of_objects);
+  object_index **all_objects_indexes = NULL;
+
+  if (number_of_correct_objects != -1) {
+    all_objects_indexes = calloc(sizeof(object_index), number_of_correct_objects);
+    all_objects_indexes[0] = find_object(array_of_objects, 0);
+    for (int i = 1; i < number_of_correct_objects; i++) {
+      all_objects_indexes[i] = find_object(array_of_objects, all_objects_indexes[i - 1]->end);
+    }
+  } else {
+    fprintf(stderr, "ERROR: Don't found any objects\n");
+  }
+  return all_objects_indexes;
+}
+
+int free_get_all_object(object_index **all_objects_indexes, int number_of_correct_objects) {
+  for (int i = 0; i < number_of_correct_objects; i++) {
+    if (all_objects_indexes[i] != NULL) {
+      free(all_objects_indexes[i]);
+    } else {
+      return 1;
+    }
+  }
+  if (all_objects_indexes != NULL) {
+    free(all_objects_indexes);
+  } else {
+    return 1;
+  }
+  return 0;
+}
+
+void print_all_the_objects(object_index **all_objects_indexes, lines_tokenize *token_file, int number_of_correct_objects) {
+  for (int i = 0; i < number_of_correct_objects; i++) {
+    print_contents_of_n_object(token_file, all_objects_indexes[i]);
   }
 }
 
@@ -130,7 +168,7 @@ char *token_error(int error_result) {
 int find_number_of_objects(lines_tokenize *token_file) {
   int number_of_objects = 0;
   object_index *cursor = NULL;
-  object_index **p_array=calloc(sizeof(object_index),max_number_objects); // saving address of object_index to free
+  object_index **p_array = calloc(sizeof(object_index), MAX_NUMBER_OBJECTS); // saving address of object_index to free
   cursor = find_object(token_file, 0);
   p_array[0] = cursor;
   if (cursor != NULL) {
@@ -145,7 +183,7 @@ int find_number_of_objects(lines_tokenize *token_file) {
     p_array[number_of_objects] = cursor;
   }
   // Freeing Memory
-  for (int i = 0; i < max_number_objects; i++) {
+  for (int i = 0; i < MAX_NUMBER_OBJECTS; i++) {
     if (p_array[i] != NULL)
       free(p_array[i]);
   }
@@ -199,7 +237,7 @@ object_index *search_start_and_end_index(lines_tokenize *token_line, int start_i
  */
 int free_memory_object(object_index **objects) {
   if (objects != NULL) {
-    for (int i = 0; i < max_number_objects; i++) {
+    for (int i = 0; i < MAX_NUMBER_OBJECTS; i++) {
       if (objects[i] != NULL) {
         free(objects[i]);
       } else {
