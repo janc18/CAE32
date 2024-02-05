@@ -25,20 +25,13 @@ int main(int argc, char *argv[]) {
   int number_of_lines = 0;
   lines_tokenize *array_of_objects;
   char **array_of_strings;
-  object_index *first_object = NULL;
 
   // Getting raw tokens
   number_of_lines = find_number_of_lines(contents_file);
   array_of_strings = get_array_of_strings(contents_file);
   array_of_objects = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
 
-  first_object = find_object(array_of_objects, 0);
-
-  print_contents_of_n_object(array_of_objects, first_object);
-
-  if (first_object != NULL) {
-    free(first_object);
-  }
+  printf("number of objects found:%d\n",find_number_of_objects(array_of_objects));
 
   free_array_of_lines(array_of_strings, number_of_lines);
   free_line_tokenize_struct(array_of_objects);
