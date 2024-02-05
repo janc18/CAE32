@@ -9,7 +9,7 @@ typedef struct line_token {
 
 typedef struct lines_tokenize{
 line_token **all_tokens;
-int number_of_lines;
+int number_of_correct_tokens;
 }lines_tokenize;
 
 char *get_each_line_of_file_string(char *string_file, int *offset);
