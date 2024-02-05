@@ -18,53 +18,7 @@
 #include <strings.h>
 
 const int max_number_objects = 10;
-/**
- * @brief Get the start and end of an object
- *
- * @param line_token Struct with all the tokens of a given file
- * @return object_index** Array of structs with the start and end of all objects
- */
-//
-// object_index **get_objects_index(lines_tokenize *token_lines) {
-//   object_index *index[number_of_lines];
-//   index[0] = find_object(token_file, number_of_lines, 0);
-//   int index_array = 0;
-//   if (index[index_array] != NULL) {
-// #ifdef DEBUG
-//     print_contents_of_n_object(token_file, *index[index_array]);
-// #endif /* ifdef DEBUG */
-//   } else {
-//     printf("ERROR at index[%d]\n", 0);
-//     return NULL;
-//   }
-//
-//   while (index[index_array] != NULL) {
-//     bool are_the_same = index[index_array]->end & index[index_array - 1]->end;
-//     index_array++;
-//     if (are_the_same == 1)
-//       break;
-//     index[index_array] = find_object(token_file, number_of_lines, index[index_array - 1]->end);
-//     if (index[index_array] != NULL) {
-// #ifdef DEBUG
-//       print_contents_of_n_object(token_file, *index[index_array]);
-// #endif /* ifdef DEBUG */
-//     } else {
-//       printf("%d\n", index_array);
-//       printf("ERROR at index[%d]\n", index_array);
-//       index[index_array] = NULL;
-//     }
-//   }
-//   object_index **p_index = calloc(sizeof(object_index *), index_array + 1);
-//   for (int i = 0; i < index_array + 1; i++) {
-//     if (p_index != NULL) {
-//       p_index[i] = index[i];
-//     } else {
-//       printf("[%d]\tindex array NULL\n", i);
-//     }
-//   }
-//   printf("Number of objects %d\n", index_array);
-//   return p_index;
-// }
+
 /**
  * @brief Verify if the start and end value are the same
  *
