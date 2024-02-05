@@ -27,4 +27,5 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
 int free_array_of_lines(char **lines_allocated, int number_of_lines);
 int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize);
 int analize_line(char *line);
+char *status_message(int error);
 #endif // !PARSER_H
