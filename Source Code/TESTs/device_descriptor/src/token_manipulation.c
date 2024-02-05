@@ -58,10 +58,13 @@ int verify_object(lines_tokenize *token_file, object_index index) {
  *  - -1 Word not found
  */
 int search_for_word(line_token *token_file, const char *parameter, int index) {
+  if (token_file == NULL) {
+    return -1;
+  }
   if (strcmp(parameter, token_file->parameter) == 0) {
-    #ifdef DEBUG
+#ifdef DEBUG
     printf("Word: [%s] with [%s] value, found at index:%d\n", token_file->parameter, token_file->value, index);
-    #endif /* ifdef DEBUG */
+#endif /* ifdef DEBUG */
     return 0;
   } else {
     return -1;
@@ -75,12 +78,15 @@ int search_for_word(line_token *token_file, const char *parameter, int index) {
  *
  * @return #TODO check if line_token is not NULL
  */
-int print_contents_of_n_object(line_token **token_file, object_index content_index) {
-  printf("Contents of the [%s] object\n", token_file[content_index.start]->value);
-  for (int i = content_index.start + 1; i <= content_index.end - 1; i++) {
-    printf("Parameter:[%s],Value:[%s]\n", token_file[i]->parameter, token_file[i]->value);
+void print_contents_of_n_object(lines_tokenize *token_file, object_index *content_index) {
+  if (content_index!= NULL) {
+  if (content_index->end < token_file->number_of_correct_tokens) {
+    printf("Contents of the [%s] object\n", token_file->all_tokens[content_index->start]->value);
+    for (int i = content_index->start + 1; i <= content_index->end - 1; i++) {
+      printf("Parameter:[%s],Value:[%s]\n", token_file->all_tokens[i]->parameter, token_file->all_tokens[i]->value);
+    }
   }
-  return 0;
+  }
 }
 /**
  * @brief Search for each object sequentally
@@ -98,7 +104,7 @@ object_index *find_object(lines_tokenize *token_line, int start_index) {
   if (object_result == 0) {
     return p_index;
   } else {
-    fprintf(stderr, "ERROR:%s\n",token_error(object_result));
+    fprintf(stderr, "ERROR:%s\n", token_error(object_result));
     free(p_index);
     return NULL;
   }
