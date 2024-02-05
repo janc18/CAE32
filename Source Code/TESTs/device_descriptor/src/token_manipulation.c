@@ -79,24 +79,23 @@ int search_for_word(line_token *token_file, const char *parameter, int index) {
  * @return void
  */
 void print_contents_of_n_object(lines_tokenize *token_file, object_index *content_index) {
-  if (content_index!= NULL) {
-  if (content_index->end < token_file->number_of_correct_tokens) {
-    printf("Contents of the [%s] object\n", token_file->all_tokens[content_index->start]->value);
-    for (int i = content_index->start + 1; i <= content_index->end - 1; i++) {
-      printf("Parameter:[%s],Value:[%s]\n", token_file->all_tokens[i]->parameter, token_file->all_tokens[i]->value);
+  if (content_index != NULL) {
+    if (content_index->end < token_file->number_of_correct_tokens) {
+      printf("Contents of the [%s] object\n", token_file->all_tokens[content_index->start]->value);
+      for (int i = content_index->start + 1; i <= content_index->end - 1; i++) {
+        printf("Parameter:[%s],Value:[%s]\n", token_file->all_tokens[i]->parameter, token_file->all_tokens[i]->value);
+      }
     }
-  }
   }
 }
 /**
  * @brief Find an object starting with the start index
- * 
+ *
  * @param *lines_tokenize A struct with all the tokens of a given input file
  * @param int Start index
  *
  * @return *object_index or NULL if can't find any object
  */
-
 object_index *find_object(lines_tokenize *token_line, int start_index) {
   object_index *p_index = search_start_and_end_index(token_line, start_index);
   int object_result = verify_object(token_line, *p_index);
@@ -121,6 +120,30 @@ char *token_error(int error_result) {
   }
   return "";
 }
+
+/**
+ * @brief Find number of objects
+ * @param *lines_tokenize Struct with all the tokens of a given file
+ *
+ * @return int Number of objects
+ */
+int find_number_of_objects(lines_tokenize *token_file) {
+  int number_of_objects = 0;
+  object_index *cursor = NULL;
+  cursor = find_object(token_file, 0);
+  if (cursor != NULL) {
+    number_of_objects++;
+  } else {
+    free(cursor);
+    return -1;
+  }
+  while (cursor->end < (token_file->number_of_correct_tokens - 1) && cursor != NULL) {
+    number_of_objects++;
+    cursor = find_object(token_file, cursor->end);
+  }
+  free(cursor);
+  return number_of_objects;
+}
 /**
  * @brief Search for the start and End Parameter
  *
@@ -135,8 +158,8 @@ char *token_error(int error_result) {
  * This it the same object
  *
  * @param *lines_tokenize Pointer struct with all the tokens
- * @param int index to start to search an object 
- * @return 
+ * @param int index to start to search an object
+ * @return
  *  - *object_index Allocated Pointer struct with start and end index of an object
  *  - NULL if didn't find any object
  */
