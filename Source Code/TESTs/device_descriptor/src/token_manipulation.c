@@ -4,21 +4,22 @@
  * @brief Get objects from tokens previously proceded
  *
  * - Build objects gived by an struct with each line tokenize
- *   and saved to compare to the device descriptor and check if work as 
+ *   and saved to compare to the device descriptor and check if work as
  *   is supossed
  *
  */
 
 #include "token_manipulation.h"
 #include "parser.h"
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 
 const int max_number_objects = 10;
 
+enum TOKENS_ERRORS { OUTSIDE_ARRAY = 1, NOT_THE_SAME };
 /**
  * @brief Verify if the start and end value are the same
  *
@@ -27,17 +28,21 @@ const int max_number_objects = 10;
  *
  * @return int
  *  - 0 if the values objects are the same
- *  - -1 if the values are not the same
+ *  - 1 if is trying to access outide of the token array
+ *  - 2 if the values are not the same
  */
-int verify_object(line_token **token_file, object_index index) {
-  if (strcmp(token_file[index.start]->value, token_file[index.end]->value) == 0) {
+int verify_object(lines_tokenize *token_file, object_index index) {
+  if (index.start > token_file->number_of_correct_tokens) {
+    return 1;
+  } else if (strcmp(token_file->all_tokens[index.start]->value, token_file->all_tokens[index.end]->value) == 0) {
 #ifdef DEBUG
     printf("Are the same object\n");
 #endif /* ifdef DEBUG */
     return 0;
   } else {
-    fprintf(stderr,"index.start:%s,index.end:%s\tAre not the same\n", token_file[index.start]->value, token_file[index.end]->value);
-    return -1;
+    fprintf(stderr, "index.start:%s,index.end:%s\tAre not the same\n", token_file->all_tokens[index.start]->value,
+            token_file->all_tokens[index.end]->value);
+    return 2;
   }
 }
 
@@ -54,9 +59,9 @@ int verify_object(line_token **token_file, object_index index) {
  */
 int search_for_word(line_token *token_file, const char *parameter, int index) {
   if (strcmp(parameter, token_file->parameter) == 0) {
-#ifdef DEBUG
+    #ifdef DEBUG
     printf("Word: [%s] with [%s] value, found at index:%d\n", token_file->parameter, token_file->value, index);
-#endif /* ifdef DEBUG */
+    #endif /* ifdef DEBUG */
     return 0;
   } else {
     return -1;
@@ -87,43 +92,57 @@ int print_contents_of_n_object(line_token **token_file, object_index content_ind
  * @return object_index Struct loaded with the start and end index of an object or NULL
  * if did't find anyone
  */
-object_index *find_object(lines_tokenize *token_line,int start_index) {
-  object_index *p_index=search_start_and_end_index(token_line,start_index);
-  if (verify_object(token_line->all_tokens, *p_index) == 0) {
+object_index *find_object(lines_tokenize *token_line, int start_index) {
+  object_index *p_index = search_start_and_end_index(token_line, start_index);
+  int object_result = verify_object(token_line, *p_index);
+  if (object_result == 0) {
     return p_index;
   } else {
-    fprintf(stderr,"ERROR: Tokens values are not the same\n");
+    fprintf(stderr, "ERROR:%s\n",token_error(object_result));
     free(p_index);
     return NULL;
   }
+  return NULL;
+}
+
+char *token_error(int error_result) {
+  switch (error_result) {
+  case OUTSIDE_ARRAY:
+    return "Trying to read token outside array";
+    break;
+  case NOT_THE_SAME:
+    return "Tokens values are not the same";
+    break;
+  }
+  return "";
 }
 /**
  * @brief Search for the start and End Parameter
- * 
- * Get the start and end index of the given lines_tokenize struct 
+ *
+ * Get the start and end index of the given lines_tokenize struct
  * not compare if it is the same object.
- * Example: 
+ * Example:
  *
  * Start: CAE32
  * ..n characteristics
  * End: CAE32
- * ^^^^^^^^^^^^^^^^^^^ 
+ * ^^^^^^^^^^^^^^^^^^^
  * This it the same object
  *
  * @param *lines_tokenize Pointer struct with all the tokens
  * @return *object_index Allocated Pointer struct with start and end index
  */
 
-object_index *search_start_and_end_index(lines_tokenize *token_line,int start_index){
-  object_index *index=malloc(sizeof(object_index)); //Saving space for one struct
-  while (start_index <= token_line->number_of_lines) {
+object_index *search_start_and_end_index(lines_tokenize *token_line, int start_index) {
+  object_index *index = malloc(sizeof(object_index)); // Saving space for one struct
+  while (start_index <= token_line->number_of_correct_tokens) {
     if (search_for_word(token_line->all_tokens[start_index], "Start", start_index) == 0) { // start found
       index->start = start_index;
       break;
     }
     start_index++;
   }
-  while (start_index <= token_line->number_of_lines) {
+  while (start_index <= token_line->number_of_correct_tokens) {
     if (search_for_word(token_line->all_tokens[start_index], "End", start_index) == 0) { // END found
       index->end = start_index;
       break;
@@ -132,7 +151,6 @@ object_index *search_start_and_end_index(lines_tokenize *token_line,int start_in
   }
   return index;
 }
-
 
 /**
  * @brief Free Memory for any objects created
