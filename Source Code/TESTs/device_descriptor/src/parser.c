@@ -322,7 +322,7 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
 
   lines_tokenize *p_string_tokenize = malloc((sizeof(line_token) * token_with_correct_syntax) + sizeof(int));
 
-  p_string_tokenize->number_of_lines = token_with_correct_syntax;
+  p_string_tokenize->number_of_correct_tokens= token_with_correct_syntax;
   p_string_tokenize->all_tokens = p_array_of_lines_tokenize;
 
   return p_string_tokenize;
@@ -355,7 +355,7 @@ int free_array_of_lines(char **lines_allocated, int number_of_lines) {
  */
 int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize) {
   if (p_lines_tokenize != NULL) {
-    for (int i = 0; i < p_lines_tokenize->number_of_lines; i++) {
+    for (int i = 0; i < p_lines_tokenize->number_of_correct_tokens; i++) {
       if (p_lines_tokenize->all_tokens[i] == NULL)
         return -1;
       free_line_token(p_lines_tokenize->all_tokens[i]);
