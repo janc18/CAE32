@@ -18,6 +18,8 @@
 const char Keywords[][30] = {"Start",   "End", "Size_bits", "Logical_Minimum", "Logical_Maximum", "Physical_Minumum", "Physical_Maximum",
                              "Buttons", "Axis"};
 
+enum LINE_ERRORS { UNKNOWN_ERROR = -1, EMPTY_LINE = 1 };
+
 /**
  * @brief Convert input file to an string
  *
@@ -125,7 +127,6 @@ line_token *get_line_tokens(char *line) {
  */
 int free_line_token(line_token *tokens) {
   if (tokens == NULL) {
-    fprintf(stderr, "WARNING: Trying to free a line_token struct that already is NULL\n");
     return -1;
   } else {
     free(tokens->value);
@@ -312,8 +313,8 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
       token_with_correct_syntax++;
       // #TODO check if its an empty line, if isn't, return null
     } else {
-      fprintf(stderr, "ERROR: in string:[%s], at line %d\t", array_of_strings[i], i);
-      analize_line(array_of_strings[i]);
+      int error = analize_line(array_of_strings[i]);
+      fprintf(stderr, "DEBUG: At line\t%d\t, is %s\n", i + 1, status_message(error));
       free_line_token(array_of_lines_tokenize[i]);
       continue;
     }
@@ -368,7 +369,16 @@ int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize) {
 }
 int analize_line(char *line) {
   if (strcmp("", line) == 0) {
-    fprintf(stderr, "Empty line\n");
+    return EMPTY_LINE;
   }
   return 0;
+}
+
+char *status_message(int error) {
+  switch (error) {
+  case EMPTY_LINE: {
+    return "Empty line";
+  }
+  }
+  return "";
 }
