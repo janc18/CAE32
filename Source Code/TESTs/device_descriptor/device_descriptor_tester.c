@@ -32,26 +32,13 @@ int main(int argc, char *argv[]) {
   array_of_objects = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
 
   // Alocating memory for all the objects indexes
+  
   int number_of_correct_objects = find_number_of_objects(array_of_objects);
   object_index **all_objects_indexes = NULL;
-  if (number_of_correct_objects != -1) {
-    all_objects_indexes = calloc(sizeof(object_index), number_of_correct_objects);
-    all_objects_indexes[0] = find_object(array_of_objects, 0);
-    for (int i = 1; i < number_of_correct_objects; i++) {
-      all_objects_indexes[i] = find_object(array_of_objects, all_objects_indexes[i - 1]->end);
-    }
-  } else {
-    fprintf(stderr, "ERROR: Don't found any objects\n");
-  }
+  all_objects_indexes=get_all_objects(array_of_objects);
+  print_all_the_objects(all_objects_indexes,array_of_objects,number_of_correct_objects);
 
-  for (int i = 0; i < number_of_correct_objects; i++) {
-    print_contents_of_n_object(array_of_objects, all_objects_indexes[i]);
-  }
-  for (int i = 0; i < number_of_correct_objects; i++) {
-  free(all_objects_indexes[i]);
-  }
-  free(all_objects_indexes);
-  // 
+  free_get_all_object(all_objects_indexes,number_of_correct_objects);
   free_array_of_lines(array_of_strings, number_of_lines);
   free_line_tokenize_struct(array_of_objects);
   free(contents_file);
