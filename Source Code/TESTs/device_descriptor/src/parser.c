@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-const char Keywords[][30] = {"Start",   "End", "Size_bits", "Logical_Minimum", "Logical_Maximum", "Physical_Minumum", "Physical_Maximum",
+const char Keywords[7][30] = {"Size_bits", "Logical_Minimum", "Logical_Maximum", "Physical_Minumum", "Physical_Maximum",
                              "Buttons", "Axis"};
 
 enum LINE_ERRORS { UNKNOWN_ERROR = -1, EMPTY_LINE = 1 };
@@ -322,7 +322,7 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
 
   lines_tokenize *p_string_tokenize = malloc((sizeof(line_token) * token_with_correct_syntax) + sizeof(int));
 
-  p_string_tokenize->number_of_correct_tokens= token_with_correct_syntax;
+  p_string_tokenize->number_of_correct_tokens = token_with_correct_syntax;
   p_string_tokenize->all_tokens = p_array_of_lines_tokenize;
 
   return p_string_tokenize;
