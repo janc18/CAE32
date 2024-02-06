@@ -21,4 +21,6 @@ int find_number_of_objects(lines_tokenize *token_file);
 // Token verication
 int verify_parameters_of_object(lines_tokenize *token_file, object_index *object);
 int verify_parameters_of_all_objects(lines_tokenize *token_file, object_index **objects, int number_of_correct_objects);
+// Misc functions
+void print_colors(int color);
 #endif // !TOKEN_MANIPULATION_H
