@@ -18,4 +18,7 @@ void print_contents_of_n_object(lines_tokenize *token_file, object_index *conten
 int search_for_word(line_token *token_file, const char *parameter, int index);
 char *token_error(int error_result);
 int find_number_of_objects(lines_tokenize *token_file);
+// Token verication
+int verify_parameters_of_object(lines_tokenize *token_file, object_index *object);
+int verify_parameters_of_all_objects(lines_tokenize *token_file, object_index **objects, int number_of_correct_objects);
 #endif // !TOKEN_MANIPULATION_H
