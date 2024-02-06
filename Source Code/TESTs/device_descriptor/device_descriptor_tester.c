@@ -36,8 +36,11 @@ int main(int argc, char *argv[]) {
   object_index **all_objects_indexes = NULL;
   all_objects_indexes = get_all_objects(array_of_objects);
 
-  // Parameter oObjects verification
-  verify_parameters_of_all_objects(array_of_objects, all_objects_indexes, number_of_correct_objects);
+  // Parameter Objects verification
+  int result_object=verify_parameters_of_all_objects(array_of_objects, all_objects_indexes, number_of_correct_objects);
+  
+  if(result_object==0)
+    print_all_the_objects(all_objects_indexes, array_of_objects, number_of_correct_objects);
 
   free_get_all_object(all_objects_indexes, number_of_correct_objects);
   free_array_of_lines(array_of_strings, number_of_lines);
