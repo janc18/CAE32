@@ -19,7 +19,7 @@
 
 const int MAX_NUMBER_OBJECTS = 10;
 
-enum TOKENS_ERRORS { OUTSIDE_ARRAY = 1, NOT_THE_SAME };
+enum TOKENS_ERRORS { OUTSIDE_ARRAY = 1, NOT_THE_SAME, NULL_INPUT_VALUE };
 /**
  * @brief Verify if the start and end value are the same
  *
@@ -243,6 +243,56 @@ int free_memory_object(object_index **objects) {
       } else {
         break;
       }
+    }
+  }
+  return 0;
+}
+/**
+ * @brief Check if an object have correct Keywords
+ *
+ * @param *lines_tokenize Struct with all the lines as tokens
+ * @param *object_index Array of objects structs
+ *
+ * @return 
+ *   - 0 Correct object
+ *   - 1 Unknown paramater
+ *   - 3 NULL_INPUT_VALUE
+ * 
+ */
+int verify_parameters_of_object(lines_tokenize *token_file, object_index *object) {
+  if (token_file == NULL || object == NULL) {
+    return NULL_INPUT_VALUE;
+  }
+  int number_of_keywords = sizeof(Keywords) / sizeof(Keywords[0]);
+  bool word_found = false;
+
+  for (int j = (object->start + 1); j < object->end; j++) { // jumping the "start" paramater(object->start + 1);
+    word_found = false;
+    for (int i = 0; i < number_of_keywords; i++) {
+      if (strcmp(Keywords[i], token_file->all_tokens[j]->parameter) == 0) { // Parameter found
+        word_found = true;
+        break;
+      }
+    }
+    if (!word_found) {
+      fprintf(stderr, "ERROR: Unknown parameter [%s]\n", token_file->all_tokens[j]->parameter);
+      return 1;
+    }
+  }
+  return 0;
+}
+
+/**
+  * @brief 
+  *
+  */
+
+int verify_parameters_of_all_objects(lines_tokenize *token_file, object_index **objects, int number_of_correct_objects) {
+  for (int i = 0; i < number_of_correct_objects; i++) {
+    int result_objects = verify_parameters_of_object(token_file, objects[i]);
+    if (result_objects != 0) {
+      fprintf(stderr, "ERROR: In object %d with the name of %s\n", i, token_file->all_tokens[objects[i]->start]->value);
+      return 1;
     }
   }
   return 0;
