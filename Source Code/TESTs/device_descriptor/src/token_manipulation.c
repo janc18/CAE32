@@ -20,6 +20,13 @@
 const int MAX_NUMBER_OBJECTS = 10;
 
 enum TOKENS_ERRORS { OUTSIDE_ARRAY = 1, NOT_THE_SAME, NULL_INPUT_VALUE };
+
+enum COLORS {
+  RESET,
+  BLUE,
+  PURPLE,
+  GREEN,
+};
 /**
  * @brief Verify if the start and end value are the same
  *
@@ -79,8 +86,36 @@ int free_get_all_object(object_index **all_objects_indexes, int number_of_correc
 }
 
 void print_all_the_objects(object_index **all_objects_indexes, lines_tokenize *token_file, int number_of_correct_objects) {
+  print_colors(BLUE);
+  printf("======This are the next devices to search in the Kernel======\n\n");
   for (int i = 0; i < number_of_correct_objects; i++) {
+    print_colors(PURPLE);
+    printf("-----------Device %d information----------\n", i + 1);
+    print_colors(GREEN);
     print_contents_of_n_object(token_file, all_objects_indexes[i]);
+    print_colors(PURPLE);
+    printf("------------------------------------------\n\n");
+    print_colors(RESET);
+  }
+}
+
+void print_colors(int color) {
+  switch (color) {
+  case RESET:
+    printf("\033[0m");
+    break;
+  case BLUE:
+    printf("\033[1;36m");
+    break;
+  case PURPLE:
+    printf("\033[1;34m");
+    break;
+  case GREEN:
+    printf("\033[1;32m");
+    break;
+  default:
+    printf("\033[0m");
+    break;
   }
 }
 
