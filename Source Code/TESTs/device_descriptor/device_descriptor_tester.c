@@ -32,13 +32,14 @@ int main(int argc, char *argv[]) {
   array_of_objects = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
 
   // Alocating memory for all the objects indexes
-  
   int number_of_correct_objects = find_number_of_objects(array_of_objects);
   object_index **all_objects_indexes = NULL;
-  all_objects_indexes=get_all_objects(array_of_objects);
-  print_all_the_objects(all_objects_indexes,array_of_objects,number_of_correct_objects);
+  all_objects_indexes = get_all_objects(array_of_objects);
 
-  free_get_all_object(all_objects_indexes,number_of_correct_objects);
+  // Parameter oObjects verification
+  verify_parameters_of_all_objects(array_of_objects, all_objects_indexes, number_of_correct_objects);
+
+  free_get_all_object(all_objects_indexes, number_of_correct_objects);
   free_array_of_lines(array_of_strings, number_of_lines);
   free_line_tokenize_struct(array_of_objects);
   free(contents_file);
