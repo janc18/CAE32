@@ -251,13 +251,13 @@ int free_memory_object(object_index **objects) {
  * @brief Check if an object have correct Keywords
  *
  * @param *lines_tokenize Struct with all the lines as tokens
- * @param *object_index Array of objects structs
+ * @param *object_index Structs with the start and end index
  *
- * @return 
+ * @return
  *   - 0 Correct object
  *   - 1 Unknown paramater
  *   - 3 NULL_INPUT_VALUE
- * 
+ *
  */
 int verify_parameters_of_object(lines_tokenize *token_file, object_index *object) {
   if (token_file == NULL || object == NULL) {
@@ -283,9 +283,16 @@ int verify_parameters_of_object(lines_tokenize *token_file, object_index *object
 }
 
 /**
-  * @brief 
-  *
-  */
+ * @brief Verify all the parameter of a object_index array
+ *
+ * @param *lines_tokenize Struct with all the lines as tokens
+ * @param **object_index Array of objects structs
+ * @param int number of correct_objects
+ *
+ * @return
+ *    - 0 all the objects are correct
+ *    - 1 Some object is incorrect
+ */
 
 int verify_parameters_of_all_objects(lines_tokenize *token_file, object_index **objects, int number_of_correct_objects) {
   for (int i = 0; i < number_of_correct_objects; i++) {
