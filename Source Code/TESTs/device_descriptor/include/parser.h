@@ -1,7 +1,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-extern const char Keywords[][30];
+extern const char Keywords[7][30];
 typedef struct line_token {
   char *parameter;
   char *value;
