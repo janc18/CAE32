@@ -11,10 +11,13 @@
  */
 
 #include "parser.h"
+#include "read_file_descriptor.h"
 #include "token_manipulation.h"
+#include <libudev.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 int main(int argc, char *argv[]) {
   char *contents_file = file_to_string(argv[1]);
   if (contents_file == NULL) {
@@ -25,8 +28,23 @@ int main(int argc, char *argv[]) {
   int number_of_lines = 0;
   lines_tokenize *array_of_objects;
   char **array_of_strings;
+  // udev
+  struct udev *udev;
+  struct udev_enumerate *enumerate;
+  struct udev_list_entry *devices, *dev_list_entry;
 
-  // Getting raw tokens
+  // Crear el contexto de udev
+  udev = udev_new();
+  if (!udev) {
+    printf("Error al crear el contexto de udev\n");
+    return 1;
+  }
+
+  enumerate_block_devices(udev);
+
+  udev_unref(udev);
+  // udev
+  //  Getting raw tokens
   number_of_lines = find_number_of_lines(contents_file);
   array_of_strings = get_array_of_strings(contents_file);
   array_of_objects = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
@@ -37,10 +55,12 @@ int main(int argc, char *argv[]) {
   all_objects_indexes = get_all_objects(array_of_objects);
 
   // Parameter Objects verification
-  int result_object=verify_parameters_of_all_objects(array_of_objects, all_objects_indexes, number_of_correct_objects);
-  
-  if(result_object==0)
+  int result_object = verify_parameters_of_all_objects(array_of_objects, all_objects_indexes, number_of_correct_objects);
+
+  if (result_object == 0)
     print_all_the_objects(all_objects_indexes, array_of_objects, number_of_correct_objects);
+
+  // Testing file descriptor operations
 
   free_get_all_object(all_objects_indexes, number_of_correct_objects);
   free_array_of_lines(array_of_strings, number_of_lines);
