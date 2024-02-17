@@ -333,7 +333,7 @@ int verify_parameters_of_all_objects(lines_tokenize *token_file, object_index **
   for (int i = 0; i < number_of_correct_objects; i++) {
     int result_objects = verify_parameters_of_object(token_file, objects[i]);
     if (result_objects != 0) {
-      fprintf(stderr, "ERROR: In object %d with the name of %s\n", i, token_file->all_tokens[objects[i]->start]->value);
+      fprintf(stderr, "ERROR: In object %d with the name of %s\n", i + 1, token_file->all_tokens[objects[i]->start]->value);
       return 1;
     }
   }
