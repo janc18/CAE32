@@ -8,8 +8,7 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
-#include "device_descriptor.h"
-static unsigned char rdesc0[] = {0x05, 0x02, 0x09, 0x02, 0xa1, 0x01, 0x85, 0x01, 0xc0};
+#include "device_desc_pedals.h"
 static int uhid_write(int fd, const struct uhid_event *ev) {
   ssize_t ret;
 
@@ -31,10 +30,10 @@ static int create(int fd) {
   memset(&ev, 0, sizeof(ev));
   ev.type = UHID_CREATE2;
   strcpy((char *)ev.u.create2.name, "Steering Wheel CAE32");
-  // ev.u.create.rd_data = rdesc;
-  // ev.u.create2.rd_data[sizeof(rdesc)];
-  memcpy(ev.u.create2.rd_data, rdesc, sizeof(rdesc));
-  ev.u.create2.rd_size = sizeof(rdesc);
+  // ev.u.create.rd_data = Pedals_descriptor;
+  // ev.u.create2.rd_data[sizeof(Pedals_descriptor)];
+  memcpy(ev.u.create2.rd_data, Pedals_descriptor, sizeof(Pedals_descriptor));
+  ev.u.create2.rd_size = sizeof(Pedals_descriptor);
   ev.u.create2.bus = BUS_USB;
   ev.u.create2.vendor = 0x15d9;
   ev.u.create2.product = 0x0a37;
@@ -64,7 +63,7 @@ static void handle_output(struct uhid_event *ev) {
   /* led reports have length 2 bytes */
   if (ev->u.output.size != 2)
     return;
-  /* first byte is report-id which is 0x02 for leds in our rdesc */
+  /* first byte is report-id which is 0x02 for leds in our Pedals_descriptor */
   if (ev->u.output.data[0] != 0x2)
     return;
 
