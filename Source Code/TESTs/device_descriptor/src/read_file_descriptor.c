@@ -54,7 +54,7 @@ void enumerate_block_devices(struct udev *udev) {
   }
 
   // Enumerar los dispositivos de bloque
-  udev_enumerate_add_match_subsystem(enumerate, "usb");
+  udev_enumerate_add_match_subsystem(enumerate, "hid");
   udev_enumerate_scan_devices(enumerate);
   devices = udev_enumerate_get_list_entry(enumerate);
 
@@ -71,7 +71,7 @@ void enumerate_block_devices(struct udev *udev) {
     if (model_name) {
       printf("Nombre del modelo del dispositivo USB: %s\n", model_name);
     } else {
-      printf("No se encontró el nombre del modelo del dispositivo USB\n");
+      printf("No se encontró en este path %s \n",path);
     }
 
     // Liberar la memoria utilizada por el objeto de dispositivo
