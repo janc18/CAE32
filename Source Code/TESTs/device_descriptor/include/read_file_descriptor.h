@@ -1,6 +1,8 @@
 #ifndef READ_FILE_DESCRIPTOR
 #define READ_FILE_DESCRIPTOR
-#include <libudev.h>
-void read_hidraw_devices(int max_number_of_devices);
-void enumerate_block_devices(struct udev *udev);
+#include <stdbool.h>
+bool exist_in_array(unsigned char value, unsigned char array_to_compare[], int array_size);
+char *generate_hid_path(char *path, int number_device);
+int get_fd(char *path_device, char *compare_device_name);
+bool search_device(char *path_device, int *fd);
 #endif
