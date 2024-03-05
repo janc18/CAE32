@@ -49,7 +49,7 @@ bool exist_in_array(unsigned char value, unsigned char array_to_compare[], int a
 }
 
 /**
- * @brief Generate an allocated string with the hid path 
+ * @brief Generate an allocated string with the hid path
  *
  * @param char* Hid path to be concatenate
  * @param int Number to concatenate with the hid path
@@ -61,6 +61,10 @@ bool exist_in_array(unsigned char value, unsigned char array_to_compare[], int a
  * @return char* Allocated string with the hid pad generated
  */
 char *generate_hid_path(char *path, int number_device) {
+  if (path == NULL) {
+    fprintf(stderr, "ERROR: Path paramater NULL\n");
+    return NULL;
+  }
   int buffersize = 30;
   char *p_buffer = malloc(buffersize * sizeof(char));
   snprintf(p_buffer, buffersize, "%s%d", path, number_device);
@@ -73,12 +77,17 @@ char *generate_hid_path(char *path, int number_device) {
  * @param char* Hid path, Example(/dev/hidraw1)
  * @param char* Device name to be compared with the hid device name
  *
- * @return int 
+ * @return int
  *  -1 Unable to open device or an error occour when getting the name
  *  -2 Compared name it's the correct one
+ *  -3 Parameters NULLs
  *  >0 If it was find, return the actual file descriptor number
  */
 int get_fd(char *path_device, char *compare_device_name) {
+  if (path_device == NULL || compare_device_name == NULL) {
+    fprintf(stderr, "ERROR: Path device or compare device name is NULL\n");
+    return -3;
+  }
   int fd, res;
   char buffer[50] = {0};
 
@@ -110,16 +119,19 @@ int get_fd(char *path_device, char *compare_device_name) {
   return -1;
 }
 
-
 /**
  * @brief Search in all hid device connected for the given device name
  *
  * @param char* Hid path, Example(/dev/hidraw1)
  * @param int* File descriptor number
  *
- * @return bool true when it's found or false if din't
- */ 
+ * @return bool true when it's found or false if didn't or path_device is null
+ */
 bool search_device(char *path_device, int *fd) {
+  if (path_device == NULL) {
+    fprintf(stderr, "ERROR: Path device is NULL");
+    return false;
+  }
   char *newpath;
   int iteration = 0;
   *fd = 0;
