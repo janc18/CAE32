@@ -97,6 +97,7 @@ void print_all_the_objects(object_index **all_objects_indexes, lines_tokenize *t
     printf("------------------------------------------\n\n");
     print_colors(RESET);
   }
+  print_colors(RESET);
 }
 
 void print_colors(int color) {
