@@ -11,12 +11,15 @@
  */
 
 #include "struct_manipulation.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
   devices_handle *devices;
-  devices=get_all_information_from_device_c_32(argv[1]);
+  devices = get_all_information_from_device_c_32(argv[1]);
+  char *buttons = get_feature_value_from_device_c32_file(1, devices, "Buttons");
+  if (buttons != NULL)
+    printf("Quantity of buttons %s\n", buttons);
   free_all_memory(devices);
   return EXIT_SUCCESS;
 }
-// Check how to read joystick devices
