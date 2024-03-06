@@ -10,50 +10,13 @@
  * - it require an input file to automate a little bit the test process
  */
 
-#include "parser.h"
-#include "read_file_descriptor.h"
-#include "token_manipulation.h"
-#include <libudev.h>
-#include <stdio.h>
+#include "struct_manipulation.h"
 #include <stdlib.h>
-#include <string.h>
 
 int main(int argc, char *argv[]) {
-  char *contents_file = file_to_string(argv[1]);
-  if (contents_file == NULL) {
-    printf("ERROR: At open file\n");
-    return EXIT_FAILURE;
-  }
-  // Variable declaration
-  int number_of_lines = 0;
-  lines_tokenize *array_of_objects;
-  char **array_of_strings;
-
-  //  Getting raw tokens
-  number_of_lines = find_number_of_lines(contents_file);
-  array_of_strings = get_array_of_strings(contents_file);
-  array_of_objects = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
-
-  // Alocating memory for all the objects indexes
-  int number_of_correct_objects = find_number_of_objects(array_of_objects);
-  object_index **all_objects_indexes = NULL;
-  all_objects_indexes = get_all_objects(array_of_objects);
-
-  // Parameter Objects verification
-  int result_object = verify_parameters_of_all_objects(array_of_objects, all_objects_indexes, number_of_correct_objects);
-
-  if (result_object == 0)
-    print_all_the_objects(all_objects_indexes, array_of_objects, number_of_correct_objects);
-
-  // Testing file descriptor operations
-
-  int fd;
-  search_device(array_of_objects->all_tokens[all_objects_indexes[2]->start]->value, &fd);
-  // --
-  free_get_all_object(all_objects_indexes, number_of_correct_objects);
-  free_array_of_lines(array_of_strings, number_of_lines);
-  free_line_tokenize_struct(array_of_objects);
-  free(contents_file);
+  devices_handle *devices;
+  devices=get_all_information_from_device_c_32(argv[1]);
+  free_all_memory(devices);
   return EXIT_SUCCESS;
 }
 // Check how to read joystick devices
