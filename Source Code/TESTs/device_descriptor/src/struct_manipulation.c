@@ -92,6 +92,14 @@ char *get_feature_value_from_device_c32_file(int object_number, devices_handle *
       return devices->values_tokens->all_tokens[j]->value;
     }
   }
-  fprintf(stderr,"This object [%s] doesn't have that feature[%s]\n",devices->values_tokens->all_tokens[devices->indexes[object_number]->start]->value,feature);
+  fprintf(stderr, "This object [%s] doesn't have that feature[%s]\n",
+          devices->values_tokens->all_tokens[devices->indexes[object_number]->start]->value, feature);
+  return NULL;
+}
+
+char *get_object_name(int object_number, devices_handle *devices) {
+  if (object_number < devices->number_of_correct_objects)
+    return devices->values_tokens->all_tokens[devices->indexes[object_number]->start]->value;
+  fprintf(stderr, "Doesn't exist at object with that index:%d\n", object_number);
   return NULL;
 }
