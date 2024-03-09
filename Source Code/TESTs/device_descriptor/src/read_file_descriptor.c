@@ -108,6 +108,7 @@ int get_fd(char *path_device, char *compare_device_name) {
 
   if (strcmp(compare_device_name, buffer) != 0) {
     printf("Don't found at %s\n", path_device);
+    close(fd);
     return -2;
   }
 
@@ -146,4 +147,38 @@ bool search_device(char *path_device, int *fd) {
   }
   free(newpath);
   return false;
+}
+
+struct hidraw_report_descriptor *get_report_descriptor(char *path_device)  {
+  int fd;
+  int i, res, desc_size = 0;
+  char buf[256];
+  struct hidraw_report_descriptor *rpt_desc=malloc(sizeof(struct hidraw_report_descriptor));
+  fd = open(path_device, O_RDWR | O_NONBLOCK);
+  if (fd < 0) {
+    perror("Unable to open device");
+    free(rpt_desc);
+    return NULL;
+  }
+  memset(buf, 0x0, sizeof(buf));
+
+  /* Get Report Descriptor Size */
+  res = ioctl(fd, HIDIOCGRDESCSIZE, &desc_size);
+  if (res < 0){
+    perror("HIDIOCGRDESCSIZE");
+    free(rpt_desc);
+  }
+  else
+    printf("Report Descriptor Size: %d\n", desc_size);
+
+  /* Get Report Descriptor */
+  rpt_desc->size = desc_size;
+  res = ioctl(fd, HIDIOCGRDESC, rpt_desc);
+  if (res < 0) {
+    perror("HIDIOCGRDESC");
+    free(rpt_desc);
+  } else {
+    return rpt_desc;
+  }
+  return NULL;
 }
