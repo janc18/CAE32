@@ -66,7 +66,7 @@ char *generate_hid_path(char *path, int number_device) {
     return NULL;
   }
   int buffersize = 30;
-  char *p_buffer = malloc(buffersize * sizeof(char));
+  char *p_buffer = calloc(sizeof(char), buffersize);
   snprintf(p_buffer, buffersize, "%s%d", path, number_device);
   return p_buffer;
 }
@@ -88,14 +88,13 @@ int get_fd(char *path_device, char *compare_device_name) {
     fprintf(stderr, "ERROR: Path device or compare device name is NULL\n");
     return -3;
   }
-  int fd, res;
+  int fd, res = 0;
   char buffer[50] = {0};
 
   fd = open(path_device, O_RDWR | O_NONBLOCK);
 
   if (fd < 0) {
     perror("Unable to open device");
-    close(fd);
     return -1;
   }
 
@@ -113,7 +112,7 @@ int get_fd(char *path_device, char *compare_device_name) {
   }
 
   if (strcmp(compare_device_name, buffer) == 0) {
-    printf("Found %s device at %s with an fd at %d\n", compare_device_name, path_device, fd);
+    printf("Found %s device at %s\n", compare_device_name, path_device);
     close(fd);
     return fd;
   }
@@ -128,32 +127,31 @@ int get_fd(char *path_device, char *compare_device_name) {
  *
  * @return bool true when it's found or false if didn't or path_device is null
  */
-bool search_device(char *path_device, int *fd) {
+char *search_device(char *path_device) {
   if (path_device == NULL) {
-    fprintf(stderr, "ERROR: Path device is NULL");
-    return false;
+    fprintf(stderr, "ERROR: Path device is NULL\n");
+    return NULL;
   }
-  char *newpath;
-  int iteration = 0;
-  *fd = 0;
-  while (*fd != -1) {
-    newpath = generate_hid_path(hid_path, iteration);
-    *fd = get_fd(newpath, path_device);
-    if (*fd > 0) {
+  int device_number = 0, fd = 0;
+  while (fd != -1) {
+    char *newpath;
+    newpath = generate_hid_path(hid_path, device_number);
+    fd = get_fd(newpath, path_device);
+    if (fd > 0) {
+      return newpath;
+    } else {
       free(newpath);
-      return true;
     }
-    iteration++;
+    device_number++;
   }
-  free(newpath);
-  return false;
+  return NULL;
 }
 
-struct hidraw_report_descriptor *get_report_descriptor(char *path_device)  {
+struct hidraw_report_descriptor *get_report_descriptor(char *path_device) {
   int fd;
   int i, res, desc_size = 0;
   char buf[256];
-  struct hidraw_report_descriptor *rpt_desc=malloc(sizeof(struct hidraw_report_descriptor));
+  struct hidraw_report_descriptor *rpt_desc = malloc(sizeof(struct hidraw_report_descriptor));
   fd = open(path_device, O_RDWR | O_NONBLOCK);
   if (fd < 0) {
     perror("Unable to open device");
@@ -164,11 +162,10 @@ struct hidraw_report_descriptor *get_report_descriptor(char *path_device)  {
 
   /* Get Report Descriptor Size */
   res = ioctl(fd, HIDIOCGRDESCSIZE, &desc_size);
-  if (res < 0){
+  if (res < 0) {
     perror("HIDIOCGRDESCSIZE");
     free(rpt_desc);
-  }
-  else
+  } else
     printf("Report Descriptor Size: %d\n", desc_size);
 
   /* Get Report Descriptor */
