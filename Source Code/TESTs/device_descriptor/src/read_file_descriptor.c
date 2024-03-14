@@ -51,16 +51,16 @@ bool exist_in_array(unsigned char value, unsigned char array_to_compare[], int a
 /**
  * @brief Generate an allocated string with the hid path
  *
- * @param char* Hid path to be concatenate
- * @param int Number to concatenate with the hid path
+ * @param char* path to be concatenate
+ * @param int Number to concatenate with the path
  *
- * Example: /dev/hidraw 0
- *          ^^^^^^^^^^^ ^
- *          |         | |
- *          path         number
- * @return char* Allocated string with the hid pad generated
+ * Example: /dev/input/event 0
+ *          ^^^^^^^^^^^^^^^^ ^
+ *          |                |
+ *          path              number
+ * @return char* Allocated string with the path generated
  */
-char *generate_hid_path(char *path, int number_device) {
+char *generate_path(char *path, int number_device) {
   if (path == NULL) {
     fprintf(stderr, "ERROR: Path paramater NULL\n");
     return NULL;
@@ -135,7 +135,7 @@ char *search_device(char *path_device) {
   int device_number = 0, fd = 0;
   while (fd != -1) {
     char *newpath;
-    newpath = generate_hid_path(hid_path, device_number);
+    newpath = generate_path(hid_path, device_number);
     fd = get_fd(newpath, path_device);
     if (fd > 0) {
       return newpath;
@@ -148,11 +148,21 @@ char *search_device(char *path_device) {
 }
 
 struct hidraw_report_descriptor *get_report_descriptor(char *path_device) {
+  char *hid_path;
+
+  if (path_device != NULL) {
+    hid_path = search_device(path_device);
+  }
+
+  if (hid_path == NULL) {
+    return NULL;
+  }
+
   int fd;
   int i, res, desc_size = 0;
   char buf[256];
   struct hidraw_report_descriptor *rpt_desc = malloc(sizeof(struct hidraw_report_descriptor));
-  fd = open(path_device, O_RDWR | O_NONBLOCK);
+  fd = open(hid_path, O_RDWR | O_NONBLOCK);
   if (fd < 0) {
     perror("Unable to open device");
     free(rpt_desc);
@@ -165,9 +175,7 @@ struct hidraw_report_descriptor *get_report_descriptor(char *path_device) {
   if (res < 0) {
     perror("HIDIOCGRDESCSIZE");
     free(rpt_desc);
-  } else
-    printf("Report Descriptor Size: %d\n", desc_size);
-
+  }
   /* Get Report Descriptor */
   rpt_desc->size = desc_size;
   res = ioctl(fd, HIDIOCGRDESC, rpt_desc);
@@ -175,6 +183,7 @@ struct hidraw_report_descriptor *get_report_descriptor(char *path_device) {
     perror("HIDIOCGRDESC");
     free(rpt_desc);
   } else {
+    free(hid_path);
     return rpt_desc;
   }
   return NULL;
