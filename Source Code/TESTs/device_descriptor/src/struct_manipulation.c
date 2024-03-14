@@ -103,3 +103,11 @@ char *get_object_name(int object_number, devices_handle *devices) {
   fprintf(stderr, "Doesn't exist at object with that index:%d\n", object_number);
   return NULL;
 }
+
+void print_data(char *data2print) {
+  if (data2print != NULL) {
+    printf("%s\n", data2print);
+  } else {
+    fprintf(stderr, "ERROR: Getting feature description\n");
+  }
+}
