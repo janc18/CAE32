@@ -44,12 +44,14 @@ void read_events(char *path_event) {
   } while (rc == 1 || rc == 0 || rc == -EAGAIN);
 }
 
+
+
 char *get_event_path(char *name_to_compare) {
   printf("Searching the %s device\n", name_to_compare);
   if (name_to_compare == NULL)
     return NULL;
 
-  int fd; // Conditional jump or move depends on uninitialised value(s)
+  int fd; //Valgrind:Conditional jump or move depends on uninitialised value(s)
   int rc = 0;
   int iteration = 0;
   struct libevdev *dev = NULL;
@@ -63,9 +65,8 @@ char *get_event_path(char *name_to_compare) {
       return NULL;
     }
     if (strcmp(name_to_compare, libevdev_get_name(dev)) == 0) {
-      return event_path_generated;
       close(fd);
-      break;
+      return event_path_generated;
     }
     close(fd);
     free(event_path_generated);
