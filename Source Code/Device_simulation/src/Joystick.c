@@ -158,9 +158,7 @@ static int create(int fd) {
   memset(&ev, 0, sizeof(ev));
   ev.type = UHID_CREATE2;
   strcpy((char *)ev.u.create2.name, "CAE32 Steering Wheel");
-  // ev.u.create.rd_data = rdesc;
-  // ev.u.create2.rd_data[sizeof(rdesc)];
-  memcpy(ev.u.create2.rd_data, Pedals_descriptor, sizeof(Pedals_descriptor));
+  memcpy(ev.u.create2.rd_data,Pedals_descriptor, sizeof(Pedals_descriptor));
   ev.u.create2.rd_size = sizeof(Pedals_descriptor);
   ev.u.create2.bus = BUS_USB;
   ev.u.create2.vendor = 0x15d9;
