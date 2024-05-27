@@ -13,9 +13,11 @@ for cmd in cmake gcc make pkgconf; do
   fi 
 done
 
-# Checking if the gtk3 library is installed 
-if pkg-config --exist gtk+-3.0; then
-  echo -e "gtk3 \t\t \e[32mInstalled\e[0m"
-else
-  echo -e "gtk3 \t\t \e[31mNot installed\e[0m"
-fi
+# Checking if some library are installed with pkg-config 
+for pkg_cmd in gtk3+-3.0 libevdev-dev; do
+  if pkg-config --exist $pkg_cmd; then
+    echo -e "$pkg_cmd\t\e[31m Not installed\e[0m"
+  else
+    echo -e "$pkg_cmd\t\e[32m Installed\e[0m"
+  fi
+  done
