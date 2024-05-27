@@ -13,5 +13,9 @@ for cmd in cmake gcc make pkgconf; do
   fi 
 done
 
-#TODO if pkgconf is installed, check for the gtk+-3.0 library,
-#for some distros it can be pkg-config|
+# Checking if the gtk3 library is installed 
+if pkg-config --exist gtk+-3.0; then
+  echo -e "gtk3 \t\t \e[32mInstalled\e[0m"
+else
+  echo -e "gtk3 \t\t \e[31mNot installed\e[0m"
+fi
