@@ -10,7 +10,7 @@ GUI:
 
 Testing:
 	@echo "Creating build files for testing"
-	cmake -B ./TESTs/build ./TESTs/
+	cmake -B ./TESTs/device_descriptor/build ./TESTs/device_descriptor/
 
 build_gui:
 	@echo "Building GUI"
