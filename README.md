@@ -64,4 +64,19 @@ The interface is developed with the GTK 3 framework, which will allow configurat
   * SPI, I2C input (Custom sensor)
 * Firmware update
 
-**To compile the project, you can use the container or build it on your system (meeting the dependencies). Check the directory: Code -> Graphical_Interface**
+## How to compile the project
+
+1. Install all the dependencies
+```bash
+sudo apt install cmake make gcc pkgconf libevdev-dev libgtk-3-dev libgtk-3-0
+```
+
+2. Run the script to check if all the dependencies was successfully installed
+```bash
+./Source Code/checking_dependency.sh
+```
+3. Execute the Makefile to build the graphic interface and the unit tests
+```sh
+make -C Source\ Code/
+```
+
