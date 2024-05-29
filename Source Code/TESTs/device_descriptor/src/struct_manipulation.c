@@ -16,6 +16,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief Get all the information from input file
+ *
+ * Create a device handle with all the data gived by the input file
+ *
+ *  @param char* File path to *.c32
+ *  @return devices_handle* pointer On success, or NULL if an error occurs
+ */
 devices_handle *get_all_information_from_device_c_32(char *file_path) {
   // Saving file into a string
   devices_handle *p_devices = malloc(sizeof(devices_handle));
@@ -46,6 +54,13 @@ devices_handle *get_all_information_from_device_c_32(char *file_path) {
   return p_devices;
 }
 
+/**
+ * @Free all the memory
+ *
+ *  Deallocate memory from the devices_handle struct
+ *
+ *  @param *devices_handle
+ */
 void free_all_memory(devices_handle *p_devices) {
   if (p_devices != NULL) {
     free_get_all_object(p_devices->indexes, p_devices->number_of_correct_objects);
@@ -56,6 +71,15 @@ void free_all_memory(devices_handle *p_devices) {
   }
 }
 
+/**
+ * @Check if a feature is valid
+ *
+ *  Compare a feature name to Keywords array(found at parser.h)
+ *
+ *  @param *char feature name
+ *
+ *  @return bool True if the word is found or false otherway
+ */
 bool feature_name_is_valid(char *feature) {
 
   int number_of_keywords = sizeof(Keywords) / sizeof(Keywords[0]);
@@ -73,6 +97,15 @@ bool feature_name_is_valid(char *feature) {
   return false;
 }
 
+/**
+ * @Get the value from a feature in a given object
+ *
+ *  @param int Object number
+ *  @param *devices_handle
+ *  @char *feature
+ *
+ *  @return char* Value from the feature or NULL if an error occur
+ */
 char *get_feature_value_from_device_c32_file(int object_number, devices_handle *devices, char *feature) {
   if (feature == NULL) {
     fprintf(stderr, "ERROR: Feature parameter is NULL\n");
@@ -97,6 +130,14 @@ char *get_feature_value_from_device_c32_file(int object_number, devices_handle *
   return NULL;
 }
 
+/**
+ * @Get the object name
+ *
+ *  @param int object_number
+ *  @param *devices_handle
+ *
+ *  @return *char name of the object or NULL if doesn't exist
+ */
 char *get_object_name(int object_number, devices_handle *devices) {
   if (object_number < devices->number_of_correct_objects)
     return devices->values_tokens->all_tokens[devices->indexes[object_number]->start]->value;
@@ -104,6 +145,13 @@ char *get_object_name(int object_number, devices_handle *devices) {
   return NULL;
 }
 
+/**
+ * @Print string securely
+ *
+ *  Check if doesn't is NULL
+ *
+ *  @param char* string to print
+ */
 void print_data(char *data2print) {
   if (data2print != NULL) {
     printf("%s\n", data2print);
