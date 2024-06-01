@@ -7,8 +7,7 @@ Aquí tienes algunas pautas y recomendaciones para ayudarte a hacer contribucion
 
 ## Entorno de desarrollo
 
-Este proyecto esta probado en Debian Bullseye, aunque no debería de existir problemas de compatibilidad al **construir** los elementos(GUI y Firmware), ya que se usan
-contenedores Docker,sin embargo es posible que al ejecutar la GUI existan problemas, en dado caso crea un issue, siguiendo los pasos que muestran a continuación
+Este proyecto esta probado en Debian from Bullseye to Bookworm.
 
 ## Estilo de código
 
