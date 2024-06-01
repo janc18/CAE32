@@ -28,13 +28,15 @@ Los comentarios, nombres de variables y funciones deben estar escritos en Inglé
 
 Los reportes de problemas pueden redactarse tanto en Inglés como Español
 
-## Construcción de la interfaz gráfica y el firmware para el ESP32S3
+## Construcción de la interfaz gráfica, herramientas de automatizacion y test unitarios
 
-Recomendamos utilizar las imágenes de Docker proporcionadas para construir la interfaz gráfica y el firmware de ESP-IDF. 
-Puedes encontrar instrucciones detalladas en la guía de construcción disponible en el siguiente enlace:
+1. Instala las dependencias necesarias ejecutando el script que se encuentra en
+```./Source Code/checking_dependency.sh```
 
-[Guía para construir la GUI](./Codigo/Interfaz_grafica/README.md)
-[Guía para construir el firmware ESP-IDF](./Codigo/Firmware/Main_board_HID/ESP32-S3/)
+2. Si todas las dependencias ya fueron instaladas ejecuta 
+```bash
+make
+```
 
 ## Reporte de problemas
 
@@ -57,7 +59,7 @@ actualmente en el proyecto, ademas aquí puedes verlas agrupadas por [dificultad
 
 ## PCB
 
-El Sofware utilizado para crear la PCB es KiCAD 7
+El Sofware utilizado para crear la PCB es la version mas reciente de Kicad
 
 Al elegir los componentes, el número de parte se tiene que obtenerse de la pagina [LCSC](https://www.lcsc.com/)
 
