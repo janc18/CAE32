@@ -13,7 +13,7 @@
 
 char *event_path = "/dev/input/event";
 
-void read_events(char *path_event) {
+void readEvents(char *path_event) {
   
   if(path_event==NULL){
     return;
@@ -46,7 +46,7 @@ void read_events(char *path_event) {
 
 
 
-char *get_event_path(char *name_to_compare) {
+char *getEventPath(char *name_to_compare) {
   printf("Searching the %s device\n", name_to_compare);
   if (name_to_compare == NULL)
     return NULL;
@@ -57,7 +57,7 @@ char *get_event_path(char *name_to_compare) {
   struct libevdev *dev = NULL;
 
   while (fd > 0) {
-    char *event_path_generated = generate_path(event_path, iteration);
+    char *event_path_generated = generatePath(event_path, iteration);
     fd = open(event_path_generated, O_RDONLY | O_NONBLOCK);
     rc = libevdev_new_from_fd(fd, &dev);
     if (rc < 0) {

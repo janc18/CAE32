@@ -24,10 +24,10 @@
  *  @param char* File path to *.c32
  *  @return devices_handle* pointer On success, or NULL if an error occurs
  */
-devices_handle *get_all_information_from_device_c_32(char *file_path) {
+devices_handle *getAllInformationFromDeviceC32(char *file_path) {
   // Saving file into a string
   devices_handle *p_devices = malloc(sizeof(devices_handle));
-  p_devices->string_file = file_to_string(file_path);
+  p_devices->string_file = fileToString(file_path);
   if (p_devices->string_file == NULL) {
     printf("ERROR: At open file\n");
     free(p_devices);
@@ -35,21 +35,21 @@ devices_handle *get_all_information_from_device_c_32(char *file_path) {
   }
 
   //  Getting raw tokens
-  p_devices->number_of_lines = find_number_of_lines(p_devices->string_file);
-  p_devices->array_of_strings = get_array_of_strings(p_devices->string_file);
-  p_devices->values_tokens = get_array_of_tokens_from_an_string_array(p_devices->array_of_strings, p_devices->number_of_lines);
+  p_devices->number_of_lines = findNumberOfLines(p_devices->string_file);
+  p_devices->array_of_strings = getArrayOfStrings(p_devices->string_file);
+  p_devices->values_tokens = getArrayOfTokensFromAnStringArray(p_devices->array_of_strings, p_devices->number_of_lines);
 
   // Alocating memory for all the objects indexes
-  p_devices->number_of_correct_objects = find_number_of_objects(p_devices->values_tokens);
+  p_devices->number_of_correct_objects = findNumberOfObjects(p_devices->values_tokens);
   // object_index **all_objects_indexes==p_devices->indexes
   p_devices->indexes = NULL;
-  p_devices->indexes = get_all_objects(p_devices->values_tokens);
+  p_devices->indexes = getAllObjects(p_devices->values_tokens);
 
   // Parameter Objects verification
-  int result_object = verify_parameters_of_all_objects(p_devices->values_tokens, p_devices->indexes, p_devices->number_of_correct_objects);
+  int result_object = verifyParametersOfAllObjects(p_devices->values_tokens, p_devices->indexes, p_devices->number_of_correct_objects);
 
   if (result_object == 0)
-    print_all_the_objects(p_devices->indexes, p_devices->values_tokens, p_devices->number_of_correct_objects);
+    printAllTheObjects(p_devices->indexes, p_devices->values_tokens, p_devices->number_of_correct_objects);
 
   return p_devices;
 }
@@ -61,11 +61,11 @@ devices_handle *get_all_information_from_device_c_32(char *file_path) {
  *
  *  @param *devices_handle
  */
-void free_all_memory(devices_handle *p_devices) {
+void freeAllMemory(devices_handle *p_devices) {
   if (p_devices != NULL) {
-    free_get_all_object(p_devices->indexes, p_devices->number_of_correct_objects);
-    free_array_of_lines(p_devices->array_of_strings, p_devices->number_of_lines);
-    free_line_tokenize_struct(p_devices->values_tokens);
+    freeGetAllObject(p_devices->indexes, p_devices->number_of_correct_objects);
+    freeArrayOfLines(p_devices->array_of_strings, p_devices->number_of_lines);
+    freeLineTokenizeStruct(p_devices->values_tokens);
     free(p_devices->string_file);
     free(p_devices);
   }
@@ -80,7 +80,7 @@ void free_all_memory(devices_handle *p_devices) {
  *
  *  @return bool True if the word is found or false otherway
  */
-bool feature_name_is_valid(char *feature) {
+bool featureNameIsValid(char *feature) {
 
   int number_of_keywords = sizeof(Keywords) / sizeof(Keywords[0]);
   bool word_found = false;
@@ -106,7 +106,7 @@ bool feature_name_is_valid(char *feature) {
  *
  *  @return char* Value from the feature or NULL if an error occur
  */
-char *get_feature_value_from_device_c32_file(int object_number, devices_handle *devices, char *feature) {
+char *getFeatureValueFromDeviceC32(int object_number, devices_handle *devices, char *feature) {
   if (feature == NULL) {
     fprintf(stderr, "ERROR: Feature parameter is NULL\n");
     return NULL;
@@ -116,7 +116,7 @@ char *get_feature_value_from_device_c32_file(int object_number, devices_handle *
     return NULL;
   }
 
-  if (!feature_name_is_valid(feature)) {
+  if (!featureNameIsValid(feature)) {
     return NULL;
   }
 
@@ -138,7 +138,7 @@ char *get_feature_value_from_device_c32_file(int object_number, devices_handle *
  *
  *  @return *char name of the object or NULL if doesn't exist
  */
-char *get_object_name(int object_number, devices_handle *devices) {
+char *getObjectName(int object_number, devices_handle *devices) {
   if (object_number < devices->number_of_correct_objects)
     return devices->values_tokens->all_tokens[devices->indexes[object_number]->start]->value;
   fprintf(stderr, "Doesn't exist at object with that index:%d\n", object_number);
@@ -152,7 +152,7 @@ char *get_object_name(int object_number, devices_handle *devices) {
  *
  *  @param char* string to print
  */
-void print_data(char *data2print) {
+void printData(char *data2print) {
   if (data2print != NULL) {
     printf("%s\n", data2print);
   } else {

@@ -29,7 +29,7 @@ enum LINE_ERRORS { UNKNOWN_ERROR = -1, EMPTY_LINE = 1 };
  *  @param char* File path to *.c32
  *  @return char* On success, a string allocated at heap, or NULL if an error occurs
  */
-char *file_to_string(char *file_path) {
+char *fileToString(char *file_path) {
   FILE *fptr_devices;
   fptr_devices = fopen(file_path, "r");
 
@@ -62,7 +62,7 @@ char *file_to_string(char *file_path) {
  *
  *  @return int Number of lines or -1 if a the string file is null
  */
-int find_number_of_lines(char *string_file) {
+int findNumberOfLines(char *string_file) {
   if (string_file != NULL) {
     int number_of_lines = 0;
     int cursor = 0;
@@ -86,7 +86,7 @@ int find_number_of_lines(char *string_file) {
  *
  *  @return line_token* A pointer to a struct with the value an parameter, or NULL if parsing get an error
  */
-line_token *get_line_tokens(char *line) {
+line_token *getLineTokens(char *line) {
   if (line == NULL) {
     fprintf(stderr, "ERROR: NULL input line\n");
     return NULL;
@@ -97,12 +97,12 @@ line_token *get_line_tokens(char *line) {
     return NULL;
   }
   char param[50], value[50] = {0};
-  int delimiter_ocurrence = number_of_delimiter(line, ':');
+  int delimiter_ocurrence = numberOfDelimiter(line, ':');
   int result = sscanf(line, " %49[^:]: %49[^\n]", param, value);
 
   if (result == 2 && delimiter_ocurrence == 1) {
-    remove_extra_spaces(param);
-    remove_extra_spaces(value);
+    removeExtraSpaces(param);
+    removeExtraSpaces(value);
     if (param[0] == '\0' || value[0] == '\0') { // string Empty
       free(pline_token);
       return NULL;
@@ -125,7 +125,7 @@ line_token *get_line_tokens(char *line) {
  *
  * @return int 0=Success, -1=Error
  */
-int free_line_token(line_token *tokens) {
+int freeLineToken(line_token *tokens) {
   if (tokens == NULL) {
     return -1;
   } else {
@@ -143,7 +143,7 @@ int free_line_token(line_token *tokens) {
  *
  * @return char* An allocated string or NULL if char* string_file is NULL
  */
-char *get_each_line_of_file_string(char *string_file, int *offset) {
+char *getEachLineOfFileString(char *string_file, int *offset) {
   if (string_file == NULL)
     return NULL;
   char temp_line_buffer[50] = {0};
@@ -183,11 +183,11 @@ char *get_each_line_of_file_string(char *string_file, int *offset) {
 lines_tokenize *get_file_tokens(char *string_file) {
   if (string_file == NULL)
     return NULL;
-  int number_of_lines = find_number_of_lines(string_file);
+  int number_of_lines = findNumberOfLines(string_file);
   // Getting each line and save at array_of_lines
-  char **array_of_strings = get_array_of_strings(string_file);
+  char **array_of_strings = getArrayOfStrings(string_file);
   // Getting all the tokens from each line
-  lines_tokenize *array_of_tokens = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
+  lines_tokenize *array_of_tokens = getArrayOfTokensFromAnStringArray(array_of_strings, number_of_lines);
 
   return array_of_tokens;
 }
@@ -202,10 +202,10 @@ lines_tokenize *get_file_tokens(char *string_file) {
  *  - 0 memory successfully free
  *  - -1 line_token** is NULL
  */
-int free_memory_tokens(line_token **tokens, int number_of_lines) {
+int freeMemoryTokens(line_token **tokens, int number_of_lines) {
   if (tokens != NULL) {
     for (int i = 0; i < number_of_lines; i++) {
-      free_line_token(tokens[i]);
+      freeLineToken(tokens[i]);
     }
     free(tokens);
     return 0;
@@ -225,7 +225,7 @@ int free_memory_tokens(line_token **tokens, int number_of_lines) {
  *
  * @return 0 if success or -1 if line is NULL
  */
-int remove_extra_spaces(char *line) {
+int removeExtraSpaces(char *line) {
   if (line == NULL)
     return -1;
 
@@ -251,7 +251,7 @@ int remove_extra_spaces(char *line) {
  *
  * @return int with the number of matched delimiter
  */
-int number_of_delimiter(char *line, char delimiter) {
+int numberOfDelimiter(char *line, char delimiter) {
   if (line == NULL)
     return -1;
   int counter = 0;
@@ -270,14 +270,14 @@ int number_of_delimiter(char *line, char delimiter) {
  *
  * @return char ** An array o string pointer or NULL if the string_file is NULL
  */
-char **get_array_of_strings(char *string_file) {
+char **getArrayOfStrings(char *string_file) {
   if (string_file == NULL)
     return NULL;
   int offsets = 0;
-  int number_of_lines = find_number_of_lines(string_file);
+  int number_of_lines = findNumberOfLines(string_file);
   char temporal_array_lines[number_of_lines][50];
   for (int i = 0; i < number_of_lines; i++) {
-    char *line = get_each_line_of_file_string(string_file, &offsets);
+    char *line = getEachLineOfFileString(string_file, &offsets);
     strcpy(temporal_array_lines[i], line);
     free(line);
   }
@@ -298,7 +298,7 @@ char **get_array_of_strings(char *string_file) {
  * @return lines_tokenize AN Struct pointer with all the correct parsed lines and number of correct lines or NULL if
  * have an error in array_of_string
  */
-lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings, int number_of_lines) {
+lines_tokenize *getArrayOfTokensFromAnStringArray(char **array_of_strings, int number_of_lines) {
   if (array_of_strings == NULL)
     return NULL;
   line_token *array_of_lines_tokenize[number_of_lines];
@@ -306,16 +306,16 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
 
   int token_with_correct_syntax = 0;
   for (int i = 0; i < number_of_lines; i++) {
-    array_of_lines_tokenize[i] = get_line_tokens(array_of_strings[i]);
+    array_of_lines_tokenize[i] = getLineTokens(array_of_strings[i]);
 
     if (array_of_lines_tokenize[i] != NULL) { // Because a syntax error
       p_array_of_lines_tokenize[token_with_correct_syntax] = array_of_lines_tokenize[i];
       token_with_correct_syntax++;
       // #TODO check if its an empty line, if isn't, return null
     } else {
-      int error = analize_line(array_of_strings[i]);
-      fprintf(stderr, "DEBUG: At line\t%d\t, is %s\n", i + 1, status_message(error));
-      free_line_token(array_of_lines_tokenize[i]);
+      int error = analizeLine(array_of_strings[i]);
+      fprintf(stderr, "DEBUG: At line\t%d\t, is %s\n", i + 1, statusMessage(error));
+      freeLineToken(array_of_lines_tokenize[i]);
       continue;
     }
   }
@@ -328,13 +328,13 @@ lines_tokenize *get_array_of_tokens_from_an_string_array(char **array_of_strings
   return p_string_tokenize;
 }
 /**
- * @brief Free memory allocated by the function get_array_of_strings
+ * @brief Free memory allocated by the function getArrayOfStrings
  *
  * @param char** Lines allocated
  * @param int Number of lines allocated
  * @return int 0 in success, -1 in Error
  */
-int free_array_of_lines(char **lines_allocated, int number_of_lines) {
+int freeArrayOfLines(char **lines_allocated, int number_of_lines) {
   if (lines_allocated != NULL) {
     for (int i = 0; i < number_of_lines; i++) {
       free(lines_allocated[i]);
@@ -348,17 +348,17 @@ int free_array_of_lines(char **lines_allocated, int number_of_lines) {
   return 0;
 }
 /**
- * @brief Free memory allocated by the function get_array_of_tokens_from_an_string_array
+ * @brief Free memory allocated by the function getArrayOfTokensFromAnStringArray
  *
  * @param lines_tokenize* Struct pointer with all the lines tokenize
  * @return int 0 in success, -1 in Error
  */
-int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize) {
+int freeLineTokenizeStruct(lines_tokenize *p_lines_tokenize) {
   if (p_lines_tokenize != NULL) {
     for (int i = 0; i < p_lines_tokenize->number_of_correct_tokens; i++) {
       if (p_lines_tokenize->all_tokens[i] == NULL)
         return -1;
-      free_line_token(p_lines_tokenize->all_tokens[i]);
+      freeLineToken(p_lines_tokenize->all_tokens[i]);
     }
     free(p_lines_tokenize->all_tokens);
     free(p_lines_tokenize);
@@ -367,14 +367,14 @@ int free_line_tokenize_struct(lines_tokenize *p_lines_tokenize) {
   }
   return 0;
 }
-int analize_line(char *line) {
+int analizeLine(char *line) {
   if (strcmp("", line) == 0) {
     return EMPTY_LINE;
   }
   return 0;
 }
 
-char *status_message(int error) {
+char *statusMessage(int error) {
   switch (error) {
   case EMPTY_LINE: {
     return "Empty line";

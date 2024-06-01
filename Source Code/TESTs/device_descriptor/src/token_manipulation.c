@@ -38,7 +38,7 @@ enum COLORS {
  *  - 1 if is trying to access outide of the token array
  *  - 2 if the values are not the same
  */
-int verify_object(lines_tokenize *token_file, object_index index) {
+int verifyObject(lines_tokenize *token_file, object_index index) {
   if (index.start > token_file->number_of_correct_tokens) {
     return 1;
   } else if (strcmp(token_file->all_tokens[index.start]->value, token_file->all_tokens[index.end]->value) == 0) {
@@ -53,15 +53,15 @@ int verify_object(lines_tokenize *token_file, object_index index) {
   }
 }
 
-object_index **get_all_objects(lines_tokenize *array_of_objects) {
-  int number_of_correct_objects = find_number_of_objects(array_of_objects);
+object_index **getAllObjects(lines_tokenize *array_of_objects) {
+  int number_of_correct_objects = findNumberOfObjects(array_of_objects);
   object_index **all_objects_indexes = NULL;
 
   if (number_of_correct_objects != -1) {
     all_objects_indexes = calloc(sizeof(object_index), number_of_correct_objects);
-    all_objects_indexes[0] = find_object(array_of_objects, 0);
+    all_objects_indexes[0] = findObject(array_of_objects, 0);
     for (int i = 1; i < number_of_correct_objects; i++) {
-      all_objects_indexes[i] = find_object(array_of_objects, all_objects_indexes[i - 1]->end);
+      all_objects_indexes[i] = findObject(array_of_objects, all_objects_indexes[i - 1]->end);
     }
   } else {
     fprintf(stderr, "ERROR: Don't found any objects\n");
@@ -69,7 +69,7 @@ object_index **get_all_objects(lines_tokenize *array_of_objects) {
   return all_objects_indexes;
 }
 
-int free_get_all_object(object_index **all_objects_indexes, int number_of_correct_objects) {
+int freeGetAllObject(object_index **all_objects_indexes, int number_of_correct_objects) {
   for (int i = 0; i < number_of_correct_objects; i++) {
     if (all_objects_indexes[i] != NULL) {
       free(all_objects_indexes[i]);
@@ -85,22 +85,22 @@ int free_get_all_object(object_index **all_objects_indexes, int number_of_correc
   return 0;
 }
 
-void print_all_the_objects(object_index **all_objects_indexes, lines_tokenize *token_file, int number_of_correct_objects) {
-  print_colors(BLUE);
+void printAllTheObjects(object_index **all_objects_indexes, lines_tokenize *token_file, int number_of_correct_objects) {
+  printColors(BLUE);
   printf("======This are the next devices to search in the Kernel======\n\n");
   for (int i = 0; i < number_of_correct_objects; i++) {
-    print_colors(PURPLE);
+    printColors(PURPLE);
     printf("-----------Device %d information----------\n", i + 1);
-    print_colors(GREEN);
-    print_contents_of_n_object(token_file, all_objects_indexes[i]);
-    print_colors(PURPLE);
+    printColors(GREEN);
+    printContentsOfNObject(token_file, all_objects_indexes[i]);
+    printColors(PURPLE);
     printf("------------------------------------------\n\n");
-    print_colors(RESET);
+    printColors(RESET);
   }
-  print_colors(RESET);
+  printColors(RESET);
 }
 
-void print_colors(int color) {
+void printColors(int color) {
   switch (color) {
   case RESET:
     printf("\033[0m");
@@ -131,7 +131,7 @@ void print_colors(int color) {
  *  - 0 Word found
  *  - -1 Word not found or line_token is null
  */
-int search_for_word(line_token *token_file, const char *parameter, int index) {
+int searchForWord(line_token *token_file, const char *parameter, int index) {
   if (token_file == NULL) {
     return -1;
   }
@@ -152,7 +152,7 @@ int search_for_word(line_token *token_file, const char *parameter, int index) {
  *
  * @return void
  */
-void print_contents_of_n_object(lines_tokenize *token_file, object_index *content_index) {
+void printContentsOfNObject(lines_tokenize *token_file, object_index *content_index) {
   if (content_index != NULL) {
     if (content_index->end < token_file->number_of_correct_tokens) {
       printf("Contents of the [%s] object\n", token_file->all_tokens[content_index->start]->value);
@@ -170,20 +170,20 @@ void print_contents_of_n_object(lines_tokenize *token_file, object_index *conten
  *
  * @return *object_index or NULL if can't find any object
  */
-object_index *find_object(lines_tokenize *token_line, int start_index) {
-  object_index *p_index = search_start_and_end_index(token_line, start_index);
-  int object_result = verify_object(token_line, *p_index);
+object_index *findObject(lines_tokenize *token_line, int start_index) {
+  object_index *p_index = searchStartAndEndIndex(token_line, start_index);
+  int object_result = verifyObject(token_line, *p_index);
   if (object_result == 0) {
     return p_index;
   } else {
-    fprintf(stderr, "ERROR:%s\n", token_error(object_result));
+    fprintf(stderr, "ERROR:%s\n", tokenError(object_result));
     free(p_index);
     return NULL;
   }
   return NULL;
 }
 
-char *token_error(int error_result) {
+char *tokenError(int error_result) {
   switch (error_result) {
   case OUTSIDE_ARRAY:
     return "Trying to read token outside array";
@@ -201,11 +201,11 @@ char *token_error(int error_result) {
  *
  * @return int Number of objects
  */
-int find_number_of_objects(lines_tokenize *token_file) {
+int findNumberOfObjects(lines_tokenize *token_file) {
   int number_of_objects = 0;
   object_index *cursor = NULL;
   object_index **p_array = calloc(sizeof(object_index), MAX_NUMBER_OBJECTS); // saving address of object_index to free
-  cursor = find_object(token_file, 0);
+  cursor = findObject(token_file, 0);
   p_array[0] = cursor;
   if (cursor != NULL) {
     number_of_objects++; // object found
@@ -215,7 +215,7 @@ int find_number_of_objects(lines_tokenize *token_file) {
   }
   while (cursor->end < (token_file->number_of_correct_tokens - 1) && cursor != NULL) {
     number_of_objects++;
-    cursor = find_object(token_file, cursor->end);
+    cursor = findObject(token_file, cursor->end);
     p_array[number_of_objects] = cursor;
   }
   // Freeing Memory
@@ -246,17 +246,17 @@ int find_number_of_objects(lines_tokenize *token_file) {
  *  - NULL if didn't find any object
  */
 
-object_index *search_start_and_end_index(lines_tokenize *token_line, int start_index) {
+object_index *searchStartAndEndIndex(lines_tokenize *token_line, int start_index) {
   object_index *index = malloc(sizeof(object_index)); // Saving space for one struct
   while (start_index <= token_line->number_of_correct_tokens) {
-    if (search_for_word(token_line->all_tokens[start_index], "Start", start_index) == 0) { // start found
+    if (searchForWord(token_line->all_tokens[start_index], "Start", start_index) == 0) { // start found
       index->start = start_index;
       break;
     }
     start_index++;
   }
   while (start_index <= token_line->number_of_correct_tokens) {
-    if (search_for_word(token_line->all_tokens[start_index], "End", start_index) == 0) { // END found
+    if (searchForWord(token_line->all_tokens[start_index], "End", start_index) == 0) { // END found
       index->end = start_index;
       break;
     }
@@ -271,7 +271,7 @@ object_index *search_start_and_end_index(lines_tokenize *token_line, int start_i
  * @param object_index** Struct with all the pointers of generated by the function get_objects_index
  * @return int 0 in success
  */
-int free_memory_object(object_index **objects) {
+int freeMemoryObject(object_index **objects) {
   if (objects != NULL) {
     for (int i = 0; i < MAX_NUMBER_OBJECTS; i++) {
       if (objects[i] != NULL) {
@@ -295,7 +295,7 @@ int free_memory_object(object_index **objects) {
  *   - 3 NULL_INPUT_VALUE
  *
  */
-int verify_parameters_of_object(lines_tokenize *token_file, object_index *object) {
+int verifyParametersOfObject(lines_tokenize *token_file, object_index *object) {
   if (token_file == NULL || object == NULL) {
     return NULL_INPUT_VALUE;
   }
@@ -330,9 +330,9 @@ int verify_parameters_of_object(lines_tokenize *token_file, object_index *object
  *    - 1 Some object is incorrect
  */
 
-int verify_parameters_of_all_objects(lines_tokenize *token_file, object_index **objects, int number_of_correct_objects) {
+int verifyParametersOfAllObjects(lines_tokenize *token_file, object_index **objects, int number_of_correct_objects) {
   for (int i = 0; i < number_of_correct_objects; i++) {
-    int result_objects = verify_parameters_of_object(token_file, objects[i]);
+    int result_objects = verifyParametersOfObject(token_file, objects[i]);
     if (result_objects != 0) {
       fprintf(stderr, "ERROR: In object %d with the name of %s\n", i + 1, token_file->all_tokens[objects[i]->start]->value);
       return 1;

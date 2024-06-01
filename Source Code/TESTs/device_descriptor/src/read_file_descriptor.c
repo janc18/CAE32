@@ -39,7 +39,7 @@ char hid_path[] = "/dev/hidraw";
  *  @param int Array size
  *  @return bool true if found or false if didn't
  */
-bool exist_in_array(unsigned char value, unsigned char array_to_compare[], int array_size) {
+bool existInArray(unsigned char value, unsigned char array_to_compare[], int array_size) {
   for (int i = 0; i < array_size; i++) {
     if (array_to_compare[i] == value) {
       return true;
@@ -60,7 +60,7 @@ bool exist_in_array(unsigned char value, unsigned char array_to_compare[], int a
  *          path              number
  * @return char* Allocated string with the path generated
  */
-char *generate_path(char *path, int number_device) {
+char *generatePath(char *path, int number_device) {
   if (path == NULL) {
     fprintf(stderr, "ERROR: Path paramater NULL\n");
     return NULL;
@@ -83,7 +83,7 @@ char *generate_path(char *path, int number_device) {
  *  -3 Parameters NULLs
  *  >0 If it was find, return the actual file descriptor number
  */
-int get_fd(char *path_device, char *compare_device_name) {
+int getFd(char *path_device, char *compare_device_name) {
   if (path_device == NULL || compare_device_name == NULL) {
     fprintf(stderr, "ERROR: Path device or compare device name is NULL\n");
     return -3;
@@ -127,7 +127,7 @@ int get_fd(char *path_device, char *compare_device_name) {
  *
  * @return bool true when it's found or false if didn't or path_device is null
  */
-char *search_device(char *path_device) {
+char *searchDevice(char *path_device) {
   if (path_device == NULL) {
     fprintf(stderr, "ERROR: Path device is NULL\n");
     return NULL;
@@ -135,8 +135,8 @@ char *search_device(char *path_device) {
   int device_number = 0, fd = 0;
   while (fd != -1) {
     char *newpath;
-    newpath = generate_path(hid_path, device_number);
-    fd = get_fd(newpath, path_device);
+    newpath = generatePath(hid_path, device_number);
+    fd = getFd(newpath, path_device);
     if (fd > 0) {
       return newpath;
     } else {
@@ -147,11 +147,11 @@ char *search_device(char *path_device) {
   return NULL;
 }
 
-struct hidraw_report_descriptor *get_report_descriptor(char *path_device) {
+struct hidraw_report_descriptor *getReportDescriptor(char *path_device) {
   char *hid_path;
 
   if (path_device != NULL) {
-    hid_path = search_device(path_device);
+    hid_path = searchDevice(path_device);
   }
 
   if (hid_path == NULL) {

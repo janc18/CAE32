@@ -28,19 +28,19 @@ int main(int argc, char *argv[]) {
   }
 
   devices_handle *devices;
-  devices = get_all_information_from_device_c_32(argv[1]);
+  devices = getAllInformationFromDeviceC32(argv[1]);
 
   if (devices == NULL) {
     return EXIT_FAILURE;
   }
 
-  char *buttons = get_feature_value_from_device_c32_file(1, devices, "Buttons");
-  char *object_name_1 = get_object_name(2, devices);
-  print_data(buttons);
+  char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
+  char *object_name_1 = getObjectName(2, devices);
+  printData(buttons);
 
-  char *event_path = get_event_path(object_name_1);
+  char *event_path = getEventPath(object_name_1);
   printf("The path is:%s\nReading events\n", event_path);
-  read_events(event_path);
-  free_all_memory(devices);
+  readEvents(event_path);
+  freeAllMemory(devices);
   return EXIT_SUCCESS;
 }
