@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <libevdev-1.0/libevdev/libevdev.h>
 #include <poll.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,9 +14,36 @@
 
 char *event_path = "/dev/input/event";
 
+bool hasSudoPermissions() {
+  if (getuid()) {
+    fprintf(stderr,"Doesn't have sudo permissions to read the events, Want to continue? Y/n\n");
+    return false;
+  } else {
+    return true;
+  }
+}
+
+bool continueWithoutSudoPermissions() {
+  char response[9];
+  fgets(response, 3, stdin);
+  switch (response[0]) {
+  case '\n':
+    return true;
+    break;
+  case 'y':
+    return true;
+    break;
+  case 'Y':
+    return true;
+    break;
+  default:
+    return false;
+  }
+}
+
 void readEvents(char *path_event) {
-  
-  if(path_event==NULL){
+
+  if (path_event == NULL) {
     return;
   }
 
@@ -23,7 +51,7 @@ void readEvents(char *path_event) {
   struct pollfd device;
   memset(&device, 0, sizeof(device));
   device.events = POLLIN;
-  
+
   int fd;
   int rc = 1;
   fd = open(path_event, O_RDONLY | O_NONBLOCK);
@@ -44,14 +72,12 @@ void readEvents(char *path_event) {
   } while (rc == 1 || rc == 0 || rc == -EAGAIN);
 }
 
-
-
 char *getEventPath(char *name_to_compare) {
   printf("Searching the %s device\n", name_to_compare);
   if (name_to_compare == NULL)
     return NULL;
 
-  int fd; //Valgrind:Conditional jump or move depends on uninitialised value(s)
+  int fd; // Valgrind:Conditional jump or move depends on uninitialised value(s)
   int rc = 0;
   int iteration = 0;
   struct libevdev *dev = NULL;
