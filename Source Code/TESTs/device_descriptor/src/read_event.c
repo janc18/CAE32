@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <libevdev-1.0/libevdev/libevdev.h>
 #include <poll.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,36 +41,56 @@ bool continueWithoutSudoPermissions() {
     return false;
   }
 }
-
 void readEvents(char *path_event) {
-
-  if (path_event == NULL) {
-    return;
-  }
-
-  struct libevdev *dev = NULL;
-  struct pollfd device;
-  memset(&device, 0, sizeof(device));
-  device.events = POLLIN;
-
-  int fd;
-  int rc = 1;
-  fd = open(path_event, O_RDONLY | O_NONBLOCK);
-  rc = libevdev_new_from_fd(fd, &dev);
-  if (rc < 0) {
-    exit(1);
-  }
-
-  device.fd = fd;
-  do {
-    struct input_event ev;
-    poll(&device, 1, -1);
-    if (device.revents & POLLIN) {
-      rc = libevdev_next_event(dev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
-      if (rc == 0)
-        printf("Event: %s %s %d\n", libevdev_event_type_get_name(ev.type), libevdev_event_code_get_name(ev.type, ev.code), ev.value);
+    if (path_event == NULL) {
+        return;
     }
-  } while (rc == 1 || rc == 0 || rc == -EAGAIN);
+
+    struct libevdev *dev = NULL;
+    struct pollfd device;
+    memset(&device, 0, sizeof(device));
+    device.events = POLLIN;
+
+    int fd;
+    int rc = 1;
+    fd = open(path_event, O_RDONLY | O_NONBLOCK);
+    if (fd < 0) {
+        fprintf(stderr,"ERROR: Opening the device\n");
+        exit(1);
+    }
+
+    rc = libevdev_new_from_fd(fd, &dev);
+    if (rc < 0) {
+        fprintf(stderr,"ERROR: At starting libevdev\n");
+        close(fd);
+        exit(1);
+    }
+
+    device.fd = fd;
+    do {
+        struct input_event ev;
+        int poll_result = poll(&device, 1, -1);
+        if (poll_result < 0) {
+            fprintf(stderr,"ERROR: At Poll\n");
+            break;
+        }
+
+        if (device.revents & POLLIN) {
+            rc = libevdev_next_event(dev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
+            if (rc == 0) {
+                printf("Event: %s %s %d\n", libevdev_event_type_get_name(ev.type), libevdev_event_code_get_name(ev.type, ev.code), ev.value);
+            } else if (rc < 0 && rc != -EAGAIN) {
+                fprintf(stderr,"ERROR: Reading event\n");
+                break;
+            }
+        } else if (device.revents & (POLLERR | POLLHUP)) {
+            fprintf(stderr,"Device Disconnected\n");
+            break;
+        }
+    } while (rc == 1 || rc == 0 || rc == -EAGAIN);
+
+    libevdev_free(dev);
+    close(fd);
 }
 
 char *getEventPath(char *name_to_compare) {
