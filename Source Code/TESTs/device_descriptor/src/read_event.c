@@ -16,7 +16,7 @@ char *event_path = "/dev/input/event";
 
 bool hasSudoPermissions() {
   if (getuid()) {
-    fprintf(stderr,"Doesn't have sudo permissions to read the events, Want to continue? Y/n\n");
+    fprintf(stderr, "Doesn't have sudo permissions to read the events, Want to continue? Y/n\n");
     return false;
   } else {
     return true;
