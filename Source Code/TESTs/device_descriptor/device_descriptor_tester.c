@@ -20,9 +20,16 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
-
+  bool sudoPermission = false;
   // Check if it has sudo permission to read the report descriptor
-  if (argv[1] == NULL) { // Checking if a path was given
+  sudoPermission = hasSudoPermissions();
+  if (!sudoPermission) {
+    if (continueWithoutSudoPermissions() == false) {
+      return EXIT_FAILURE; // Quit program
+    }
+  }
+  // Checking if a path was given
+  if (argv[1] == NULL) {
     fprintf(stderr, "ERROR: Doesn't give any input path\n");
     return EXIT_FAILURE;
   }
@@ -37,6 +44,12 @@ int main(int argc, char *argv[]) {
   char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
   char *object_name_1 = getObjectName(2, devices);
   printData(buttons);
+
+  if (!sudoPermission) {
+    fprintf(stderr, "Isn't posible to read events without sudo permission, execute with sudo access\n");
+    freeAllMemory(devices);
+    return EXIT_FAILURE;
+  }
 
   char *event_path = getEventPath(object_name_1);
   printf("The path is:%s\nReading events\n", event_path);
