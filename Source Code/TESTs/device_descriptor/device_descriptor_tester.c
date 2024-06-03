@@ -51,7 +51,12 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  char *event_path = getEventPath(object_name_1);
+  char *event_path = getEventPath(object_name_1); // Valgrind: Conditional jump or move depends on uninitialised value(s)
+  if (event_path == NULL) {
+    fprintf(stderr, "ERROR: Doesn't found any device with that name\n");
+    freeAllMemory(devices);
+    return EXIT_FAILURE;
+  }
   printf("The path is:%s\nReading events\n", event_path);
   readEvents(event_path);
   freeAllMemory(devices);
