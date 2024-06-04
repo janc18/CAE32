@@ -12,7 +12,7 @@ TEST(ParserTests, ParsesWithOutExtraSpaces) {
   char token[30] = "Start:Object_1";
 
   // Act
-  object = get_line_tokens(token);
+  object = getLineTokens(token);
 
   // Assert
   EXPECT_STREQ("Start", object->parameter) << "Parameter parsing failed.";
@@ -20,7 +20,7 @@ TEST(ParserTests, ParsesWithOutExtraSpaces) {
   EXPECT_STREQ("Object_1", object->value) << "Value parsing failed";
 
   // Post Act
-  free_line_token(object);
+  freeLineToken(object);
 }
 
 TEST(ParserTests, ParseParameterTwoWords) {
@@ -29,7 +29,7 @@ TEST(ParserTests, ParseParameterTwoWords) {
   char token[30] = "Start:Object_1 second";
 
   // Act
-  object = get_line_tokens(token);
+  object = getLineTokens(token);
 
   // Assert
   EXPECT_STREQ("Start", object->parameter) << "Parameter parsing failed.";
@@ -37,7 +37,7 @@ TEST(ParserTests, ParseParameterTwoWords) {
   EXPECT_STREQ("Object_1 second", object->value) << "Value parsing failed";
 
   // Post Act
-  free_line_token(object);
+  freeLineToken(object);
 }
 
 TEST(ParserTests, ParsesWithExtraSpacesNumVariation0) {
@@ -46,7 +46,7 @@ TEST(ParserTests, ParsesWithExtraSpacesNumVariation0) {
   char line[30] = "   Start:Object_1 ";
 
   // Act
-  object = get_line_tokens(line);
+  object = getLineTokens(line);
 
   // Assert
   EXPECT_STREQ("Start", object->parameter) << "Parameter parsing failed.";
@@ -54,7 +54,7 @@ TEST(ParserTests, ParsesWithExtraSpacesNumVariation0) {
   EXPECT_STREQ("Object_1", object->value) << "Value parsing failed";
 
   // Post Act
-  free_line_token(object);
+  freeLineToken(object);
 }
 
 TEST(ParserTests, ParsesWithExtraSpacesNum1) {
@@ -63,7 +63,7 @@ TEST(ParserTests, ParsesWithExtraSpacesNum1) {
   char line[30] = "Start: Object_1 ";
 
   // Act
-  object = get_line_tokens(line);
+  object = getLineTokens(line);
 
   // Assert
   EXPECT_STREQ("Start", object->parameter) << "Parameter parsing failed.";
@@ -71,7 +71,7 @@ TEST(ParserTests, ParsesWithExtraSpacesNum1) {
   EXPECT_STREQ("Object_1", object->value) << "Value parsing failed";
 
   // Post Act
-  free_line_token(object);
+  freeLineToken(object);
 }
 
 TEST(ParserTests, IncorrectSyntax) {
@@ -82,7 +82,7 @@ TEST(ParserTests, IncorrectSyntax) {
 
   // Act
   for (int i = 0; i < number_of_line_elements; i++) {
-    lines_tokens[i] = get_line_tokens(incorrect_line[i]);
+    lines_tokens[i] = getLineTokens(incorrect_line[i]);
   }
 
   // Assert
@@ -92,7 +92,7 @@ TEST(ParserTests, IncorrectSyntax) {
 
   // Post Act
   for (int i = 0; i < number_of_line_elements; i++) {
-    free_line_token(lines_tokens[i]);
+    freeLineToken(lines_tokens[i]);
   }
 }
 
@@ -104,9 +104,9 @@ TEST(ParserTests, GettingEachLineOfString) {
   int offsets = 0;
 
   // Act
-  int number_of_lines = find_number_of_lines(input_file);
+  int number_of_lines = findNumberOfLines(input_file);
   for (int i = 0; i < number_of_lines; i++) {
-    p_array_of_string[i] = get_each_line_of_file_string(input_file, &offsets);
+    p_array_of_string[i] = getEachLineOfFileString(input_file, &offsets);
   }
 
   // Assert
@@ -127,7 +127,7 @@ TEST(ParserTests, GetEachLineOfFileString) {
   char *line_1;
   int offset = 0;
   // Act
-  line_1 = get_each_line_of_file_string(input_file, &offset);
+  line_1 = getEachLineOfFileString(input_file, &offset);
 
   // Assert
   EXPECT_STREQ("Line 1", line_1);
@@ -143,8 +143,8 @@ TEST(ParserTests, GetArrayOfStrings) {
   char **array_of_lines = {0};
 
   // Act
-  array_of_lines = get_array_of_strings(input_file);
-  int number_of_lines = find_number_of_lines(input_file);
+  array_of_lines = getArrayOfStrings(input_file);
+  int number_of_lines = findNumberOfLines(input_file);
 
   // Assert
   for (int i = 0; i < number_of_lines; i++) {
@@ -152,7 +152,7 @@ TEST(ParserTests, GetArrayOfStrings) {
   }
 
   //Post act
-  free_array_of_lines(array_of_lines, number_of_lines);
+  freeArrayOfLines(array_of_lines, number_of_lines);
 }
 
 TEST(ParserTests, GetArrayOfTokens) {
@@ -161,18 +161,18 @@ TEST(ParserTests, GetArrayOfTokens) {
   lines_tokenize *array_of_objects;
   char **array_of_strings;
   // Act
-  number_of_lines = find_number_of_lines(string_file_c);
-  array_of_strings = get_array_of_strings(string_file_c);
-  array_of_objects = get_array_of_tokens_from_an_string_array(array_of_strings, number_of_lines);
+  number_of_lines = findNumberOfLines(string_file_c);
+  array_of_strings = getArrayOfStrings(string_file_c);
+  array_of_objects = getArrayOfTokensFromAnStringArray(array_of_strings, number_of_lines);
 
   // Assert
   EXPECT_NE(nullptr, array_of_objects);
-  EXPECT_EQ(26, array_of_objects->number_of_lines);
+  EXPECT_EQ(26, array_of_objects->number_of_correct_tokens);
   
 
   // Post Act
-  free_array_of_lines(array_of_strings, number_of_lines);
-  free_line_tokenize_struct(array_of_objects);
+  freeArrayOfLines(array_of_strings, number_of_lines);
+  freeLineTokenizeStruct(array_of_objects);
 }
 
 TEST(FileTest, FileNotFound) {
@@ -181,7 +181,7 @@ TEST(FileTest, FileNotFound) {
   char *file_string;
 
   // Act
-  file_string = file_to_string(file_path);
+  file_string = fileToString(file_path);
 
   // Assert
   EXPECT_EQ(NULL, file_string);
@@ -193,7 +193,7 @@ TEST(NumberOfLines, CorrectlyParsed) {
   int number_of_lines = 0;
 
   // Act
-  number_of_lines = find_number_of_lines(test_file);
+  number_of_lines = findNumberOfLines(test_file);
 
   // Assert
   EXPECT_EQ(4, number_of_lines);
@@ -205,14 +205,14 @@ TEST(NumberOfLines, WhitOutNewLine) {
   int number_of_lines = 0;
 
   // Act
-  number_of_lines = find_number_of_lines(test_file);
+  number_of_lines = findNumberOfLines(test_file);
 
   // Assert
   EXPECT_EQ(1, number_of_lines);
 }
 
 // All the Free memory test are tested with valgrind
-TEST(FreeMemory, FreeLineTokensStruct) {
+TEST(FreeMemory, freeLineTokensStruct) {
   // Arrange
   line_token *valid_object;
   line_token *invalid_object;
@@ -220,15 +220,15 @@ TEST(FreeMemory, FreeLineTokensStruct) {
   char incorrect_token[30] = "_::::";
 
   // Act
-  valid_object = get_line_tokens(correct_token);
+  valid_object = getLineTokens(correct_token);
   // When an object have an incorrect syntaxis will return a NULL pointer
-  invalid_object = get_line_tokens(incorrect_token);
+  invalid_object = getLineTokens(incorrect_token);
 
   // Assert
   EXPECT_NE(valid_object, nullptr);
   EXPECT_EQ(invalid_object, nullptr);
 
   // Post Act
-  free_line_token(valid_object);
-  free_line_token(invalid_object); // free_line_token check first if is NULL
+  freeLineToken(valid_object);
+  freeLineToken(invalid_object); // free_line_token check first if is NULL
 }
