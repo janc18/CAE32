@@ -2,7 +2,7 @@
 
 echo -e "\e[1mDependency\t Status\e[0m"
 echo -e "\t\t|---------"
-for cmd in cmake gcc make pkgconf; do 
+for cmd in cmake gcc make pkgconf gtester; do 
   if ! command -v $cmd &> /dev/null; then
     echo -e "$cmd \t\t \e[31mNot installed\e[0m"
     Packages_not_installed+=($cmd)
@@ -20,4 +20,4 @@ for pkg_cmd in gtk3+-3.0 libevdev-dev; do
   else
     echo -e "$pkg_cmd\t\e[32m Installed\e[0m"
   fi
-  done
+ done
