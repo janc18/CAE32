@@ -1,3 +1,4 @@
+#include "device_desc_pedals.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <linux/uhid.h>
@@ -8,7 +9,6 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
-#include "device_desc_pedals.h"
 
 static int uhid_write(int fd, const struct uhid_event *ev) {
   ssize_t ret;
@@ -31,7 +31,7 @@ static int create(int fd) {
   memset(&ev, 0, sizeof(ev));
   ev.type = UHID_CREATE2;
   strcpy((char *)ev.u.create2.name, "CAE32 Steering Wheel");
-  memcpy(ev.u.create2.rd_data,Pedals_descriptor, sizeof(Pedals_descriptor));
+  memcpy(ev.u.create2.rd_data, Pedals_descriptor, sizeof(Pedals_descriptor));
   ev.u.create2.rd_size = sizeof(Pedals_descriptor);
   ev.u.create2.bus = BUS_USB;
   ev.u.create2.vendor = 0x15d9;
@@ -54,6 +54,7 @@ static void destroy(int fd) {
 /* This parses raw output reports sent by the kernel to the device. A normal
  * uhid program shouldn't do this but instead just forward the raw report.
  * However, for ducomentational purposes, we try to detect LED events here and
+ *
  * print debug messages for it. */
 static void handle_output(struct uhid_event *ev) {
   /* LED messages are adverised via OUTPUT reports; ignore the rest */
@@ -305,9 +306,25 @@ int main(int argc, char **argv) {
     }
 
     if (pfds[0].revents & POLLIN) {
-      ret = keyboard(fd);
-      if (ret)
-        break;
+      int counter = 0; //TODO: Remove termios functions
+      while (1) {
+        sleep(1);
+        if (counter > 255) {
+          counter = 0;
+          rel_hor=0;
+          rel_ver=0;
+          wheel=0;
+          clutch=0;
+        }
+        counter++;
+        rel_hor++;
+        rel_ver++;
+        wheel++;
+        clutch++;
+        ret = send_event(fd);
+        if (ret)
+          break;
+      }
     }
     if (pfds[1].revents & POLLIN) {
       ret = event(fd);
