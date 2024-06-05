@@ -67,7 +67,7 @@ The interface is developed with the GTK 3 framework, which will allow configurat
 
 1. Install all the dependencies
 ```bash
-sudo apt install cmake make gcc pkgconf libevdev-dev libgtk-3-dev libgtk-3-0
+sudo apt install cmake make gcc pkgconf libevdev-dev libgtk-3-dev libgtk-3-0 libgtest-dev
 ```
 
 2. Run the script to check if all the dependencies was successfully installed
