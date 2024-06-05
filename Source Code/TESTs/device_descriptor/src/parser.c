@@ -15,8 +15,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-const char Keywords[7][30] = {"Size_bits", "Logical_Minimum", "Logical_Maximum", "Physical_Minumum", "Physical_Maximum",
-                             "Buttons", "Axis"}; //If is changed is necessary to update at the parser.h file
+const char Keywords[7][30] = {"Size_bits", "Logical_Minimum", "Logical_Maximum", "Physical_Minumum", "Physical_Maximum", "Buttons",
+                              "Axis"}; // If is changed is necessary to update at the parser.h file
 
 enum LINE_ERRORS { UNKNOWN_ERROR = -1, EMPTY_LINE = 1 };
 
