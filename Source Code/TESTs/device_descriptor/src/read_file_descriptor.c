@@ -27,10 +27,10 @@
 #include <string.h>
 
 #include "read_file_descriptor.h"
-
-unsigned char usuage_id_axis_values[6] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35};
 char hid_path[] = "/dev/hidraw";
 
+ enum axis { AXIS_X = 0x30, AXIS_Y, AXIS_Z, AXIS_RX, AXIS_RY, AXIS_RZ };
+ unsigned char usage_id_axis_values[6] = {AXIS_X, AXIS_Y, AXIS_Z, AXIS_RX, AXIS_RY, AXIS_RZ};
 /**
  * @brief Check if a hexadecimal value exist in an unsigned char array
  *
@@ -42,6 +42,7 @@ char hid_path[] = "/dev/hidraw";
 bool existInArray(unsigned char value, unsigned char array_to_compare[], int array_size) {
   for (int i = 0; i < array_size; i++) {
     if (array_to_compare[i] == value) {
+      printf("found %x",value);
       return true;
     }
   }
