@@ -15,6 +15,7 @@
 
 char *event_path = "/dev/input/event";
 
+const char EVENTS_AXIS_TABLE[3][10] = {"ABS_X", "ABS_Y", "ABS_Z"};
 bool hasSudoPermissions() {
   if (getuid()) {
     fprintf(stderr, "Doesn't have sudo permissions to read the events, Want to continue? Y/n\n");
