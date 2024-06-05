@@ -1,0 +1,4 @@
+#ifndef EVENT_ANALYSIS_H
+#define EVENT_ANALYSIS_H
+
+#endif // !EVENT_ANALYSIS_H
