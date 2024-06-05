@@ -53,10 +53,18 @@ int main(int argc, char *argv[]) {
 
   char *event_path = getEventPath(object_name_1); // Valgrind: Conditional jump or move depends on uninitialised value(s)
   if (event_path == NULL) {
-    fprintf(stderr, "ERROR: Doesn't found any device with that name\n");
+    fprintf(stderr, "ERROR: Doesn't found any device with that name:%s\n", object_name_1);
     freeAllMemory(devices);
     return EXIT_FAILURE;
   }
+  /**/
+  struct hidraw_report_descriptor *device1;
+  device1 = getReportDescriptor(object_name_1);
+  for (int i = 0; i < device1->size; i++) {
+    existInArray(device1->value[i], usage_id_axis_values, 6);
+  }
+
+  /**/
   printf("The path is:%s\nReading events\n", event_path);
   readEvents(event_path);
   freeAllMemory(devices);
