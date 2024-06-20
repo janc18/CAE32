@@ -15,6 +15,7 @@
 #include "struct_manipulation.h"
 #include <fcntl.h>
 #include <linux/hidraw.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -66,7 +67,26 @@ int main(int argc, char *argv[]) {
 
   /**/
   printf("The path is:%s\nReading events\n", event_path);
-  readEvents(event_path);
+  if (event_path == NULL) {
+    freeAllMemory(devices);
+    return EXIT_FAILURE;
+  }
+  // readEvents(event_path);
+  pthread_t reader_thread, processor_thread;
+  event_buffer initializeDeviceBuffer = getDeviceBuffer();
+  if (pthread_create(&reader_thread, NULL, readEvents, (void *)event_path) != 0) {
+    fprintf(stderr, "Error creating reader thread\n");
+    return 1;
+  }
+
+  if (pthread_create(&processor_thread, NULL, processEvents, NULL) != 0) {
+    fprintf(stderr, "Error creating processor thread\n");
+    return 1;
+  }
+  sleep(10);
+  stopThreads();
+  pthread_join(reader_thread, NULL);
+  pthread_join(processor_thread, NULL);
   freeAllMemory(devices);
   return EXIT_SUCCESS;
 }
