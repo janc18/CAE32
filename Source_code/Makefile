@@ -7,10 +7,12 @@ all: GUI Testing
 GUI:
 	@echo "Creating build files for the GUI"
 	cmake -B ./Interfaz_grafica/Interfaz_gtk/build/ ./Interfaz_grafica/Interfaz_gtk/
+	make -C ./Interfaz_grafica/Interfaz_gtk/build/
 
 Testing:
 	@echo "Creating build files for testing"
 	cmake -B ./TESTs/device_descriptor/build ./TESTs/device_descriptor/
+	make -C ./TESTs/device_descriptor/build/
 
 build_gui:
 	@echo "Building GUI"
@@ -22,4 +24,4 @@ build_tests:
 
 clean:
 	rm -r ./Interfaz_grafica/Interfaz_gtk/build/
-	rm -r ./TESTs/build/
+	rm -r ./TESTs/device_descriptor/build/
