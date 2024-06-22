@@ -72,10 +72,10 @@ sudo apt install cmake make gcc pkgconf libevdev-dev libgtk-3-dev libgtk-3-0 lib
 
 2. Run the script to check if all the dependencies was successfully installed
 ```bash
-./Source Code/checking_dependency.sh
+./Source_code/checking_dependency.sh
 ```
 3. Execute the Makefile to build the graphic interface and the unit tests
 ```sh
-make -C Source\ Code/
+make -C Source_code/
 ```
 
