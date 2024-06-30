@@ -22,5 +22,6 @@ bool continueWithoutSudoPermissions();
 void *processEvents(void *arg);
 void stopThreads();
 void initializeEventBuffer(struct event_buffer *buffer);
+void handle_signal(int sig);
 event_buffer getDeviceBuffer();
 #endif // !READ_EVENT_h
