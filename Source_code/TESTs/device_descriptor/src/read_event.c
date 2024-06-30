@@ -17,7 +17,16 @@ char *event_path = "/dev/input/event";
 
 event_buffer device_buffer;
 
+struct libevdev *dev = NULL;
+int fd;
 event_buffer getDeviceBuffer() { return device_buffer; }
+
+void handle_signal(int sig) {
+  stopThreads();
+  libevdev_free(dev);
+  close(fd);
+  printf("\n");
+}
 
 void initializeEventBuffer(struct event_buffer *buffer) {
   buffer->head = 0;
@@ -89,19 +98,19 @@ void *processEvents(void *arg) {
   return NULL;
 }
 void *readEvents(void *path_event_void) {
-  char *path_event=path_event_void;
-  
-  printf("%s\n",path_event);
+  char *path_event = path_event_void;
+
+  printf("%s\n", path_event);
   if (path_event == NULL) {
     fprintf(stderr, "ERROR: invalid path\n");
   }
 
-  struct libevdev *dev = NULL;
+  // struct libevdev *dev = NULL;
   struct pollfd device;
   memset(&device, 0, sizeof(device));
   device.events = POLLIN;
 
-  int fd;
+  // int fd;
   int rc = 1;
   fd = open(path_event, O_RDONLY | O_NONBLOCK);
   if (fd < 0) {
@@ -154,10 +163,15 @@ void *readEvents(void *path_event_void) {
         break;
       }
     }
-    libevdev_free(dev);
-    close(fd);
+    // libevdev_free(dev);
+    // close(fd);
   }
 }
+
+// struct libevdev *get_dev_reference() {
+//
+//   // return dev
+// }
 
 char *getEventPath(char *name_to_compare) {
   printf("Searching the %s device\n", name_to_compare);
