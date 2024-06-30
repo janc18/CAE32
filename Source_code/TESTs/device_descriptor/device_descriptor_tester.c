@@ -16,11 +16,13 @@
 #include <fcntl.h>
 #include <linux/hidraw.h>
 #include <pthread.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
+  signal(SIGINT, handle_signal);
   bool sudoPermission = false;
   // Check if it has sudo permission to read the report descriptor
   sudoPermission = hasSudoPermissions();
@@ -83,8 +85,6 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Error creating processor thread\n");
     return 1;
   }
-  sleep(10);
-  stopThreads();
   pthread_join(reader_thread, NULL);
   pthread_join(processor_thread, NULL);
   freeAllMemory(devices);
