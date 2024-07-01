@@ -23,53 +23,39 @@
 
 int main(int argc, char *argv[]) {
   signal(SIGINT, handle_signal);
+
   if (!itHasSudoPermissions(argv[1])) {
     return EXIT_FAILURE;
   }
+  // Get device's information using the file *.cae32
   devices_handle *devices;
   devices = getAllInformationFromDeviceC32(argv[1]);
 
+  // Checking if the device's information was correct
   if (devices == NULL) {
     return EXIT_FAILURE;
   }
 
-  char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
-  char *object_name_1 = getObjectName(2, devices);
-  printData(buttons);
+  // Searching from the device's name given and getting the event_path
+  // event_path example: /dev/input/event15
+  char *event_path;
+  if (!isDevicefind(devices, 2, &event_path)) {
+    return EXIT_FAILURE;
+  }
 
-  char *event_path = getEventPath(object_name_1); // Valgrind: Conditional jump or move depends on uninitialised value(s)
+  // Free memory in the case that didn't find any device with the given name
   if (event_path == NULL) {
-    fprintf(stderr, "ERROR: Doesn't found any device with that name:%s\n", object_name_1);
     freeAllMemory(devices);
     return EXIT_FAILURE;
   }
-  /**/
-  struct hidraw_report_descriptor *device1;
-  device1 = getReportDescriptor(object_name_1);
-  for (int i = 0; i < device1->size; i++) {
-    existInArray(device1->value[i], usage_id_axis_values, 6);
-  }
 
-  /**/
   printf("The path is:%s\nReading events\n", event_path);
-  if (event_path == NULL) {
+
+  // Creation of threads to read and print the output data from de device
+  pthread_t reader_thread, processor_thread;
+  if (!threadCreation(reader_thread, processor_thread, event_path)) {
     freeAllMemory(devices);
     return EXIT_FAILURE;
   }
-  // readEvents(event_path);
-  pthread_t reader_thread, processor_thread;
-  event_buffer initializeDeviceBuffer = getDeviceBuffer();
-  if (pthread_create(&reader_thread, NULL, readEvents, (void *)event_path) != 0) {
-    fprintf(stderr, "Error creating reader thread\n");
-    return 1;
-  }
-
-  if (pthread_create(&processor_thread, NULL, processEvents, NULL) != 0) {
-    fprintf(stderr, "Error creating processor thread\n");
-    return 1;
-  }
-  pthread_join(reader_thread, NULL);
-  pthread_join(processor_thread, NULL);
-  freeAllMemory(devices);
   return EXIT_SUCCESS;
 }
