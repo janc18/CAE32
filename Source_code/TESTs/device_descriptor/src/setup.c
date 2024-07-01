@@ -1,4 +1,7 @@
 #include "setup.h"
+#include "read_event.h"
+#include "struct_manipulation.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
 /**
@@ -64,5 +67,38 @@ bool itHasSudoPermissions(char *device_information_path) {
     fprintf(stderr, "ERROR: Doesn't give any input path\n");
     return false;
   }
+  return true;
+}
+
+bool isDevicefind(devices_handle *devices, int device_number, char **event_path) {
+  // demo code to extract information from the device(device *.cae32)
+  // char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
+  char *object_name = getObjectName(device_number, devices);
+  // printData(buttons);
+
+  // Getting information of the real device using the name extracted from the file
+  *event_path = getEventPath(object_name); // Valgrind: Conditional jump or move depends on uninitialised value(s)
+  if (*event_path == NULL) {
+    fprintf(stderr, "ERROR: Doesn't found any device with that name:%s\n", object_name);
+    freeAllMemory(devices);
+    return false;
+  }
+  return true;
+}
+
+bool threadCreation(pthread_t reader_thread, pthread_t processor_thread, char *event_path) {
+
+  // event_buffer initializeDeviceBuffer = getDeviceBuffer();
+  if (pthread_create(&reader_thread, NULL, readEvents, (void *)event_path) != 0) {
+    fprintf(stderr, "Error creating reader thread\n");
+    return false;
+  }
+
+  if (pthread_create(&processor_thread, NULL, processEvents, NULL) != 0) {
+    fprintf(stderr, "Error creating processor thread\n");
+    return false;
+  }
+  pthread_join(reader_thread, NULL);
+  pthread_join(processor_thread, NULL);
   return true;
 }
