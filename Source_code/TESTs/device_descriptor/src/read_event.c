@@ -43,32 +43,6 @@ void cleanUpEventBuffer(struct event_buffer *buffer) {
 }
 
 const char EVENTS_AXIS_TABLE[3][10] = {"ABS_X", "ABS_Y", "ABS_Z"};
-bool hasSudoPermissions() {
-  if (getuid()) {
-    fprintf(stderr, "Doesn't have sudo permissions to read the events, Want to continue? Y/n\n");
-    return false;
-  } else {
-    return true;
-  }
-}
-
-bool continueWithoutSudoPermissions() {
-  char response[9];
-  fgets(response, 3, stdin);
-  switch (response[0]) {
-  case '\n':
-    return true;
-    break;
-  case 'y':
-    return true;
-    break;
-  case 'Y':
-    return true;
-    break;
-  default:
-    return false;
-  }
-}
 void stopThreads() {
   pthread_mutex_lock(&device_buffer.mutex);
   device_buffer.stop = 1;

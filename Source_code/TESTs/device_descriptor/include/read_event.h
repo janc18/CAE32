@@ -17,8 +17,6 @@ typedef struct event_buffer {
 
 char *getEventPath(char *name_to_compare);
 void *readEvents(void *path_event_void);
-bool hasSudoPermissions();
-bool continueWithoutSudoPermissions();
 void *processEvents(void *arg);
 void stopThreads();
 void initializeEventBuffer(struct event_buffer *buffer);
