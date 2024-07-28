@@ -23,5 +23,5 @@ build_tests:
 	$(MAKE) -C ./TESTs/build/
 
 clean:
-	rm -r ./Interfaz_grafica/Interfaz_gtk/build/
-	rm -r ./TESTs/device_descriptor/build/
+	rm -r -f ./Interfaz_grafica/Interfaz_gtk/build/
+	rm -r -f ./TESTs/device_descriptor/build/
