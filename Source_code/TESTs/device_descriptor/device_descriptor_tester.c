@@ -50,8 +50,7 @@ int main(int argc, char *argv[]) {
   }
 
   printf("The path is:%s\nReading events\n", event_path);
-
-  // Creation of threads to read and print the output data from de device
+ // Creation of threads to read and print the output data from de device
   pthread_t reader_thread, processor_thread;
   if (!threadCreation(reader_thread, processor_thread, event_path)) {
     freeAllMemory(devices);

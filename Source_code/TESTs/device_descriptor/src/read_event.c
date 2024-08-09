@@ -16,16 +16,67 @@
 char *event_path = "/dev/input/event";
 
 event_buffer device_buffer;
-
+events *p_copy = NULL;
 struct libevdev *dev = NULL;
 int fd;
 event_buffer getDeviceBuffer() { return device_buffer; }
+
+void push(events **headRef, int val, const char *event_name) {
+  events *newNode = (events *)malloc(sizeof(events));
+  newNode->val = val;
+  strncpy(newNode->event_name, event_name, 30 - 1);
+  newNode->event_name[sizeof(newNode->event_name) - 1] = '\0';
+  newNode->siguiente = NULL;
+  if (*headRef == NULL) {
+    *headRef = newNode;
+  } else {
+    events *current = *headRef;
+    while (current->siguiente != NULL) {
+      current = current->siguiente;
+    }
+    current->siguiente = newNode;
+  }
+}
+
+void free_memory_events(events *head) {
+  events *current;
+
+  while (head != NULL) {
+    current = head;
+    head = current->siguiente;
+    free(current);
+  }
+}
+int updateValue(events *head, const char *event_name, int value) {
+
+  events *current = head;
+  while (current != NULL) {
+    if (strcmp(current->event_name, event_name) == 0) {
+      printf("updating value :%d\n", value);
+      current->val = value;
+      return 1;
+    }
+    current = current->siguiente;
+  }
+  push(&head, value, event_name);
+  return 0;
+}
+
+void terminal_print(events *head) {
+  events *current = head;
+  printf("\e[1;1H\e[2J");
+  while (current != NULL) {
+    printf("Event:%s\tValue:%d\n", current->event_name, current->val);
+    current = current->siguiente;
+  }
+}
 
 void handle_signal(int sig) {
   stopThreads();
   libevdev_free(dev);
   close(fd);
   printf("\n");
+  free_memory_events(p_copy);
 }
 
 void initializeEventBuffer(struct event_buffer *buffer) {
@@ -50,6 +101,8 @@ void stopThreads() {
   pthread_mutex_unlock(&device_buffer.mutex);
 }
 void *processEvents(void *arg) {
+  events *head = (events *)arg;
+  p_copy = (events *)arg;
   while (1) {
     pthread_mutex_lock(&device_buffer.mutex);
     while (device_buffer.count == 0 && !device_buffer.stop) {
@@ -66,8 +119,8 @@ void *processEvents(void *arg) {
     device_buffer.count--;
 
     pthread_mutex_unlock(&device_buffer.mutex);
-
-    printf("Event: %s %s %d\n", libevdev_event_type_get_name(ev.type), libevdev_event_code_get_name(ev.type, ev.code), ev.value);
+    updateValue(head, libevdev_event_code_get_name(ev.type, ev.code), ev.value);
+    terminal_print(head);
   }
   return NULL;
 }
