@@ -3,6 +3,7 @@
 #include "struct_manipulation.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 /**
  * @brief Check if was executed with sudo permissions
@@ -88,13 +89,13 @@ bool isDevicefind(devices_handle *devices, int device_number, char **event_path)
 
 bool threadCreation(pthread_t reader_thread, pthread_t processor_thread, char *event_path) {
 
-  // event_buffer initializeDeviceBuffer = getDeviceBuffer();
+  events *cabeza = (events *)malloc(sizeof(events));
   if (pthread_create(&reader_thread, NULL, readEvents, (void *)event_path) != 0) {
     fprintf(stderr, "Error creating reader thread\n");
     return false;
   }
 
-  if (pthread_create(&processor_thread, NULL, processEvents, NULL) != 0) {
+  if (pthread_create(&processor_thread, NULL, processEvents, (void *)cabeza) != 0) {
     fprintf(stderr, "Error creating processor thread\n");
     return false;
   }
