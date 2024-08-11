@@ -41,7 +41,6 @@ devices_handle *getAllInformationFromDeviceC32(char *file_path) {
 
   // Alocating memory for all the objects indexes
   p_devices->number_of_correct_objects = findNumberOfObjects(p_devices->values_tokens);
-  // object_index **all_objects_indexes==p_devices->indexes
   p_devices->indexes = NULL;
   p_devices->indexes = getAllObjects(p_devices->values_tokens);
 
@@ -66,6 +65,7 @@ void freeAllMemory(devices_handle *p_devices) {
     freeGetAllObject(p_devices->indexes, p_devices->number_of_correct_objects);
     freeArrayOfLines(p_devices->array_of_strings, p_devices->number_of_lines);
     freeLineTokenizeStruct(p_devices->values_tokens);
+    free(p_devices->eventPath);
     free(p_devices->string_file);
     free(p_devices);
   }
