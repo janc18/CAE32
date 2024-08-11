@@ -84,6 +84,7 @@ bool isDevicefind(devices_handle *devices, int device_number, char **event_path)
     freeAllMemory(devices);
     return false;
   }
+  devices->eventPath = *event_path;
   return true;
 }
 
