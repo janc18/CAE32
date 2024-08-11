@@ -11,6 +11,7 @@ typedef struct devices_handle {
   lines_tokenize *values_tokens;
   int number_of_correct_objects;
   int number_of_lines;
+  char *eventPath;
 } devices_handle;
 
 
