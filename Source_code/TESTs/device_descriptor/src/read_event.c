@@ -205,7 +205,7 @@ char *getEventPath(char *name_to_compare) {
   if (name_to_compare == NULL)
     return NULL;
 
-  int fd; // Valgrind:Conditional jump or move depends on uninitialised value(s)
+  int fd = 1;
   int rc = 0;
   int iteration = 0;
   struct libevdev *dev = NULL;
@@ -216,14 +216,18 @@ char *getEventPath(char *name_to_compare) {
     rc = libevdev_new_from_fd(fd, &dev);
     if (rc < 0) {
       close(fd);
+      libevdev_free(dev);
+      free(event_path_generated);
       return NULL;
     }
     if (strcmp(name_to_compare, libevdev_get_name(dev)) == 0) {
       close(fd);
+      libevdev_free(dev);
       return event_path_generated;
     }
-    close(fd);
     free(event_path_generated);
+    close(fd);
+    libevdev_free(dev);
     iteration++;
   }
   return NULL;
