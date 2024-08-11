@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
   // Get device's information using the file *.cae32
-  devices_handle *devices;
+  devices_handle *devices=NULL;
   devices = getAllInformationFromDeviceC32(argv[1]);
 
   // Checking if the device's information was correct
@@ -49,6 +49,8 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+    freeAllMemory(devices);
+ /*
   printf("The path is:%s\nReading events\n", event_path);
  // Creation of threads to read and print the output data from de device
   pthread_t reader_thread, processor_thread;
@@ -56,5 +58,6 @@ int main(int argc, char *argv[]) {
     freeAllMemory(devices);
     return EXIT_FAILURE;
   }
+  */
   return EXIT_SUCCESS;
 }
