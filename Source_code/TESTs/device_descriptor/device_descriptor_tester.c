@@ -49,15 +49,13 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-    freeAllMemory(devices);
- /*
   printf("The path is:%s\nReading events\n", event_path);
  // Creation of threads to read and print the output data from de device
   pthread_t reader_thread, processor_thread;
   if (!threadCreation(reader_thread, processor_thread, event_path)) {
+    fprintf(stderr, "ERROR: Creating threads\n");
     freeAllMemory(devices);
     return EXIT_FAILURE;
   }
-  */
   return EXIT_SUCCESS;
 }
