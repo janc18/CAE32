@@ -29,7 +29,7 @@ int fd;
  * @param *char Name of the Event ABS_X=255(ABS_X is the event value)
  */
 void push(events **headRef, int val, const char *event_name) { // TODO: change funtion prototype to int and check if memory was correctly allocated
-  events *newNode = (events *)malloc(sizeof(events));
+  events *newNode = (events *)calloc(sizeof(events), 1);
   newNode->val = val;
   strncpy(newNode->event_name, event_name, 30 - 1);
   newNode->event_name[sizeof(newNode->event_name) - 1] = '\0';
@@ -90,8 +90,10 @@ void terminal_print(events *head) {
   events *current = head;
   printf("\e[1;1H\e[2J");
   while (current != NULL) {
-    printf("Event:%s\tValue:%d\n", current->event_name, current->val);
-    current = current->siguiente;
+    if (current->event_name != NULL) {
+      printf("Event:%s\tValue:%d\n", current->event_name, current->val);
+      current = current->siguiente;
+    }
   }
 }
 /**
@@ -158,7 +160,7 @@ void *processEvents(void *arg) {
 }
 /**
  * @brief Print in the terminal all the events
- * @param void* 
+ * @param void*
  */
 void *readEvents(void *path_event_void) {
   char *path_event = path_event_void;
