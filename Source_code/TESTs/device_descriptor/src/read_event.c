@@ -13,15 +13,22 @@
 #include <sys/poll.h>
 #include <time.h>
 #include <unistd.h>
+
 char *event_path = "/dev/input/event";
+const char EVENTS_AXIS_TABLE[3][10] = {"ABS_X", "ABS_Y", "ABS_Z"};
 
 event_buffer device_buffer;
 events *p_copy = NULL;
 struct libevdev *dev = NULL;
 int fd;
-event_buffer getDeviceBuffer() { return device_buffer; }
-
-void push(events **headRef, int val, const char *event_name) {
+/**
+ * @brief Push an event(device) to the linked list with the last characteristics
+ *
+ * @param **event Device event struct pointer
+ * @param int event value Example ABS_X=255(255 is the value)
+ * @param *char Name of the Event ABS_X=255(ABS_X is the event value)
+ */
+void push(events **headRef, int val, const char *event_name) { // TODO: change funtion prototype to int and check if memory was correctly allocated
   events *newNode = (events *)malloc(sizeof(events));
   newNode->val = val;
   strncpy(newNode->event_name, event_name, 30 - 1);
@@ -37,7 +44,10 @@ void push(events **headRef, int val, const char *event_name) {
     current->siguiente = newNode;
   }
 }
-
+/**
+ * @brief Free struct event memory
+ * @param event* struct event pointer
+ */
 void free_memory_events(events *head) {
   events *current;
 
@@ -47,12 +57,23 @@ void free_memory_events(events *head) {
     free(current);
   }
 }
+
+/**
+ * @brief Update value that match the event name
+ *
+ * If didn't find an event with that name, creates an new struct
+ *
+ * @param *event struct event pointer
+ * @param const *char Event name, Example: ABS_X
+ * @param int New update
+ * @return int 0 if didn't find any match, 1 if found the event name
+ */
 int updateValue(events *head, const char *event_name, int value) {
 
   events *current = head;
   while (current != NULL) {
     if (strcmp(current->event_name, event_name) == 0) {
-      printf("updating value :%d\n", value);
+      fprintf(stderr, "updating value :%d\n", value);
       current->val = value;
       return 1;
     }
@@ -61,7 +82,10 @@ int updateValue(events *head, const char *event_name, int value) {
   push(&head, value, event_name);
   return 0;
 }
-
+/**
+ * @brief Prints all the events in the screen
+ * @param *event struct event pointer
+ */
 void terminal_print(events *head) {
   events *current = head;
   printf("\e[1;1H\e[2J");
@@ -70,7 +94,11 @@ void terminal_print(events *head) {
     current = current->siguiente;
   }
 }
-
+/**
+ * @brief Handle signal when is pressed Ctrl + c
+ * This free all the resources
+ * @param int signal
+ */
 void handle_signal(int sig) {
   stopThreads();
   libevdev_free(dev);
@@ -93,13 +121,17 @@ void cleanUpEventBuffer(struct event_buffer *buffer) {
   pthread_cond_destroy(&buffer->cond);
 }
 
-const char EVENTS_AXIS_TABLE[3][10] = {"ABS_X", "ABS_Y", "ABS_Z"};
 void stopThreads() {
   pthread_mutex_lock(&device_buffer.mutex);
   device_buffer.stop = 1;
   pthread_cond_broadcast(&device_buffer.cond);
   pthread_mutex_unlock(&device_buffer.mutex);
 }
+
+/**
+ * @brief Get the current(last) event from the device
+ * @param void* Head struct event
+ */
 void *processEvents(void *arg) {
   events *head = (events *)arg;
   p_copy = (events *)arg;
@@ -124,6 +156,10 @@ void *processEvents(void *arg) {
   }
   return NULL;
 }
+/**
+ * @brief Print in the terminal all the events
+ * @param void* 
+ */
 void *readEvents(void *path_event_void) {
   char *path_event = path_event_void;
 

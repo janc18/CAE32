@@ -96,7 +96,7 @@ line_token *getLineTokens(char *line) {
     fprintf(stderr, "ERROR: Unable to allocate memory for line_token\n");
     return NULL;
   }
-  char param[50], value[50] = {0};
+  char param[50], value[50] = {0}; // TODO: Define size at the start in define macro
   int delimiter_ocurrence = numberOfDelimiter(line, ':');
   int result = sscanf(line, " %49[^:]: %49[^\n]", param, value);
 
@@ -125,7 +125,7 @@ line_token *getLineTokens(char *line) {
  *
  * @return int 0=Success, -1=Error
  */
-int freeLineToken(line_token *tokens) {
+int freeLineToken(line_token *tokens) { // TODO: check return value
   if (tokens == NULL) {
     return -1;
   } else {
@@ -141,7 +141,7 @@ int freeLineToken(line_token *tokens) {
  * @param char* An string with the contents of the input file
  * @param int* Index of the string to start to iterate
  *
- * @return char* An allocated string or NULL if char* string_file is NULL
+ * @return char* An allocated string, NULL if char* string_file is NULL or can't allocated memory to the line buffer
  */
 char *getEachLineOfFileString(char *string_file, int *offset) {
   if (string_file == NULL)
@@ -202,7 +202,7 @@ lines_tokenize *get_file_tokens(char *string_file) {
  *  - 0 memory successfully free
  *  - -1 line_token** is NULL
  */
-int freeMemoryTokens(line_token **tokens, int number_of_lines) {
+int freeMemoryTokens(line_token **tokens, int number_of_lines) { // TODO: check return value
   if (tokens != NULL) {
     for (int i = 0; i < number_of_lines; i++) {
       freeLineToken(tokens[i]);
@@ -321,7 +321,10 @@ lines_tokenize *getArrayOfTokensFromAnStringArray(char **array_of_strings, int n
   }
 
   lines_tokenize *p_string_tokenize = malloc((sizeof(line_token) * token_with_correct_syntax) + sizeof(int));
-
+  if (p_string_tokenize == NULL) {
+    fprintf(stderr, "DEBUG: Can't allocated memory\n");
+    return NULL;
+  }
   p_string_tokenize->number_of_correct_tokens = token_with_correct_syntax;
   p_string_tokenize->all_tokens = p_array_of_lines_tokenize;
 
@@ -334,15 +337,19 @@ lines_tokenize *getArrayOfTokensFromAnStringArray(char **array_of_strings, int n
  * @param int Number of lines allocated
  * @return int 0 in success, -1 in Error
  */
-int freeArrayOfLines(char **lines_allocated, int number_of_lines) {
+int freeArrayOfLines(char **lines_allocated, int number_of_lines) { // TODO: check return value
   if (lines_allocated != NULL) {
     for (int i = 0; i < number_of_lines; i++) {
-      free(lines_allocated[i]);
-      if (lines_allocated[i] == NULL)
+      if (lines_allocated[i] != NULL) {
+        free(lines_allocated[i]);
+      } else {
+        fprintf(stderr, "Line already free\n");
         return -1;
+      }
     }
     free(lines_allocated);
   } else {
+    fprintf(stderr, "Array of line already free\n");
     return -1;
   }
   return 0;
@@ -367,13 +374,24 @@ int freeLineTokenizeStruct(lines_tokenize *p_lines_tokenize) {
   }
   return 0;
 }
+/**
+ * @brief Analize line error
+ *
+ * @param *char Line
+ * @return int code error
+ */
 int analizeLine(char *line) {
   if (strcmp("", line) == 0) {
     return EMPTY_LINE;
   }
   return 0;
 }
-
+/**
+ * @brief Get the error messsage
+ *
+ * @param int code error
+ * @return *char Error description
+ */
 char *statusMessage(int error) {
   switch (error) {
   case EMPTY_LINE: {
