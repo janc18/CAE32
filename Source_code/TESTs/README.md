@@ -15,3 +15,15 @@ permission to read the incoming data from the device.
 
 This program is paired with another program, that program create a virtual device that 
 simulates inputs and it's verify with the input file give (**Example at device_descriptor/build/bin**)
+
+
+## TODO
+
+- [ ] Input analysis (Virtual Device)
+    - [ ] Get the step increment
+    - [ ] Get from file the actuation range
+    - [ ] Create a log than can be saved in a file
+    - [ ] 
+
+- [ ] Free resources (memory) when the device is desconnected
+    - [ ] Know whe the device was disconnected
