@@ -80,6 +80,7 @@
         "footprint_type_mismatch": "error",
         "hole_clearance": "error",
         "hole_near_hole": "error",
+        "holes_co_located": "warning",
         "invalid_outline": "error",
         "isolated_copper": "warning",
         "item_on_disabled_layer": "error",
@@ -474,6 +475,40 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
+        "diff_pair_gap": 0.15,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.16,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "0.7A",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.4,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.15,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.16,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "1A",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.5,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -532,6 +567,18 @@
       {
         "netclass": "Default",
         "pattern": "/MP"
+      },
+      {
+        "netclass": "1A",
+        "pattern": "+5V"
+      },
+      {
+        "netclass": "0.7A",
+        "pattern": "Net-(D5-A1)"
+      },
+      {
+        "netclass": "1A",
+        "pattern": "Net-(U4-VO)"
       }
     ]
   },
@@ -540,7 +587,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "gerber/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "../Boom/Pedals.step",
@@ -551,6 +598,7 @@
   },
   "schematic": {
     "annotate_start_num": 0,
+    "bom_export_filename": "PCB_ASEMBLY/Pedals_updated.csv",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
       "field_delimiter": ",",
@@ -600,13 +648,49 @@
           "label": "DNP",
           "name": "${DNP}",
           "show": true
+        },
+        {
+          "group_by": false,
+          "label": "#",
+          "name": "${ITEM_NUMBER}",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Item",
+          "name": "Item",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "LCSC_PART",
+          "name": "LCSC_PART",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Qty",
+          "name": "Qty",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Vendor",
+          "name": "Vendor",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Description",
+          "name": "Description",
+          "show": false
         }
       ],
       "filter_string": "",
       "group_symbols": true,
-      "name": "Grouped By Value",
+      "name": "",
       "sort_asc": true,
-      "sort_field": "Referencia"
+      "sort_field": "Reference"
     },
     "connection_grid_size": 50.0,
     "drawing": {
@@ -660,7 +744,7 @@
   "sheets": [
     [
       "f7125cb5-36d2-45a1-8b27-e8e6da0abb82",
-      ""
+      "Root"
     ],
     [
       "0187334c-67e7-4c37-9e56-a2c4a9ea8c19",
