@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #define EVENT_BUFFER_SIZE 10
-
+#define MAX_NUMBER_OF_VALUES 200
 typedef struct event_buffer {
   struct input_event events[EVENT_BUFFER_SIZE];
   int head;
@@ -18,7 +18,9 @@ typedef struct event_buffer {
 typedef struct events {
   int val;
   char event_name[30];
+  int values[MAX_NUMBER_OF_VALUES];
   struct events *siguiente;
+  int id;
 } events;
 
 void terminal_print(events *cabeza);
