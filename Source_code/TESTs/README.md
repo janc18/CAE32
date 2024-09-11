@@ -20,6 +20,9 @@ simulates inputs and it's verify with the input file give (**Example at device_d
 ## TODO
 
 - [ ] Input analysis (Virtual Device)
+    - [x] Get the number of the Events
+    - [ ] Allocate memory for each Event
+    - [ ] Add each value to an array of Event
     - [ ] Get the step increment
     - [ ] Get from file the actuation range
     - [ ] Create a log than can be saved in a file
