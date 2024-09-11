@@ -76,12 +76,12 @@ bool isDevicefind(devices_handle *devices, int device_number, char **event_path)
   // char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
   char *object_name = getObjectName(device_number, devices);
   // printData(buttons);
-
+  
   // Getting information of the real device using the name extracted from the file
   *event_path = getEventPath(object_name); // Valgrind: Conditional jump or move depends on uninitialised value(s)
   if (*event_path == NULL) {
     fprintf(stderr, "ERROR: Doesn't found any device with that name:%s\n", object_name);
-    freeAllMemory(devices);
+    //freeAllMemory(devices);
     return false;
   }
   devices->eventPath = *event_path;
