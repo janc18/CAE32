@@ -1,4 +1,5 @@
 #include "read_event.h"
+#include "event_analysis.h"
 #include "read_file_descriptor.h"
 #include <bits/pthreadtypes.h>
 #include <errno.h>
@@ -75,6 +76,7 @@ int updateValue(events *head, const char *event_name, int value) {
     if (strcmp(current->event_name, event_name) == 0) {
       fprintf(stderr, "updating value :%d\n", value);
       current->val = value;
+      current->id = current->id + 1;
       return 1;
     }
     current = current->siguiente;
@@ -91,7 +93,7 @@ void terminal_print(events *head) {
   printf("\e[1;1H\e[2J");
   while (current != NULL) {
     if (current->event_name != NULL) {
-      printf("Event:%s\tValue:%d\n", current->event_name, current->val);
+      printf("Event:%s\tValue:%d\tid:%d\n", current->event_name, current->val, current->id);
       current = current->siguiente;
     }
   }
@@ -155,6 +157,7 @@ void *processEvents(void *arg) {
     pthread_mutex_unlock(&device_buffer.mutex);
     updateValue(head, libevdev_event_code_get_name(ev.type, ev.code), ev.value);
     terminal_print(head);
+    printf("Number of Events captured until now %d\n", getNumberOfEvents(head));
   }
   return NULL;
 }
@@ -228,16 +231,8 @@ void *readEvents(void *path_event_void) {
         break;
       }
     }
-    // libevdev_free(dev);
-    // close(fd);
   }
 }
-
-// struct libevdev *get_dev_reference() {
-//
-//   // return dev
-// }
-
 char *getEventPath(char *name_to_compare) {
   printf("Searching the %s device\n", name_to_compare);
   if (name_to_compare == NULL)
