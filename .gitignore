@@ -17,7 +17,7 @@
 **build/
 **.cache/
 **.vscode/
-
+Debug/
 #ESP32-S3 dowloaded idf-components
 **managed_components/
 **dependencies.lock
