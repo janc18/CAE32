@@ -51,7 +51,6 @@ void push(events **headRef, int val, const char *event_name) { // TODO: change f
  */
 void free_memory_events(events *head) {
   events *current;
-
   while (head != NULL) {
     current = head;
     head = current->siguiente;
@@ -232,12 +231,12 @@ void *readEvents(void *path_event_void) {
       }
     }
   }
+  return (void*)0x0;
 }
 char *getEventPath(char *name_to_compare) {
-  printf("Searching the %s device\n", name_to_compare);
   if (name_to_compare == NULL)
     return NULL;
-
+  printf("Searching the %s device\n", name_to_compare);
   int fd = 1;
   int rc = 0;
   int iteration = 0;
@@ -245,12 +244,16 @@ char *getEventPath(char *name_to_compare) {
 
   while (fd > 0) {
     char *event_path_generated = generatePath(event_path, iteration);
+    if (event_path == NULL) {
+      break;
+    }
     fd = open(event_path_generated, O_RDONLY | O_NONBLOCK);
     rc = libevdev_new_from_fd(fd, &dev);
     if (rc < 0) {
       close(fd);
-      libevdev_free(dev);
-      free(event_path_generated);
+      if (event_path_generated != NULL) {
+        free(event_path_generated);
+      }
       return NULL;
     }
     if (strcmp(name_to_compare, libevdev_get_name(dev)) == 0) {

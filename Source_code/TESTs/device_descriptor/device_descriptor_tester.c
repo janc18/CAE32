@@ -30,7 +30,6 @@ int main(int argc, char *argv[]) {
   // Get device's information using the file *.cae32
   devices_handle *devices = NULL;
   devices = getAllInformationFromDeviceC32(argv[1]);
-
   // Checking if the device's information was correct
   if (devices == NULL) {
     return EXIT_FAILURE;
@@ -39,17 +38,12 @@ int main(int argc, char *argv[]) {
   // Searching from the device's name given and getting the event_path
   // event_path example: /dev/input/event15
   char *event_path;
-  if (!isDevicefind(devices, 2, &event_path)) {
-    return EXIT_FAILURE;
-  }
-
-  // Free memory in the case that didn't find any device with the given name
-  if (event_path == NULL) {
-    if (devices != NULL)
+  if (!isDevicefind(devices, 2, event_path)) {
+    if (devices != NULL) {
       freeAllMemory(devices);
-    return EXIT_FAILURE;
+      return EXIT_FAILURE;
+    }
   }
-
   printf("The path is:%s\nReading events\n", event_path);
   // Creation of threads to read and print the output data from de device
   pthread_t reader_thread, processor_thread;
@@ -57,6 +51,9 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "ERROR: Creating threads\n");
     freeAllMemory(devices);
     return EXIT_FAILURE;
+  }
+  if (devices != NULL) {
+    freeAllMemory(devices);
   }
   return EXIT_SUCCESS;
 }

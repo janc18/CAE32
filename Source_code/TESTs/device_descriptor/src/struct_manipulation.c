@@ -26,7 +26,7 @@
  */
 devices_handle *getAllInformationFromDeviceC32(char *file_path) {
   // Saving file into a string
-  devices_handle *p_devices = malloc(sizeof(devices_handle));
+  devices_handle *p_devices = calloc(1,sizeof(devices_handle));
   p_devices->string_file = fileToString(file_path);
   if (p_devices->string_file == NULL) {
     printf("ERROR: At open file\n");
