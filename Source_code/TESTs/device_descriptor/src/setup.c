@@ -71,20 +71,31 @@ bool itHasSudoPermissions(char *device_information_path) {
   return true;
 }
 
-bool isDevicefind(devices_handle *devices, int device_number, char **event_path) {
+/**
+ * @brief Search for an specific device index
+ *
+ * It search for a given device number object at the input file
+ *
+ * @param devices_handle* device handle
+ * @param int device number (Object device found in the input file)
+ * @param char **
+ * @return int -1 Doesn't want to continue or the path is invalid
+ *              0 The program was executed as sudo and the given path is correct
+ */
+bool isDevicefind(devices_handle *devices, int device_number, char *event_path) {
   // demo code to extract information from the device(device *.cae32)
   // char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
   char *object_name = getObjectName(device_number, devices);
   // printData(buttons);
   
   // Getting information of the real device using the name extracted from the file
-  *event_path = getEventPath(object_name); // Valgrind: Conditional jump or move depends on uninitialised value(s)
-  if (*event_path == NULL) {
+  event_path = getEventPath(object_name); // Valgrind: Conditional jump or move depends on uninitialised value(s)
+  if (event_path == NULL) {
     fprintf(stderr, "ERROR: Doesn't found any device with that name:%s\n", object_name);
     //freeAllMemory(devices);
     return false;
   }
-  devices->eventPath = *event_path;
+  devices->eventPath = event_path;
   return true;
 }
 
