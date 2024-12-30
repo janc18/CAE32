@@ -16,7 +16,7 @@ Physical_Minumum: 0
 Physical_Maximum: 1
 End: CAE32 Shifter
 
-Start: CAE32 Steering Wheel
+Start: CAE32 CAE32
 Buttons: 15
 Size_bits: 1
 Axis: 1
@@ -25,4 +25,4 @@ Logical_Minimum: 6
 Logical_Maximum: 1
 Physical_Minumum: 0
 Physical_Maximum: 1
-End: CAE32 Steering Wheel
+End: CAE32 CAE32

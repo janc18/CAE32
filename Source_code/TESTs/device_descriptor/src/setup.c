@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 /**
  * @brief Check if was executed with sudo permissions
  *
@@ -82,26 +83,27 @@ bool itHasSudoPermissions(char *device_information_path) {
  * @return int -1 Doesn't want to continue or the path is invalid
  *              0 The program was executed as sudo and the given path is correct
  */
-bool isDevicefind(devices_handle *devices, int device_number, char *event_path) {
+bool isDevicefind(devices_handle *devices, int device_number) {
   // demo code to extract information from the device(device *.cae32)
   // char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
   char *object_name = getObjectName(device_number, devices);
-  // printData(buttons);
-  
-  // Getting information of the real device using the name extracted from the file
-  event_path = getEventPath(object_name); // Valgrind: Conditional jump or move depends on uninitialised value(s)
-  if (event_path == NULL) {
-    fprintf(stderr, "ERROR: Doesn't found any device with that name:%s\n", object_name);
-    //freeAllMemory(devices);
+  if (object_name!= NULL){
     return false;
   }
-  devices->eventPath = event_path;
+  // Getting information of the real device using the name extracted from the file
+  char *pEventPathHeap = getEventPath(object_name); // Valgrind: Conditional jump or move depends on uninitialised value(s)
+  if (pEventPathHeap == NULL) {
+    fprintf(stderr, "ERROR: Doesn't found any device with that name:%s\n", object_name);
+    // freeAllMemory(devices);
+    return false;
+  }
+  devices->eventPath =pEventPathHeap;
   return true;
 }
 
 bool threadCreation(pthread_t reader_thread, pthread_t processor_thread, char *event_path) {
 
-  events *cabeza = (events *)calloc(sizeof(events),1);
+  events *cabeza = (events *)calloc(sizeof(events), 1);
   if (pthread_create(&reader_thread, NULL, readEvents, (void *)event_path) != 0) {
     fprintf(stderr, "Error creating reader thread\n");
     return false;

@@ -37,17 +37,20 @@ int main(int argc, char *argv[]) {
 
   // Searching from the device's name given and getting the event_path
   // event_path example: /dev/input/event15
-  char *event_path;
-  if (!isDevicefind(devices, 2, event_path)) {
+  if (!isDevicefind(devices, 2)) {
     if (devices != NULL) {
       freeAllMemory(devices);
       return EXIT_FAILURE;
     }
   }
-  printf("The path is:%s\nReading events\n", event_path);
+  if (devices->eventPath == NULL) {
+    printf("An error happend getting the path");
+    return EXIT_FAILURE;
+  }
+  printf("The path is:%s\nReading events\n", devices->eventPath);
   // Creation of threads to read and print the output data from de device
   pthread_t reader_thread, processor_thread;
-  if (!threadCreation(reader_thread, processor_thread, event_path)) {
+  if (!threadCreation(reader_thread, processor_thread, devices->eventPath)) {
     fprintf(stderr, "ERROR: Creating threads\n");
     freeAllMemory(devices);
     return EXIT_FAILURE;

@@ -256,10 +256,11 @@ char *getEventPath(char *name_to_compare) {
       }
       return NULL;
     }
+   printf("Devices scanned %s\n",libevdev_get_name(dev)); 
     if (strcmp(name_to_compare, libevdev_get_name(dev)) == 0) {
       close(fd);
       libevdev_free(dev);
-      return event_path_generated;
+      return strdup(event_path_generated);
     }
     free(event_path_generated);
     close(fd);
