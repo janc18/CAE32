@@ -2,12 +2,12 @@
 #include "read_event.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+/*
 void generateDataSet(events *head, eventCharacteristics *event) {
   // Allocating memory
   eventCharacteristics *peventcharacteristics = calloc(sizeof(eventCharacteristics), 1);
 }
-
+*/
 int getNumberOfEvents(events *head) {
   int numberOfEvents = 0;
   events *current = head;
@@ -23,7 +23,8 @@ int getNumberOfEvents(events *head) {
   }
   return numberOfEvents;
 }
-
+/*
 int appendValue(events head){
 //
 }
+*/
