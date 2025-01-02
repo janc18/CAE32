@@ -53,7 +53,8 @@ int main(int argc, char *argv[]) {
     printf("An error happend getting the path");
     return EXIT_FAILURE;
   }
-  printf("The path is:%s\nReading events\n", devices->eventPath);
+  printf("The path is:%s\nReading events in 3 seconds ...\n", devices->eventPath);
+  sleep(3);
   // Creation of threads to read and print the output data from de device
   pthread_t reader_thread = 0, processor_thread=0;
   if (!threadCreation(reader_thread, processor_thread, devices->eventPath)) {

@@ -3,7 +3,7 @@
 #include <libevdev-1.0/libevdev/libevdev.h>
 #include <pthread.h>
 #include <stdbool.h>
-#define EVENT_BUFFER_SIZE 10
+#define EVENT_BUFFER_SIZE 19
 #define MAX_NUMBER_OF_VALUES 200
 typedef struct event_buffer {
   struct input_event events[EVENT_BUFFER_SIZE];

@@ -164,6 +164,7 @@ void *processEvents(void *arg) {
     updateValue(head, libevdev_event_code_get_name(ev.type, ev.code), ev.value);
     terminal_print(head);
     printf("Number of Events captured until now %d\n", getNumberOfEvents(head));
+    printf("Number of Buttons %d\n", search_by_prefix(head, "BTN"));
   }
   return NULL;
 }
