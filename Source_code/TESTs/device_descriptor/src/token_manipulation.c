@@ -136,9 +136,9 @@ int searchForWord(line_token *token_file, const char *parameter, int index) {
     return -1;
   }
   if (strcmp(parameter, token_file->parameter) == 0) {
-#ifdef DEBUG
+//#ifdef DEBUG
     printf("Word: [%s] with [%s] value, found at index:%d\n", token_file->parameter, token_file->value, index);
-#endif /* ifdef DEBUG */
+//#endif /* ifdef DEBUG */
     return 0;
   } else {
     return -1;

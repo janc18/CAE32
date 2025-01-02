@@ -87,7 +87,8 @@ bool isDevicefind(devices_handle *devices, int device_number) {
   // demo code to extract information from the device(device *.cae32)
   // char *buttons = getFeatureValueFromDeviceC32(1, devices, "Buttons");
   char *object_name = getObjectName(device_number, devices);
-  if (object_name!= NULL){
+  if (object_name== NULL){
+    printf("Object name NULL");
     return false;
   }
   // Getting information of the real device using the name extracted from the file
