@@ -17,7 +17,10 @@
 
 char *event_path = "/dev/input/event";
 const char EVENTS_AXIS_TABLE[3][10] = {"ABS_X", "ABS_Y", "ABS_Z"};
-
+const char *color_event = "\033[1;34m";
+const char *color_value = "\033[1;32m";
+const char *color_id = "\033[1;31m";
+const char *color_reset = "\033[0m";
 event_buffer device_buffer;
 events *p_copy = NULL;
 struct libevdev *dev = NULL;
@@ -91,7 +94,12 @@ void terminal_print(events *head) {
   events *current = head;
   printf("\033[1;1H\033[2J");
   while (current != NULL) {
-    printf("Event:%s\tValue:%d\tid:%d\n", current->event_name, current->val, current->id);
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    struct tm *tm = localtime(&tv.tv_sec);
+    int millis = tv.tv_usec / 1000;
+    printf("[%02d:%02d:%02d.%03d]\t%sEvent:%s %-15s %sValue:%s %-10d %sid:%s %-5d\n", tm->tm_hour, tm->tm_min, tm->tm_sec, millis, color_event,
+           color_reset, current->event_name, color_value, color_reset, current->val, color_id, color_reset, current->id);
     current = current->siguiente;
   }
 }
