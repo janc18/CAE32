@@ -89,12 +89,10 @@ int updateValue(events *head, const char *event_name, int value) {
  */
 void terminal_print(events *head) {
   events *current = head;
-  printf("\e[1;1H\e[2J");
+  printf("\033[1;1H\033[2J");
   while (current != NULL) {
-    if (current->event_name != NULL) {
-      printf("Event:%s\tValue:%d\tid:%d\n", current->event_name, current->val, current->id);
-      current = current->siguiente;
-    }
+    printf("Event:%s\tValue:%d\tid:%d\n", current->event_name, current->val, current->id);
+    current = current->siguiente;
   }
 }
 /**
@@ -102,11 +100,12 @@ void terminal_print(events *head) {
  * This free all the resources
  * @param int signal
  */
+
 void handle_signal(int sig) {
   stopThreads();
   libevdev_free(dev);
   close(fd);
-  printf("\n");
+  printf("Signal:%d\n", sig);
   free_memory_events(p_copy);
 }
 
@@ -231,11 +230,13 @@ void *readEvents(void *path_event_void) {
       }
     }
   }
-  return (void*)0x0;
+  return (void *)0x0;
 }
 char *getEventPath(char *name_to_compare) {
-  if (name_to_compare == NULL)
+  if (name_to_compare == NULL) {
+    printf("The device name is NULL\n");
     return NULL;
+  }
   printf("Searching the %s device\n", name_to_compare);
   int fd = 1;
   int rc = 0;
@@ -245,6 +246,8 @@ char *getEventPath(char *name_to_compare) {
   while (fd > 0) {
     char *event_path_generated = generatePath(event_path, iteration);
     if (event_path == NULL) {
+      if (event_path != NULL)
+        free(event_path_generated);
       break;
     }
     fd = open(event_path_generated, O_RDONLY | O_NONBLOCK);
@@ -256,11 +259,11 @@ char *getEventPath(char *name_to_compare) {
       }
       return NULL;
     }
-   printf("Devices scanned %s\n",libevdev_get_name(dev)); 
+    printf("Devices scanned %s\n", libevdev_get_name(dev));
     if (strcmp(name_to_compare, libevdev_get_name(dev)) == 0) {
       close(fd);
       libevdev_free(dev);
-      return strdup(event_path_generated);
+      return event_path_generated;
     }
     free(event_path_generated);
     close(fd);
