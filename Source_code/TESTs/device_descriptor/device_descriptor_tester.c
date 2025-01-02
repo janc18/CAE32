@@ -22,6 +22,10 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
+  if(argc!=2){
+    printf("Doesn't give input file (devices.cae32)");
+    return EXIT_FAILURE;
+  }
   signal(SIGINT, handle_signal);
 
   if (!itHasSudoPermissions(argv[1])) {
@@ -32,13 +36,15 @@ int main(int argc, char *argv[]) {
   devices = getAllInformationFromDeviceC32(argv[1]);
   // Checking if the device's information was correct
   if (devices == NULL) {
+    printf("Error at getting devices\n");
     return EXIT_FAILURE;
   }
 
   // Searching from the device's name given and getting the event_path
   // event_path example: /dev/input/event15
-  if (!isDevicefind(devices, 2)) {
+  if (!isDevicefind(devices, 2)){
     if (devices != NULL) {
+      printf("The device doesn't found\n");
       freeAllMemory(devices);
       return EXIT_FAILURE;
     }
@@ -49,7 +55,7 @@ int main(int argc, char *argv[]) {
   }
   printf("The path is:%s\nReading events\n", devices->eventPath);
   // Creation of threads to read and print the output data from de device
-  pthread_t reader_thread, processor_thread;
+  pthread_t reader_thread = 0, processor_thread=0;
   if (!threadCreation(reader_thread, processor_thread, devices->eventPath)) {
     fprintf(stderr, "ERROR: Creating threads\n");
     freeAllMemory(devices);
