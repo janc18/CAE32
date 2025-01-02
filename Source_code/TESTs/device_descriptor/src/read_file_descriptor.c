@@ -151,16 +151,14 @@ char *searchDevice(char *path_device) {
 struct hidraw_report_descriptor *getReportDescriptor(char *path_device) {
   char *hid_path;
 
-  if (path_device != NULL) {
     hid_path = searchDevice(path_device);
-  }
 
   if (hid_path == NULL) {
     return NULL;
   }
 
   int fd;
-  int i, res, desc_size = 0;
+  int res, desc_size = 0;
   char buf[256];
   struct hidraw_report_descriptor *rpt_desc = malloc(sizeof(struct hidraw_report_descriptor));
   fd = open(hid_path, O_RDWR | O_NONBLOCK);

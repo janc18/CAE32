@@ -161,7 +161,7 @@ char *getEachLineOfFileString(char *string_file, int *offset) {
   *offset = *offset + 1;                        // jump \n character
   temp_line_buffer[offset_pline_buffer] = '\0'; // add string terminate character
 
-  int size_of_temp_line_buffer = strlen(temp_line_buffer) + 1;
+  unsigned long size_of_temp_line_buffer = strlen(temp_line_buffer) + 1;
   if (size_of_temp_line_buffer > sizeof(temp_line_buffer)) {
     return NULL;
   }
