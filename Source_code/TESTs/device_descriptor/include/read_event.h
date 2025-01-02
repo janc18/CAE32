@@ -30,8 +30,8 @@ void push(events **cabezaRef, int val, const char *event_name);
 char *getEventPath(char *name_to_compare);
 void *readEvents(void *path_event_void);
 void *processEvents(void *arg);
-void stopThreads();
+void stopThreads(void);
 void initializeEventBuffer(struct event_buffer *buffer);
 void handle_signal(int sig);
-event_buffer getDeviceBuffer();
+event_buffer getDeviceBuffer(void);
 #endif // !READ_EVENT_h
