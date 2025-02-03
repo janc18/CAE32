@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "usbd_hid.h"
 #include "i2cDriver.h"
+#include "initialization.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +47,7 @@ SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
 extern USBD_HandleTypeDef hUsbDeviceFS;
-uint16_t data=0;
+uint16_t data = 0;
 typedef struct {
 	uint8_t MODIFIER;
 	uint8_t RESERVED;
@@ -63,7 +64,6 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -76,55 +76,30 @@ static void MX_SPI1_Init(void);
  * @retval int
  */
 int main(void) {
+
 	/* USER CODE BEGIN 1 */
-	uint8_t contador = 0;
 	/* USER CODE END 1 */
-
 	/* MCU Configuration--------------------------------------------------------*/
-
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
 	HAL_Init();
-
 	/* USER CODE BEGIN Init */
-
 	/* USER CODE END Init */
-
 	/* Configure the system clock */
 	SystemClock_Config();
-
 	/* USER CODE BEGIN SysInit */
-
 	/* USER CODE END SysInit */
-
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
 	MX_USB_DEVICE_Init();
 	MX_SPI1_Init();
 	/* USER CODE BEGIN 2 */
-	ADC128S102_StartConversion(&hspi1);
-
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		/* USER CODE END WHILE */
-
-		/* USER CODE BEGIN 3 */
-
-		uint8_t msb = (data>> 8) & 0xFF;
-		uint8_t lsb = data & 0xFF;
-		uint8_t report[] = { 1, 0xff, msb, lsb, 0, 0, 1 };
-		USBD_HID_SendReport(&hUsbDeviceFS, report, 6);
-		HAL_Delay(1000);
-		uint8_t report2[] = { 1, 0x00, contador, contador, contador, contador };
-		USBD_HID_SendReport(&hUsbDeviceFS, report2, 6);
-		HAL_Delay(1000); 	       // Repeat this task on every 1 second
-		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_0);
-		contador++;
-		data=ADC128S102_ReadData(&hspi1);
-
-
+		executeDemoAxis(hUsbDeviceFS);
 	}
 	/* USER CODE END 3 */
 }
@@ -139,10 +114,6 @@ void SystemClock_Config(void) {
 	RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
 
 	/** Initializes the RCC Oscillators according to the specified parameters
-
-sudo snap install kicad
-
-	 *
 	 * in the RCC_OscInitTypeDef structure.
 	 */
 	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48
@@ -183,8 +154,6 @@ sudo snap install kicad
  */
 static void MX_SPI1_Init(void) {
 
-
-
 	/* USER CODE BEGIN SPI1_Init 0 */
 
 	/* USER CODE END SPI1_Init 0 */
@@ -196,7 +165,7 @@ static void MX_SPI1_Init(void) {
 	hspi1.Instance = SPI1;
 	hspi1.Init.Mode = SPI_MODE_MASTER;
 	hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-	hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
+	hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
 	hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
 	hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
 	hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
