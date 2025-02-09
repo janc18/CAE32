@@ -1,23 +1,21 @@
 #!/bin/bash
+printf "\e[1m%-20s %-15s\e[0m\n" "Dependency" "Status"
+printf "%-20s %-15s\n" "--------------------" "---------------"
 
-echo -e "\e[1mDependency\t Status\e[0m"
-echo -e "\t\t|---------"
 for cmd in cmake gcc make pkgconf gtester; do 
   if ! command -v $cmd &> /dev/null; then
-    echo -e "$cmd \t\t \e[31mNot installed\e[0m"
+    printf "%-20s \e[31m%-15s\e[0m\n" "$cmd" "Not installed"
     Packages_not_installed+=($cmd)
-    exit 1
   else
-    echo -e "$cmd \t\t \e[32mInstalled\e[0m"
+    printf "%-20s \e[32m%-15s\e[0m\n" "$cmd" "Installed"
     Packages_installed+=($cmd)
   fi 
 done
 
-# Checking if some library are installed with pkg-config 
 for pkg_cmd in gtk3+-3.0 libevdev-dev; do
-  if pkg-config --exist $pkg_cmd; then
-    echo -e "$pkg_cmd\t\e[31m Not installed\e[0m"
+  if ! pkg-config --exists $pkg_cmd; then
+    printf "%-20s \e[32m%-15s\e[0m\n" "$pkg_cmd" "Installed"
   else
-    echo -e "$pkg_cmd\t\e[32m Installed\e[0m"
+    printf "%-20s \e[31m%-15s\e[0m\n" "$pkg_cmd" "Not installed"
   fi
- done
+done
