@@ -1,3 +1,6 @@
+#define RL_NO_STANDARD_KEYS
+#include <raylib.h>
+#include <libevdev/libevdev.h>
 #include "read_event.h"
 #include "event_analysis.h"
 #include "read_file_descriptor.h"
@@ -14,7 +17,6 @@
 #include <sys/poll.h>
 #include <time.h>
 #include <unistd.h>
-
 char *event_path = "/dev/input/event";
 const char EVENTS_AXIS_TABLE[3][10] = {"ABS_X", "ABS_Y", "ABS_Z"};
 const char *color_event = "\033[1;34m";
@@ -101,6 +103,7 @@ void terminal_print(events *head) {
     printf("[%02d:%02d:%02d.%03d]\t%sEvent:%s %-15s %sValue:%s %-10d %sid:%s %-5d\n", tm->tm_hour, tm->tm_min, tm->tm_sec, millis, color_event,
            color_reset, current->event_name, color_value, color_reset, current->val, color_id, color_reset, current->id);
     current = current->siguiente;
+
   }
 }
 /**
