@@ -2,6 +2,7 @@
 #define __CAE32_APP_H__
 
 #include "device.h"
+#include "glibconfig.h"
 #include <gtk/gtk.h>
 
 #define CAT_TYPE_CAE32_APP (cae32_app_get_type())
@@ -21,7 +22,7 @@ struct _ObjectsUI {
   GtkWidget *barra_clutch;
   GtkWidget *output;
   GtkWidget *swa; // sterring wheel animation
-  gdouble rotation;
+  gint8  rotation;
   GtkWidget *reconectar;
   GtkWidget *search_updates; // button
   GtkWidget *tv_updatelog;
