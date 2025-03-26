@@ -28,11 +28,11 @@
 /**
  * @brief Name of the device to search
  */
-const char nameCAE[] = "CAE32 Steering Wheel";
+const char nameCAE[] = "CAE32 CAE32";
 /**
  * @brief Maximum number of times to search for the device
  */
-int MAXDEVICES = 10;
+int MAXDEVICES = 30;
 /**
  * @brief HID path
  */
@@ -44,7 +44,7 @@ const char pathJoystick[] = "/dev/input/js";
 
 struct udev_source *source;
 
-void updateAxisBar(ObjectsUI *UI, guint8 number, guint16 value);
+void updateAxisBar(ObjectsUI *UI, guint8 number, gdouble value);
 
 /**
  * @brief Search for an HID and Joystick device.
@@ -117,15 +117,20 @@ static gboolean CaptureEvent(gpointer data) {
   }
 
   if (len == sizeof(js)) {
+    gdouble mapped_value = 0;
     if (js.type & JS_EVENT_AXIS) {
-      updateAxisBar(UI, js.number, js.value);
-      g_printerr("Axis: %d, Value: %d\n", js.number, js.value);
-    } else if (js.type & JS_EVENT_BUTTON) {
-
-      g_printerr("Button: %d, Value: %d\n", js.number, js.value);
+      mapped_value = js.value / 255.0; // Already 0-255, map directly
+      g_printerr("Event AXIS %f\n",mapped_value);
+    } else {
+      mapped_value = (js.value + 32767.0) / 65534.0; // Normalize -32767 to 32767
+      g_printerr("Event SD %f\n",mapped_value);
     }
+    updateAxisBar(UI, js.number, mapped_value * 255.0);
+  } else if (js.type & JS_EVENT_BUTTON) {
+
+    g_printerr("Button: %d, Value: %hd\n", js.number, js.value);
   }
-  return TRUE;
+return TRUE;
 }
 
 /**
@@ -306,32 +311,35 @@ int searchDevice(gpointer data) {
  *@todo Add implicity formula
  */
 void updateSteeringWheel(ObjectsUI *UI, guint16 value) {
-  UI->rotation = (value / 32000.0) * 8;
+  guint16 valueCalculated=(value / 32767.0) * 8;
+  UI->rotation = valueCalculated;
+  g_printerr("value calcuted :%hu\n",valueCalculated);
   gtk_widget_queue_draw(UI->swa);
 }
 /**
  *@brief Update level bar ,corresponded to one axis
  *@param *ObjectsUI Struct with all the UI's components
  *@param guint8 Axis'number for example: number=1 correspond to the brake
- *@param guint16 Value of axis
+ *@param gdouble Value of axis
  */
-void updateAxisBar(ObjectsUI *UI, guint8 number, guint16 value) {
+void updateAxisBar(ObjectsUI *UI, guint8 number, gdouble value) {
+    gdouble normalized_value = value /32767;
+  g_printerr("%f\n",normalized_value);
   switch (number) {
   case 0: {
-    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_freno), value / 32000.0);
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_freno), normalized_value);
     break;
   }
   case 3: {
-    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_clutch), value / 32000.0);
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_clutch), normalized_value);
     break;
   }
   case 2: {
-    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_acelerador), value / 32000.0);
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_acelerador), normalized_value);
     break;
   }
   case 1: {
     updateSteeringWheel(UI, value);
-
     break;
   }
   }
