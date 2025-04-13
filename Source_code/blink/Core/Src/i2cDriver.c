@@ -1,33 +1,45 @@
 #include "i2cDriver.h"
 
-#define ADC128S102_CMD_START_CONVERSION 0x10
-#define ADC128S102_CMD_READ_DATA         0x00
-#define ADC128S102_CMD_SET_CHANNEL 0x40  
 
-uint8_t spi_tx_buffer[2];
-uint8_t spi_rx_buffer[2];
-
-void ADC128S102_StartConversion(SPI_HandleTypeDef *hspi1) {
-    spi_tx_buffer[0] = ADC128S102_CMD_START_CONVERSION;
-    spi_tx_buffer[1] = 0x00;
-
-    HAL_SPI_Transmit(hspi1, spi_tx_buffer, 2, HAL_MAX_DELAY);
+void SCLK_High(void) {
+    HAL_GPIO_WritePin(GPIOA, SCLK_Pin, GPIO_PIN_SET);
 }
 
-uint16_t ADC128S102_ReadChannel(SPI_HandleTypeDef *hspi, uint8_t channel) {
-    uint16_t adc_data = 0; 
+void SCLK_Low(void) {
+    HAL_GPIO_WritePin(GPIOA, SCLK_Pin, GPIO_PIN_RESET);
+}
+
+void Send_Bit(uint8_t bit_value) {
+    if (bit_value) {
+        HAL_GPIO_WritePin(GPIOA, MOSI_Pin, GPIO_PIN_SET);
+    } else {
+        HAL_GPIO_WritePin(GPIOA, MOSI_Pin, GPIO_PIN_RESET);
+    }
+    SCLK_High();
+    SCLK_Low();
+}
+
+uint8_t Receive_Bit(void) {
+    uint8_t bit_value = HAL_GPIO_ReadPin(GPIOA, MISO_Pin);
+    SCLK_High();
+    SCLK_Low();
+    return bit_value;
+}
+
+
+uint16_t ADC128S102_ReadSingleChannel(uint8_t channel) {
+    uint16_t adc_data = 0;
     if (channel > 7) {
-        return 0xFFFF;  
+        return 0xFFFF;
     }
-    spi_tx_buffer[0] = ADC128S102_CMD_SET_CHANNEL | (channel & 0x07);
-    spi_tx_buffer[1] = 0x00;  
-    if (HAL_SPI_Transmit(hspi, spi_tx_buffer, 2, HAL_MAX_DELAY) != HAL_OK) {
-        return 0xFFFF;  
+    HAL_GPIO_WritePin(GPIOA, CS_Pin, GPIO_PIN_RESET);
+    Send_Bit(1);
+    for (int i = 2; i >= 0; i--) {
+        Send_Bit((channel >> i) & 0x01);
     }
-    HAL_Delay(1);  
-    if (HAL_SPI_Receive(hspi, spi_rx_buffer, 2, HAL_MAX_DELAY) != HAL_OK) {
-        return 0xFFFF;  
+    for (int i = 11; i >= 0; i--) {
+        adc_data |= (Receive_Bit() << i);
     }
-    adc_data = ((spi_rx_buffer[0] << 8) | spi_rx_buffer[1]) >> 4;
+    HAL_GPIO_WritePin(GPIOA, CS_Pin, GPIO_PIN_SET);
     return adc_data;
 }
