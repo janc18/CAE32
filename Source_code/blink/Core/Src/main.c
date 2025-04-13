@@ -46,23 +46,12 @@
 
 /* USER CODE BEGIN PV */
 extern USBD_HandleTypeDef hUsbDeviceFS;
-uint16_t data = 0;
-typedef struct {
-	uint8_t MODIFIER;
-	uint8_t RESERVED;
-	uint8_t KEYCODE1;
-	uint8_t KEYCODE2;
-	uint8_t KEYCODE3;
-} subKeyBoard;
-uint16_t result[8] = { 0 };
-uint16_t result2=0 ;
-
-uint16_t resultado;
-uint16_t resultado2;
-int canal1=1;
-int canal2=3;
-subKeyBoard *keyBoardHIDsub;
-uint8_t dummyBits[1] = "a";
+uint16_t rawAcceleratorValue=0;
+uint16_t rawClutchValue=0;
+uint16_t rawBrakeValue=0;
+uint8_t acceleratorChannel=1;
+uint8_t clutchChannel=2;
+uint8_t brakeChannel=4;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,10 +99,14 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
-		HAL_Delay(10);
-		resultado = ADC128S102_ReadSingleChannel(canal1);
-		HAL_Delay(10);
-    /* USER CODE END WHILE */
+		rawAcceleratorValue = ADC128S102_ReadSingleChannel(acceleratorChannel);
+		rawBrakeValue=ADC128S102_ReadSingleChannel(brakeChannel);
+		rawClutchValue=ADC128S102_ReadSingleChannel(clutchChannel);
+		uint8_t mapAcceleratorValue = map(rawAcceleratorValue, 0, 3750, 0, 255);
+		uint8_t mapBrakeValue = map(rawBrakeValue, 0, 3750, 0, 255);
+		uint8_t mapClutchValue = map(rawClutchValue, 0, 3750, 0, 255);
+		sendAxisValues(hUsbDeviceFS, mapAcceleratorValue, mapClutchValue, mapBrakeValue);
+		/* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 

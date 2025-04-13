@@ -27,7 +27,7 @@ typedef struct USBReport_t{
 }USBReport_t;
 
 
-int executeDemoAxis(USBD_HandleTypeDef hUsbDeviceFS,uint8_t axisX,uint8_t axisY);
+int sendAxisValues(USBD_HandleTypeDef hUsbDeviceFS,uint8_t accelerator,uint8_t clutch,uint8_t brake);
 int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 
 #endif /* INC_INITIALIZATION_H_ */

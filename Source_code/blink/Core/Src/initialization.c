@@ -16,8 +16,8 @@
  *
  *
  */
-int executeDemoAxis(USBD_HandleTypeDef hUsbDeviceFS,uint8_t axisX,uint8_t axisY) {
-	uint8_t report[6] = { 1, 0xff, axisX, axisY, 12, 45};
+int sendAxisValues(USBD_HandleTypeDef hUsbDeviceFS,uint8_t accelerator,uint8_t clutch,uint8_t brake) {
+	uint8_t report[6] = { 1, 0xff, accelerator, clutch, brake, 45};
 	USBD_HID_SendReport(&hUsbDeviceFS, report, sizeof(report));
 	HAL_Delay(10);
 	return OK;
