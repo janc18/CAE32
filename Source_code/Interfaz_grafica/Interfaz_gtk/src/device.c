@@ -330,15 +330,15 @@ void updateAxisBar(ObjectsUI *UI, guint8 number, gdouble value) {
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_freno), normalized_value);
     break;
   }
-  case 3: {
+  case 2: {
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_clutch), normalized_value);
     break;
   }
-  case 2: {
+  case 1: {
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_acelerador), normalized_value);
     break;
   }
-  case 1: {
+  case 3: {
     updateSteeringWheel(UI, value);
     break;
   }
