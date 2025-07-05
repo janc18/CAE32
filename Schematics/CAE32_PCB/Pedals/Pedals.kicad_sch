@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "CAE32 pedals")
-		(date "2024-01-13")
-		(rev "1")
+		(date "2025-07-05")
+		(rev "2")
 		(comment 1 "Desing by: janc18")
 		(comment 2 "Version 2.1")
 	)
@@ -4610,6 +4610,102 @@
 		(color 0 0 0 0)
 		(uuid "fa629413-0a67-42c6-9ab8-f4650acb04cc")
 	)
+	(no_connect
+		(at 30.48 116.84)
+		(uuid "0c50d4e4-70cd-4d69-8c0c-0c1d3039d6d0")
+	)
+	(no_connect
+		(at 66.04 104.14)
+		(uuid "0dea18b3-a10f-4dbf-802a-c76e00d6c431")
+	)
+	(no_connect
+		(at 30.48 124.46)
+		(uuid "1392707c-86d5-4131-9ae3-9d0e867451c7")
+	)
+	(no_connect
+		(at 66.04 53.34)
+		(uuid "146d538b-a4f8-4d77-90d4-deeac0016ce6")
+	)
+	(no_connect
+		(at 30.48 86.36)
+		(uuid "20dcab3b-7a29-46ff-8010-af010c316bde")
+	)
+	(no_connect
+		(at 30.48 127)
+		(uuid "212d37bb-7134-4a6f-bb55-9d5f84fa3ce4")
+	)
+	(no_connect
+		(at 43.18 43.18)
+		(uuid "2f494639-9276-46e0-b73f-06dd4172a28c")
+	)
+	(no_connect
+		(at 66.04 96.52)
+		(uuid "30d3f267-1b9e-436d-9965-f0cb910a976c")
+	)
+	(no_connect
+		(at 66.04 129.54)
+		(uuid "34e9072f-0671-479b-a1a1-5eb7ad5162e5")
+	)
+	(no_connect
+		(at 66.04 124.46)
+		(uuid "36fad6a6-3190-4051-ad0a-551451e561c1")
+	)
+	(no_connect
+		(at 66.04 109.22)
+		(uuid "38dd14da-e94c-4bdc-95b1-1b6050b58a31")
+	)
+	(no_connect
+		(at 66.04 55.88)
+		(uuid "51944c2b-c345-4384-b82d-19265d22447d")
+	)
+	(no_connect
+		(at 66.04 101.6)
+		(uuid "55bc5c33-0ba1-4166-8557-a22b2002547c")
+	)
+	(no_connect
+		(at 30.48 129.54)
+		(uuid "648cada4-c144-4a0a-852d-6e43eefce6e6")
+	)
+	(no_connect
+		(at 66.04 99.06)
+		(uuid "8783539c-25c3-4c6f-aebf-435d6e7705fc")
+	)
+	(no_connect
+		(at 66.04 86.36)
+		(uuid "8c258fa5-5a32-4bca-b08f-3ae0edaf1ff3")
+	)
+	(no_connect
+		(at 66.04 93.98)
+		(uuid "8d8c5b77-f3d3-4352-adac-e8c1970fdf31")
+	)
+	(no_connect
+		(at 27.94 104.14)
+		(uuid "ad24c6df-5b77-4f9f-aa6a-f7678c617222")
+	)
+	(no_connect
+		(at 27.94 101.6)
+		(uuid "b213901a-8589-42d3-b38d-1bfb02d7ad25")
+	)
+	(no_connect
+		(at 30.48 121.92)
+		(uuid "d9b7f2b0-8775-4897-bcdb-1d754f3f8d7a")
+	)
+	(no_connect
+		(at 66.04 119.38)
+		(uuid "da38e9c5-363d-4fb4-bbbd-1e0425a326e1")
+	)
+	(no_connect
+		(at 30.48 119.38)
+		(uuid "dcee9826-6ce0-4f61-bcbe-8a51c3a09307")
+	)
+	(no_connect
+		(at 66.04 50.8)
+		(uuid "e3014057-f7eb-4dd9-94a0-a0669068bd9a")
+	)
+	(no_connect
+		(at 66.04 106.68)
+		(uuid "ed3042e2-b3d6-4c0b-bf95-53ed573b923a")
+	)
 	(wire
 		(pts
 			(xy 204.47 144.78) (xy 210.82 144.78)
@@ -4849,6 +4945,16 @@
 			(type default)
 		)
 		(uuid "3cdbebf5-2636-46c1-b066-9394d03f275d")
+	)
+	(wire
+		(pts
+			(xy 27.94 104.14) (xy 30.48 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3d0ebd27-495c-47ba-8f37-5d4f63a5788f")
 	)
 	(polyline
 		(pts
@@ -5179,6 +5285,16 @@
 			(type default)
 		)
 		(uuid "8b49c598-e939-4f4d-9305-28968f9a6435")
+	)
+	(wire
+		(pts
+			(xy 27.94 101.6) (xy 30.48 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "93ef42b6-4739-40fc-aafc-fe032f5ba47b")
 	)
 	(wire
 		(pts
@@ -6041,7 +6157,7 @@
 		(uuid "93292648-48b6-46d2-8302-0263163c5c64")
 	)
 	(label "UART_TX"
-		(at 30.48 101.6 180)
+		(at 27.94 101.6 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6241,7 +6357,7 @@
 		(uuid "e4d0212e-eb5b-4c46-a7d0-4eea745039c0")
 	)
 	(label "UART_RX"
-		(at 30.48 104.14 180)
+		(at 27.94 104.14 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6249,16 +6365,6 @@
 			(justify right bottom)
 		)
 		(uuid "e7caa3a7-f2fd-4f4d-82bb-914c38482793")
-	)
-	(label "S_CKL"
-		(at 516.89 -27.94 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "eada3c51-179f-483f-96cb-bf5d1be30125")
 	)
 	(label "MOSI"
 		(at 66.04 66.04 0)
