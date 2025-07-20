@@ -361,10 +361,10 @@ __ALIGN_BEGIN static uint8_t USBD_HID_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_
 };
 
 __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  __ALIGN_END =
-{
-		 0x05, 0x01,                         // USAGE_PAGE (Generic Desktop)
-		    0x09, 0x04,                         // USAGE (Joystick)
-		    0xA1, 0x01,                         // COLLECTION (Application)
+	{
+			 0x05, 0x01,                         // USAGE_PAGE (Generic Desktop)
+				0x09, 0x04,                         // USAGE (Joystick)
+				0xA1, 0x01,                         // COLLECTION (Application)
 		    0x85, 0x01,                         //   REPORT_ID (1)
 
 		    // Botones (8 botones)
@@ -383,11 +383,11 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
 		    0x09, 0x31,                         //   USAGE (Y)
 		    0x09, 0x32,                         //   USAGE (Z)
 		    0x09, 0x35,                         //   USAGE (Rz)
-		    0x15, 0x00,                         //   LOGICAL_MINIMUM (0)
-		    0x26, 0xFF, 0x00,                   //   LOGICAL_MAXIMUM (255)
-		    0x75, 0x08,                         //   REPORT_SIZE (8)
-		    0x95, 0x04,                         //   REPORT_COUNT (4)
-		    0x81, 0x02,                         //   INPUT (Data,Var,Abs)
+			  0x15, 0x00,        					        //   LOGICAL_MINIMUM (0)
+			  0x26, 0xFF, 0x7F,  					        //   LOGICAL_MAXIMUM (32767)
+			  0x75, 0x10,        					        // 	 REPORT_SIZE (16)
+			  0x95, 0x01,        					        //   REPORT_COUNT (1)
+			  0x81, 0x02,        					        //   INPUT (Data,Var,Abs)
 
 		    0xC0                                // END_COLLECTION
 };
