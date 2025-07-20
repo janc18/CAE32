@@ -326,7 +326,7 @@ void updateAxisBar(ObjectsUI *UI, guint8 number, gdouble value) {
     gdouble normalized_value = value /32767;
   g_printerr("%f\n",normalized_value);
   switch (number) {
-  case 0: {
+  case 1: {
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_freno), normalized_value);
     break;
   }
@@ -334,11 +334,11 @@ void updateAxisBar(ObjectsUI *UI, guint8 number, gdouble value) {
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_clutch), normalized_value);
     break;
   }
-  case 1: {
+  case 3: {
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(UI->barra_acelerador), normalized_value);
     break;
   }
-  case 3: {
+  case 0: {
     updateSteeringWheel(UI, value);
     break;
   }
